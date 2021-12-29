@@ -1,0 +1,36 @@
+# Meta
+-e .
+-r requirements.txt
+
+# Sessions
+nox==2021.10.1
+
+# Docs
+furo==2021.10.9
+sphinx<5,>=4
+
+# Formatting
+black==21.12b0
+
+# Imports
+flake8~=4.0.0
+isort~=5.10.0
+
+# Typing
+mypy==0.910
+
+# Line lengths
+len8~=0.6.0
+
+# Spelling
+codespell~=2.1.0
+
+# Tests
+coverage~=6.2.0
+pytest==7.0.0rc1
+
+# Safety
+safety~=1.10; python_version < "3.11"
+
+# Security
+bandit~=1.7.0

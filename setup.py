@@ -26,6 +26,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import annotations
+
 import sys
 from collections import defaultdict
 
@@ -39,7 +41,7 @@ if sys.version_info < (3, 7, 0):
 import setuptools
 
 
-def parse_requirements(path):
+def parse_requirements(path: str) -> list[str]:
     with open(path) as f:
         deps = (d.strip() for d in f.readlines())
         return [d for d in deps if not d.startswith(("#", "-r"))]

@@ -26,13 +26,24 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__productname__ = "chatto"
-__version__ = "0.1.0"
-__description__ = "A unified API wrapper for YouTube and Twitch chat bots."
-__url__ = "https://github.com/parafoxia/chatto"
-__docs__ = "https://chatto.readthedocs.io/en/latest"
-__author__ = "Ethan Henderson"
-__author_email__ = "ethan.henderson.1998@gmail.com"
-__license__ = "BSD 3-Clause 'New' or 'Revised' License"
-__bugtracker__ = "https://github.com/parafoxia/chatto/issues"
-__ci__ = "https://github.com/parafoxia/chatto/actions"
+import re
+
+from chatto import ux
+
+# This is a rough pattern -- no point being exact here.
+LOG_PATTERN = re.compile(
+    f"I: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}: {__name__}: This is a log message!"
+)
+
+
+def test_splash() -> None:
+    ux.display_splash()
+
+
+def test_logging() -> None:
+    # This can't be tested properly because Pytest's logger overwrites
+    # Chatto's one.
+    handlers = ux.setup_logging()
+    assert len(handlers) == 1
+    handlers = ux.setup_logging(file="test.log")
+    assert len(handlers) == 2

@@ -26,13 +26,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__productname__ = "chatto"
-__version__ = "0.1.0"
-__description__ = "A unified API wrapper for YouTube and Twitch chat bots."
-__url__ = "https://github.com/parafoxia/chatto"
-__docs__ = "https://chatto.readthedocs.io/en/latest"
-__author__ = "Ethan Henderson"
-__author_email__ = "ethan.henderson.1998@gmail.com"
-__license__ = "BSD 3-Clause 'New' or 'Revised' License"
-__bugtracker__ = "https://github.com/parafoxia/chatto/issues"
-__ci__ = "https://github.com/parafoxia/chatto/actions"
+from __future__ import annotations
+
+from .ux import display_splash
+
+if __name__ == "__main__":
+    display_splash()

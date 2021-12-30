@@ -1,4 +1,4 @@
-# Copyright (c) 2021, Ethan Henderson
+# Copyright (c) 2021-2022, Ethan Henderson
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -74,9 +74,9 @@ setuptools.setup(
     author_email=attrs["email"],
     license=attrs["license"],
     classifiers=[
-        "Development Status :: 1 - Planning",
+        # "Development Status :: 1 - Planning",
         # "Development Status :: 2 - Pre-Alpha",
-        # "Development Status :: 3 - Alpha",
+        "Development Status :: 3 - Alpha",
         # "Development Status :: 4 - Beta",
         # "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",

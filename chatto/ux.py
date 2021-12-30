@@ -29,6 +29,7 @@
 from __future__ import annotations
 
 import logging
+import typing as t
 
 import chatto
 
@@ -40,10 +41,9 @@ BANNER = r"""
  \:\ \/__/ \/\::/  / \/\::/  /  /:/\/__/  /:/\/__/ \:\/:/  /
   \:\__\     /:/  /    /:/  /   \/__/     \/__/     \::/  /
    \/__/     \/__/     \/__/                         \/__/
-
 """
 
-COLOURS = [
+CLRS = [
     "\33[38;5;1m",
     "\33[38;5;208m",
     "\33[38;5;3m",
@@ -52,29 +52,35 @@ COLOURS = [
     "\33[38;5;135m",
 ]
 
+if t.TYPE_CHECKING:
+    HandlersT = list[logging.StreamHandler[t.TextIO] | logging.FileHandler]
 
-def display_splash() -> None:
+
+def print_banner() -> None:
     banner = ""
 
     for line in BANNER.splitlines()[1:]:
         for i in range(0, 60, 10):
-            banner += COLOURS[i // 10] + line[i : i + 10] + "\33[0m"
+            banner += CLRS[i // 10] + line[i : i + 10] + "\33[0m"
         banner += "\n"
 
+    print(banner)
+
+
+def display_splash() -> None:
+    print_banner()
     print(
-        banner + f"A unified API wrapper for \33[1m{COLOURS[0]}YouTube\33[0m "
-        f"and \33[1m{COLOURS[-1]}Twitch\33[0m chat bots.\n\n"
-        f"You're using version \33[1m{COLOURS[3]}{chatto.__version__}\33[0m.\n\n"
-        f"\33[1m{COLOURS[2]}Chatto\33[0m is still in alpha, and so may change "
+        f"A unified API wrapper for \33[1m{CLRS[0]}YouTube\33[0m "
+        f"and \33[1m{CLRS[-1]}Twitch\33[0m chat bots.\n\n"
+        f"You're using version \33[1m{CLRS[3]}{chatto.__version__}\33[0m.\n\n"
+        f"\33[1m{CLRS[2]}Chatto\33[0m is still in alpha, and so may change "
         "(or break) at any time.\n"
         "Keep up with development here: "
         "\33[4mhttps://github.com/parafoxia/chatto\33[0m."
     )
 
 
-def setup_logging(
-    level: int = logging.INFO, file: str | None = None
-) -> list[logging.StreamHandler | logging.FileHandler]:
+def setup_logging(level: int = logging.INFO, file: str | None = None) -> HandlersT:
     LEVEL = "{levelname[0]}"
     ASCTIME = "\33[38;5;243m{asctime}\33[0m"
     BODY = "{name}: {message}"
@@ -95,7 +101,7 @@ def setup_logging(
 
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(StreamFormatter())
-    handlers = [stream_handler]
+    handlers: HandlersT = [stream_handler]
 
     if file:
 

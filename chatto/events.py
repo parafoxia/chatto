@@ -57,7 +57,8 @@ class MessageCreateEvent(Event):
     message: Message
 
 
-CallbacksT = dict[t.Type[Event], list[t.Callable[[Event], Awaitable[t.Any]]]]
+if t.TYPE_CHECKING:
+    CallbacksT = dict[t.Type[Event], list[t.Callable[[Event], Awaitable[t.Any]]]]
 
 
 class EventHandler:

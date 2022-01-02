@@ -28,9 +28,12 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import logging
 import typing as t
 from dataclasses import dataclass
+
+from dateutil.parser import parse as parse_ts
 
 import chatto
 from chatto.errors import ChannelNotLive
@@ -45,7 +48,7 @@ log = logging.getLogger(__name__)
 class Stream:
     id: str
     chat_id: str
-    start_time: str
+    start_time: dt.datetime
 
     @classmethod
     async def from_id(
@@ -65,9 +68,9 @@ class Stream:
         chat_id = streaming_details.get("activeLiveChatId", None)
         if not chat_id:
             raise ChannelNotLive("no chat ID found -- the stream has probably finished")
-        start_time = streaming_details.get("actualStartTime", None)
+        start_time = parse_ts(streaming_details["actualStartTime"])
 
-        log.info("Retrieved chat ID")
+        log.info(f"Retrieved stream info for stream {stream_id}")
         return cls(stream_id, chat_id, start_time)
 
     @classmethod
@@ -90,5 +93,5 @@ class Stream:
             raise ChannelNotLive("the provided channel is not live")
 
         stream_id = items[0]["id"]["videoId"]
-        log.info("Retrieved stream ID")
+        log.info(f"Retrieved ID of currently live stream ({stream_id})")
         return await cls.from_id(stream_id, token, session)

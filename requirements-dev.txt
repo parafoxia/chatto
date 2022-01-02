@@ -18,6 +18,7 @@ isort~=5.10.0
 
 # Typing
 mypy==0.930
+types-python-dateutil==2.8.4
 
 # Line lengths
 len8~=0.7.0

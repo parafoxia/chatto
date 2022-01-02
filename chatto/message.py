@@ -28,21 +28,29 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import typing as t
 from dataclasses import dataclass
+
+from dateutil.parser import parse as parse_ts
 
 
 @dataclass(eq=True, frozen=True)
 class Message:
     id: str
-    published_at: str
+    published_at: dt.datetime
     content: str
+    author_name: str
+    author_id: str
 
     @classmethod
     def from_youtube(cls, item: dict[str, t.Any]) -> Message:
         snippet = item["snippet"]
+        author = item["authorDetails"]
         return cls(
             id=item["id"],
-            published_at=snippet["publishedAt"],
+            published_at=parse_ts(snippet["publishedAt"]),
             content=snippet["displayMessage"],
+            author_name=author["displayName"],
+            author_id=author["channelId"],
         )

@@ -169,7 +169,7 @@ class YouTubeBot:
                 await asyncio.sleep(5)
 
     def run(self, *, with_stream_id: str | None = None) -> None:
-        log.info("NOW STARTING BOT")
+        log.info("\33[1mNow starting bot!\33[0m")
 
         self._loop = asyncio.new_event_loop()
 

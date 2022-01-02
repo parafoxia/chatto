@@ -147,7 +147,7 @@ class YouTubeBot:
             "activeLiveChatId", None
         )
         if not self._chat_id:
-            raise ChannelNotLive("no chat ID found")
+            raise ChannelNotLive("no chat ID found -- the stream has probably finished")
 
         log.info(f"Chatto is ready to receive messages!")
         await self.events.push(events.ReadyEvent)
@@ -192,7 +192,7 @@ class YouTubeBot:
                         log.critical("Received 4xx error, cannot continue")
                         return traceback.print_exc()
 
-                log.error(f"Ignoring error during polling -- will retry in 5 seconds:")
+                log.error(f"Ignoring error during polling (will retry in 5 seconds):")
                 traceback.print_exc()
                 await asyncio.sleep(5)
 

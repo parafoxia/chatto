@@ -37,6 +37,7 @@ from collections.abc import Awaitable
 from dataclasses import dataclass
 
 from chatto.message import Message
+from chatto.stream import Stream
 
 log = logging.getLogger(__name__)
 
@@ -53,8 +54,13 @@ class ReadyEvent(Event):
 
 
 @dataclass(eq=True, frozen=True)
-class MessageCreateEvent(Event):
+class MessageCreatedEvent(Event):
     message: Message
+
+
+@dataclass(eq=True, frozen=True)
+class StreamFetchedEvent(Event):
+    stream: Stream
 
 
 if t.TYPE_CHECKING:
@@ -70,7 +76,7 @@ class EventHandler:
         while True:
             try:
                 event = await self.queue.get()
-                log.debug(f"Found {event} event on queue")
+                log.debug(f"Retrieved {event} event")
                 for cb in self.callbacks[event.__class__]:
                     log.debug(f"Running callback '{cb.__name__}' for event...")
                     await cb(event)
@@ -79,17 +85,18 @@ class EventHandler:
                 log.error(f"Ignoring error processing {event} event:")
                 traceback.print_exc()
 
-    async def push(self, event_type: t.Type[Event], *args: t.Any) -> Event:
+    async def dispatch(self, event_type: t.Type[Event], *args: t.Any) -> Event:
         event = event_type(*args)
         await self.queue.put(event)
-        log.debug(f"Put {event_type.__name__} on the event queue")
+        log.debug(f"Dispatched {event_type.__name__} event")
         return event
 
     def subscribe(
-        self, event_type: t.Type[Event], callback: t.Callable[[t.Any], t.Any]
+        self, event_type: t.Type[Event], *callbacks: t.Callable[[t.Any], t.Any]
     ) -> None:
-        self.callbacks[event_type].append(callback)
-        log.info(
-            f"Subscribed to {event_type.__name__} events "
-            f"with callback '{callback.__name__}'"
-        )
+        for cb in callbacks:
+            self.callbacks[event_type].append(cb)
+            log.info(
+                f"Subscribed to {event_type.__name__} events "
+                f"with callback '{cb.__name__}'"
+            )

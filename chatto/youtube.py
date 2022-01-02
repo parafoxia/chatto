@@ -37,8 +37,8 @@ import typing as t
 from aiohttp import ClientSession
 
 import chatto
-from chatto import events
-from chatto.errors import ChannelNotLive, HTTPError
+from chatto import events, stream
+from chatto.errors import HTTPError, MissingRequiredInformation, NoSession
 from chatto.message import Message
 
 if t.TYPE_CHECKING:
@@ -51,10 +51,9 @@ class YouTubeBot:
     __slots__ = (
         "token",
         "channel_id",
-        "stream_id",
+        "_stream",
         "_loop",
         "_session",
-        "_chat_id",
         "commands",
         "events",
     )
@@ -63,7 +62,6 @@ class YouTubeBot:
         self,
         token: str,
         channel_id: str,
-        stream_id: str | None = None,
         log_level: int = logging.INFO,
         log_file: str | None = None,
     ) -> None:
@@ -76,9 +74,8 @@ class YouTubeBot:
 
         self.token = token
         if not channel_id:
-            raise Exception("a channel ID must be provided")
+            raise MissingRequiredInformation("a channel ID must be provided")
         self.channel_id = channel_id
-        self.stream_id = stream_id
         self.events = events.EventHandler()
 
     @property
@@ -90,8 +87,8 @@ class YouTubeBot:
         return getattr(self, "_session", None)
 
     @property
-    def chat_id(self) -> str | None:
-        return getattr(self, "_chat_id", None)
+    def stream(self) -> stream.Stream | None:
+        return getattr(self, "_stream", None)
 
     @property
     def platform(self) -> str:
@@ -100,6 +97,21 @@ class YouTubeBot:
     async def create_session(self, loop: AbstractEventLoop) -> None:
         self._session = ClientSession(loop=loop)
         log.info("New session created")
+
+    async def fetch_stream_info(self, stream_id: str | None = None) -> None:
+        if not self.session:
+            raise NoSession("no active session")
+
+        if stream_id:
+            self._stream = await stream.Stream.from_id(
+                stream_id, self.token, self.session
+            )
+        else:
+            self._stream = await stream.Stream.from_channel_id(
+                self.channel_id, self.token, self.session
+            )
+
+        await self.events.dispatch(events.StreamFetchedEvent, self._stream)
 
     async def make_request(self, url: str) -> dict[str, t.Any]:
         log.debug(f"Making request to {url}")
@@ -113,45 +125,6 @@ class YouTubeBot:
 
         return t.cast(dict[str, t.Any], data)
 
-    async def set_active_chat_id(self) -> None:
-        async def fetch_current_stream() -> str:
-            log.info("No stream ID provided -- searching for active one...")
-            url = (
-                f"{chatto.API_BASE_URL}/{chatto.API_VERSION}/search"
-                f"?key={self.token}"
-                f"&channelId={self.channel_id}"
-                "&eventType=live"
-                "&type=video"
-            )
-
-            data = await self.make_request(url)
-            items = data["items"]
-
-            if not items:
-                raise ChannelNotLive("the provided channel is not live")
-
-            stream_id = items[0]["id"]["videoId"]
-            log.info(f"Found active stream! ({stream_id})")
-            return t.cast(str, stream_id)
-
-        log.info("Fetching chat ID...")
-        url = (
-            f"{chatto.API_BASE_URL}/{chatto.API_VERSION}/videos"
-            f"?key={self.token}"
-            f"&part=liveStreamingDetails"
-            f"&id={self.stream_id or await fetch_current_stream()}"
-        )
-
-        data = await self.make_request(url)
-        self._chat_id = data["items"][0]["liveStreamingDetails"].get(
-            "activeLiveChatId", None
-        )
-        if not self._chat_id:
-            raise ChannelNotLive("no chat ID found -- the stream has probably finished")
-
-        log.info(f"Chatto is ready to receive messages!")
-        await self.events.push(events.ReadyEvent)
-
     async def poll_for_messages(self) -> None:
         def is_new(item: dict[str, t.Any]) -> bool:
             published = item["snippet"]["publishedAt"]
@@ -162,7 +135,7 @@ class YouTubeBot:
         url = (
             f"{chatto.API_BASE_URL}/{chatto.API_VERSION}/liveChat/messages"
             f"?key={self.token}"
-            f"&liveChatId={self.chat_id}"
+            f"&liveChatId={self._stream.chat_id}"
             "&part=id,snippet,authorDetails"
         )
         last_received = dt.datetime.utcnow().isoformat()
@@ -174,11 +147,11 @@ class YouTubeBot:
                 new_items = tuple(filter(is_new, data["items"]))
 
                 if new_items:
-                    log.info(f"Processing {len(new_items):,} new messages")
+                    log.info(f"Processing {len(new_items):,} new message(s)")
 
                     for item in new_items:
-                        msg = Message.from_youtube(item)
-                        await self.events.push(events.MessageCreateEvent, msg)
+                        message = Message.from_youtube(item)
+                        await self.events.dispatch(events.MessageCreatedEvent, message)
 
                     last_received = new_items[-1]["snippet"]["publishedAt"]
 
@@ -196,7 +169,7 @@ class YouTubeBot:
                 traceback.print_exc()
                 await asyncio.sleep(5)
 
-    def run(self) -> None:
+    def run(self, *, with_stream_id: str | None = None) -> None:
         log.info("NOW STARTING BOT")
 
         self._loop = asyncio.new_event_loop()
@@ -204,7 +177,7 @@ class YouTubeBot:
         try:
             # Get attributes.
             self._loop.run_until_complete(self.create_session(self._loop))
-            self._loop.run_until_complete(self.set_active_chat_id())
+            self._loop.run_until_complete(self.fetch_stream_info(with_stream_id))
 
             # Create tasks.
             task = self._loop.create_task(self.poll_for_messages())

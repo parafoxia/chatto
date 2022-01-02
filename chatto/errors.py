@@ -40,3 +40,11 @@ class HTTPError(ChattoError):
 
 class ChannelNotLive(ChattoError):
     ...
+
+
+class NoSession(ChattoError):
+    ...
+
+
+class MissingRequiredInformation(ChattoError):
+    ...

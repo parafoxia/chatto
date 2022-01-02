@@ -29,3 +29,14 @@
 
 class ChattoError(Exception):
     ...
+
+
+class HTTPError(ChattoError):
+    def __init__(self, code: int, body: str) -> None:
+        super().__init__(f"{code}: {body}")
+        self.code = code
+        self.body = body
+
+
+class ChannelNotLive(ChattoError):
+    ...

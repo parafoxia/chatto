@@ -26,21 +26,23 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__all__ = ("API_BASE_URL", "API_VERSION", "YouTubeBot", "ux")
+from __future__ import annotations
 
-__productname__ = "chatto"
-__version__ = "0.1.0"
-__description__ = "A unified API wrapper for YouTube and Twitch chat bots."
-__url__ = "https://github.com/parafoxia/chatto"
-__docs__ = "https://chatto.readthedocs.io/en/latest"
-__author__ = "Ethan Henderson"
-__author_email__ = "ethan.henderson.1998@gmail.com"
-__license__ = "BSD 3-Clause 'New' or 'Revised' License"
-__bugtracker__ = "https://github.com/parafoxia/chatto/issues"
-__ci__ = "https://github.com/parafoxia/chatto/actions"
+import typing as t
+from dataclasses import dataclass
 
-from . import ux
-from .youtube import YouTubeBot
 
-API_BASE_URL = "https://www.googleapis.com/youtube"
-API_VERSION = "v3"
+@dataclass(eq=True, frozen=True)
+class Message:
+    id: str
+    published_at: str
+    content: str
+
+    @classmethod
+    def from_youtube(cls, item: dict[str, t.Any]) -> Message:
+        snippet = item["snippet"]
+        return cls(
+            id=item["id"],
+            published_at=snippet["publishedAt"],
+            content=snippet["displayMessage"],
+        )

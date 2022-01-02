@@ -66,8 +66,7 @@ class YouTubeBot:
         log_file: str | None = None,
     ) -> None:
         chatto.ux.setup_logging(log_level, log_file)
-        chatto.ux.print_banner()
-        print(
+        chatto.ux.print_banner(
             f"Running version \33[1m{chatto.__version__}\33[0m. "
             "Use `\33[1mpython -m chatto\33[0m` for more info.\n"
         )

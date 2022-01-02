@@ -56,7 +56,7 @@ if t.TYPE_CHECKING:
     HandlersT = list[logging.StreamHandler[t.TextIO] | logging.FileHandler]
 
 
-def print_banner() -> None:
+def print_banner(extra: str | None = None) -> None:
     banner = ""
 
     for line in BANNER.splitlines()[1:]:
@@ -64,6 +64,8 @@ def print_banner() -> None:
             banner += CLRS[i // 10] + line[i : i + 10] + "\33[0m"
         banner += "\n"
 
+    if extra:
+        banner += f"\n{extra}"
     print(banner)
 
 

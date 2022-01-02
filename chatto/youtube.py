@@ -149,7 +149,7 @@ class YouTubeBot:
                     log.info(f"Processing {len(new_items):,} new message(s)")
 
                     for item in new_items:
-                        message = Message.from_youtube(item)
+                        message = Message.from_youtube(item, self._stream)
                         await self.events.dispatch(events.MessageCreatedEvent, message)
 
                     last_received = new_items[-1]["snippet"]["publishedAt"]

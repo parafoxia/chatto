@@ -28,33 +28,30 @@
 
 from __future__ import annotations
 
-import datetime as dt
 import typing as t
 from dataclasses import dataclass
 
-from dateutil.parser import parse as parse_ts
 
-from chatto.channel import Channel
-from chatto.stream import Stream
-
-
-@dataclass(eq=True, frozen=True)
-class Message:
+@dataclass
+class Channel:
     id: str
-    type: str
-    stream: Stream
-    channel: Channel
-    published_at: dt.datetime
-    content: str
+    url: str
+    name: str
+    avatar_url: str
+    is_verified: bool
+    is_owner: bool
+    is_sponsor: bool
+    is_moderator: bool
 
     @classmethod
-    def from_youtube(cls, item: dict[str, t.Any], stream: Stream) -> Message:
-        snippet = item["snippet"]
+    def from_author(cls, data: dict[str, t.Any]) -> Channel:
         return cls(
-            id=item["id"],
-            type=item["type"],
-            stream=stream,
-            channel=Channel.from_author(item["authorDetails"]),
-            published_at=parse_ts(snippet["publishedAt"]),
-            content=snippet["displayMessage"],
+            id=data["channelId"],
+            url=data["channelUrl"],
+            name=data["displayName"],
+            avatar_url=data["profileImageUrl"],
+            is_verified=data["isVerified"],
+            is_owner=data["isChatOwner"],
+            is_sponsor=data["isChatSponsor"],
+            is_moderator=data["isChatModerator"],
         )

@@ -80,7 +80,7 @@ def fetch_installs(*categories: str) -> list[str]:
 
 @nox.session(reuse_venv=True)  # type: ignore
 def tests(session: nox.Session) -> None:
-    session.install("-U", *fetch_installs("Tests"), ".")
+    session.install("-Ur", "requirements.txt", *fetch_installs("Tests"), ".")
     session.run(
         "coverage",
         "run",

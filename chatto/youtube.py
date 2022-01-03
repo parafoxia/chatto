@@ -29,7 +29,7 @@
 from __future__ import annotations
 
 import asyncio
-import datetime as dt
+import json
 import logging
 import traceback
 import typing as t
@@ -98,8 +98,8 @@ class YouTubeBot(OAuthMixin):
         return bool(self.oauth_tokens)
 
     @property
-    def access_token(self) -> str:
-        return t.cast(str, self.oauth_tokens["access_token"])
+    def access_token(self) -> str | None:
+        return t.cast(str | None, self.oauth_tokens.get("access_token", None))
 
     @property
     def platform(self) -> str:
@@ -137,35 +137,28 @@ class YouTubeBot(OAuthMixin):
         return t.cast(dict[str, t.Any], data)
 
     async def poll_for_messages(self) -> None:
-        def is_new(item: dict[str, t.Any]) -> bool:
-            published = item["snippet"]["publishedAt"]
-            if published <= last_received:
-                return False
-            return True
-
+        page_token = ""  # nosec: B105 false positive
         url = chatto.YOUTUBE_API_BASE_URL + (
             "/liveChat/messages"
             f"?key={self.token}"
             f"&liveChatId={self._stream.chat_id}"
-            "&part=id,snippet,authorDetails"
+            "&part=snippet,authorDetails"
         )
-        last_received = dt.datetime.utcnow().isoformat()
 
         while True:
             try:
                 log.debug("Polling for new messages...")
-                data = await self.make_request(url)
-                new_items = tuple(filter(is_new, data["items"]))
+                data = await self.make_request(url + f"&pageToken={page_token}")
+                new_items = data["items"]
 
-                if new_items:
+                if new_items and page_token:
                     log.info(f"Processing {len(new_items):,} new message(s)")
 
                     for item in new_items:
                         message = Message.from_youtube(item, self._stream)
                         await self.events.dispatch(events.MessageCreatedEvent, message)
 
-                    last_received = new_items[-1]["snippet"]["publishedAt"]
-
+                page_token = data["nextPageToken"]
                 next_poll_in = data["pollingIntervalMillis"] / 1_000
                 log.debug(f"Waiting {next_poll_in:,} seconds before next poll")
                 await asyncio.sleep(next_poll_in)
@@ -179,6 +172,32 @@ class YouTubeBot(OAuthMixin):
                 log.error(f"Ignoring error during polling (will retry in 5 seconds):")
                 traceback.print_exc()
                 await asyncio.sleep(5)
+
+    async def send_message(self, content: str) -> Message:
+        url = (
+            chatto.YOUTUBE_API_BASE_URL
+            + f"/liveChat/messages?part=id,snippet,authorDetails"
+        )
+        data = {
+            "snippet": {
+                "type": "textMessageEvent",
+                "liveChatId": self._stream.chat_id,
+                "textMessageDetails": {
+                    "messageText": content,
+                },
+            }
+        }
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+
+        async with self._session.post(url, data=json.dumps(data), headers=headers) as r:
+            r.raise_for_status()
+            data = await r.json()
+
+        return Message.from_youtube(data, self._stream)
 
     def run(
         self,

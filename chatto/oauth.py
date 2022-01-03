@@ -79,7 +79,7 @@ class OAuthMixin:
     def secrets(self) -> Secrets | None:
         return getattr(self, "_secrets", None)
 
-    def load_secrets(self, path: pathlib.Path | str) -> None:
+    def use_secrets(self, path: pathlib.Path | str) -> None:
         self._secrets = Secrets.from_file(path)
 
     async def authorise(self, *, force: bool = False) -> None:

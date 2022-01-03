@@ -55,19 +55,17 @@ class Stream:
         cls, stream_id: str, token: str, session: ClientSession
     ) -> Stream:
         url = chatto.YOUTUBE_API_BASE_URL + (
-            "/videos"
-            f"?key={token}"
-            f"&part=liveStreamingDetails"
-            f"&id={stream_id}"
+            f"/videos?key={token}&part=liveStreamingDetails&id={stream_id}"
         )
 
         async with session.get(url) as r:
+            r.raise_for_status()
             data = await r.json()
 
         streaming_details = data["items"][0]["liveStreamingDetails"]
         chat_id = streaming_details.get("activeLiveChatId", None)
         if not chat_id:
-            raise ChannelNotLive("no chat ID found -- the stream has probably finished")
+            raise ChannelNotLive("the stream has no active chat ID")
         start_time = parse_ts(streaming_details["actualStartTime"])
 
         log.info(f"Retrieved stream info for stream {stream_id}")

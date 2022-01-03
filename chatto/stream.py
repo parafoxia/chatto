@@ -54,8 +54,8 @@ class Stream:
     async def from_id(
         cls, stream_id: str, token: str, session: ClientSession
     ) -> Stream:
-        url = (
-            f"{chatto.API_BASE_URL}/{chatto.API_VERSION}/videos"
+        url = chatto.YOUTUBE_API_BASE_URL + (
+            "/videos"
             f"?key={token}"
             f"&part=liveStreamingDetails"
             f"&id={stream_id}"
@@ -77,8 +77,8 @@ class Stream:
     async def from_channel_id(
         cls, channel_id: str, token: str, session: ClientSession
     ) -> Stream:
-        url = (
-            f"{chatto.API_BASE_URL}/{chatto.API_VERSION}/search"
+        url = chatto.YOUTUBE_API_BASE_URL + (
+            "/search"
             f"?key={token}"
             f"&channelId={channel_id}"
             "&eventType=live"

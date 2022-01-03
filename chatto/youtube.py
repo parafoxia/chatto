@@ -143,8 +143,8 @@ class YouTubeBot(OAuthMixin):
                 return False
             return True
 
-        url = (
-            f"{chatto.API_BASE_URL}/{chatto.API_VERSION}/liveChat/messages"
+        url = chatto.YOUTUBE_API_BASE_URL + (
+            "/liveChat/messages"
             f"?key={self.token}"
             f"&liveChatId={self._stream.chat_id}"
             "&part=id,snippet,authorDetails"

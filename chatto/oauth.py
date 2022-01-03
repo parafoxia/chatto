@@ -54,7 +54,7 @@ def get_auth_url(secrets: Secrets) -> tuple[str, str]:
         "?response_type=code"
         f"&client_id={secrets.client_id}"
         f"&redirect_uri={secrets.redirect_uris[0]}"
-        f"&scope={'+'.join(chatto.API_SCOPES)}"
+        f"&scope={'+'.join(chatto.YOUTUBE_API_SCOPES)}"
         f"&state={state}"
     )
     return auth_url, state

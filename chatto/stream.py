@@ -36,7 +36,7 @@ from dataclasses import dataclass
 from dateutil.parser import parse as parse_ts
 
 import chatto
-from chatto.errors import ChannelNotLive
+from chatto.errors import ChannelNotLive, HTTPError
 
 if t.TYPE_CHECKING:
     from aiohttp import ClientSession
@@ -59,8 +59,11 @@ class Stream:
         )
 
         async with session.get(url) as r:
-            r.raise_for_status()
             data = await r.json()
+
+        err = data.get("error", None)
+        if err:
+            raise HTTPError(err["code"], err["errors"][0]["message"])
 
         streaming_details = data["items"][0]["liveStreamingDetails"]
         chat_id = streaming_details.get("activeLiveChatId", None)
@@ -84,8 +87,13 @@ class Stream:
         )
 
         async with session.get(url) as r:
-            r.raise_for_status()
-            items = (await r.json())["items"]
+            data = await r.json()
+
+        err = data.get("error", None)
+        if err:
+            raise HTTPError(err["code"], err["errors"][0]["message"])
+
+        items = data["items"]
 
         if not items:
             raise ChannelNotLive("the provided channel is not live")

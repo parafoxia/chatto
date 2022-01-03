@@ -1,5 +1,10 @@
 # Chatto
 
+[![PyPi version](https://img.shields.io/pypi/v/chatto.svg)](https://pypi.python.org/pypi/chatto/)
+[![Downloads](https://pepy.tech/badge/chatto)](https://pepy.tech/project/chatto)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/parafoxia/chatto/CI?label=ci)](https://github.com/parafoxia/chatto/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/parafoxia/chatto.svg)](https://github.com/parafoxia/chatto/blob/main/LICENSE)
+
 A unified API wrapper for YouTube and Twitch chat bots.
 
 CPython versions 3.7 through 3.10 and PyPy versions 3.7 and 3.8 are officially supported.

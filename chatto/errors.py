@@ -48,3 +48,11 @@ class NoSession(ChattoError):
 
 class MissingRequiredInformation(ChattoError):
     ...
+
+
+class NoSecrets(ChattoError):
+    ...
+
+
+class NotAuthorised(ChattoError):
+    ...

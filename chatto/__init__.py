@@ -26,7 +26,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__all__ = ("API_BASE_URL", "API_VERSION", "YouTubeBot", "ux")
+__all__ = ("API_BASE_URL", "API_SCOPES", "API_VERSION", "YouTubeBot", "ux")
 
 __productname__ = "chatto"
 __version__ = "0.1.0"
@@ -43,4 +43,5 @@ from . import ux
 from .youtube import YouTubeBot
 
 API_BASE_URL = "https://www.googleapis.com/youtube"
+API_SCOPES = ("https://www.googleapis.com/auth/youtube",)
 API_VERSION = "v3"

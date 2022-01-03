@@ -40,6 +40,7 @@ import chatto
 from chatto import events, stream
 from chatto.errors import HTTPError, MissingRequiredInformation, NoSession
 from chatto.message import Message
+from chatto.oauth import OAuthMixin
 
 if t.TYPE_CHECKING:
     from asyncio.events import AbstractEventLoop
@@ -47,15 +48,17 @@ if t.TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
-class YouTubeBot:
+class YouTubeBot(OAuthMixin):
     __slots__ = (
         "token",
         "channel_id",
         "_stream",
         "_loop",
         "_session",
+        "_secrets",
         "commands",
         "events",
+        "oauth_tokens",
     )
 
     def __init__(
@@ -76,6 +79,7 @@ class YouTubeBot:
             raise MissingRequiredInformation("a channel ID must be provided")
         self.channel_id = channel_id
         self.events = events.EventHandler()
+        self.oauth_tokens = {}
 
     @property
     def loop(self) -> AbstractEventLoop | None:
@@ -88,6 +92,14 @@ class YouTubeBot:
     @property
     def stream(self) -> stream.Stream | None:
         return getattr(self, "_stream", None)
+
+    @property
+    def authorised(self) -> bool:
+        return bool(self.oauth_tokens)
+
+    @property
+    def access_token(self) -> str:
+        return t.cast(str, self.oauth_tokens["access_token"])
 
     @property
     def platform(self) -> str:
@@ -168,14 +180,28 @@ class YouTubeBot:
                 traceback.print_exc()
                 await asyncio.sleep(5)
 
-    def run(self, *, with_stream_id: str | None = None) -> None:
+    def run(
+        self,
+        *,
+        read_only: bool = False,
+        force_auth: bool = False,
+        with_stream_id: str | None = None,
+    ) -> None:
         log.info("\33[1mNow starting bot!\33[0m")
 
         self._loop = asyncio.new_event_loop()
 
         try:
-            # Get attributes.
-            self._loop.run_until_complete(self.create_session(self._loop))
+            # Create session.
+            if not self.session:
+                # It may have been created during authorisation.
+                self._loop.run_until_complete(self.create_session(self._loop))
+
+            # Authorise.
+            if not read_only:
+                self._loop.run_until_complete(self.authorise(force=force_auth))
+
+            # Fetch stream info.
             self._loop.run_until_complete(self.fetch_stream_info(with_stream_id))
 
             # Create tasks.
@@ -184,11 +210,14 @@ class YouTubeBot:
 
             # Run loop.
             self._loop.run_until_complete(task)
+
         except Exception as exc:
             log.critical("A critical error occurred, and Chatto cannot continue")
             raise exc
+
         except KeyboardInterrupt:
             ...
+
         finally:
             self.close(self._loop)
 

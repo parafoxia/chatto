@@ -107,6 +107,15 @@ setuptools.setup(
         "Bug Tracker": attrs["bugtracker"],
         "CI": attrs["ci"],
     },
-    python_requires=">=3.7.0,<3.12",
+    install_requires=parse_requirements("./requirements.txt"),
+    extras_require={
+        "types": list(
+            filter(
+                lambda d: d.startswith("types"),
+                parse_requirements("requirements-dev.txt"),
+            )
+        ),
+    },
+    python_requires=">=3.7.0,<3.11",
     packages=setuptools.find_packages(),
 )

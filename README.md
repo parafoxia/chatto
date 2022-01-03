@@ -27,7 +27,7 @@ You may need to prefix these commands with a call to the Python interpreter depe
 
 ## Setup
 
-Before you begin, you will need to have a Google Developers project with the YouTube Data API V3 enabled. You need an API key, and if you want to send and delete messages, you will need an OAuth Client ID.
+Before you begin, you will need to have a Google Developers project with the YouTube Data API V3 enabled. You need an API key, and if you want to send and delete messages, you will need an OAuth client ID.
 
 Although this project is currently undocumented, one of my other projects [has a guide](https://analytix.readthedocs.io/en/latest/refs/yt-analytics-setup.html). Just make sure to select the Data API and not the Analytics API as mentioned in that guide.
 
@@ -49,10 +49,15 @@ async def message_callback(event: MessageCreatedEvent) -> None:
 
 if __name__ == "__main__":
     bot = YouTubeBot(
+        # Your project's API key.
         os.environ["API_KEY"],
+        # The ID of the channel whose stream you want to connect to.
         os.environ["CHANNEL_ID"],
+        # Your OAuth client ID secrets file.
+        secrets_file="secrets.json",
     )
-    bot.use_secrets("secrets.json")
+
+    # Set a callback to execute whenever a new message is received.
     bot.events.subscribe(MessageCreatedEvent, message_callback)
 
     # This is blocking, so should be the last thing you call.

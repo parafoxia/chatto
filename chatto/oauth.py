@@ -93,7 +93,7 @@ class OAuthMixin:
 
         tokens_path = secrets.path.parent / "tokens.json"
         if not force and tokens_path.is_file():
-            log.info("Loading tokens from file")
+            log.info(f"Loading tokens from {tokens_path.resolve()}")
             async with aiofiles.open(tokens_path) as f:
                 self.oauth_tokens = json.loads(await f.read())
             return

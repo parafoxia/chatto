@@ -31,6 +31,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import pathlib
 import traceback
 import typing as t
 
@@ -65,6 +66,8 @@ class YouTubeBot(OAuthMixin):
         self,
         token: str,
         channel_id: str,
+        *,
+        secrets_file: pathlib.Path | str,
         log_level: int = logging.INFO,
         log_file: str | None = None,
     ) -> None:
@@ -80,6 +83,9 @@ class YouTubeBot(OAuthMixin):
         self.channel_id = channel_id
         self.events = events.EventHandler()
         self.oauth_tokens = {}
+
+        if secrets_file:
+            self.use_secrets(secrets_file)
 
     @property
     def loop(self) -> AbstractEventLoop | None:

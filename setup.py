@@ -31,9 +31,9 @@ from __future__ import annotations
 import sys
 from collections import defaultdict
 
-if sys.version_info < (3, 7, 0):
+if sys.version_info < (3, 8, 0):
     print(
-        "chatto only supports Python versions 3.7.0 or greater.",
+        "chatto only supports Python versions 3.8.0 or greater.",
         file=sys.stderr,
     )
     sys.exit(1)
@@ -89,7 +89,6 @@ setuptools.setup(
         "Operating System :: Unix",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -116,6 +115,6 @@ setuptools.setup(
             )
         ),
     },
-    python_requires=">=3.7.0,<3.11",
+    python_requires=">=3.8.0,<3.11",
     packages=setuptools.find_packages(),
 )

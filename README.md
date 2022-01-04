@@ -7,7 +7,7 @@
 
 A unified API wrapper for YouTube and Twitch chat bots.
 
-CPython versions 3.7 through 3.10 and PyPy versions 3.7 and 3.8 are officially supported.
+CPython versions 3.8 through 3.10 and PyPy version 3.8 are officially supported.
 
 Windows, MacOS, and Linux are all supported.
 

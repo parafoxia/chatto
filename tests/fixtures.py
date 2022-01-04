@@ -32,10 +32,12 @@ import datetime as dt
 import json
 import typing as t
 
+import aiofiles
 import pytest
 from dateutil.tz import tzutc
 
 from chatto.channel import Channel
+from chatto.events import EventHandler, MessageCreatedEvent, ReadyEvent
 from chatto.message import Message
 from chatto.secrets import Secrets
 from chatto.stream import Stream
@@ -126,3 +128,18 @@ def youtube_message_data() -> dict[str, t.Any]:
             "isChatModerator": False,
         },
     }
+
+
+@pytest.fixture()  # type: ignore
+def event_handler() -> EventHandler:
+    async def ready_cb(event: ReadyEvent) -> None:
+        1 / 0
+
+    async def message_cb(event: MessageCreatedEvent) -> None:
+        async with aiofiles.open("CALLBACK", "w") as f:
+            ...
+
+    e = EventHandler()
+    e.subscribe(MessageCreatedEvent, message_cb)
+    e.subscribe(ReadyEvent, ready_cb)
+    return e

@@ -32,6 +32,7 @@ import asyncio
 import json
 import logging
 import pathlib
+import sys
 import traceback
 import typing as t
 
@@ -214,7 +215,10 @@ class YouTubeBot(OAuthMixin):
     ) -> None:
         log.info("\33[1mNow starting bot!\33[0m")
 
-        self._loop = asyncio.new_event_loop()
+        if sys.version_info >= (3, 10):
+            self._loop = asyncio.new_event_loop()
+        else:
+            self._loop = asyncio.get_event_loop()
 
         try:
             # Create session.

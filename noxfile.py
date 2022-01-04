@@ -91,6 +91,7 @@ def tests(session: nox.Session) -> None:
         "--log-level=1",
     )
     session.run("coverage", "report", "-mi")
+    os.remove("CALLBACK")
 
 
 @nox.session(reuse_venv=True)  # type: ignore

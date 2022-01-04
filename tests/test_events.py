@@ -87,7 +87,6 @@ def test_process_events(event_handler: events.EventHandler, message: Message) ->
         ...
 
     assert os.path.isfile("CALLBACK")
-    os.remove("CALLBACK")
 
 
 def test_process_bad_events(event_handler: events.EventHandler) -> None:

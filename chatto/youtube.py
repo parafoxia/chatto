@@ -106,7 +106,7 @@ class YouTubeBot(OAuthMixin):
 
     @property
     def access_token(self) -> str | None:
-        return t.cast(str | None, self.oauth_tokens.get("access_token", None))
+        return self.oauth_tokens.get("access_token", None)  # type: ignore
 
     @property
     def platform(self) -> str:
@@ -141,7 +141,7 @@ class YouTubeBot(OAuthMixin):
         if err:
             raise HTTPError(err["code"], err["errors"][0]["message"])
 
-        return t.cast(dict[str, t.Any], data)
+        return data  # type: ignore
 
     async def poll_for_messages(self) -> None:
         page_token = ""  # nosec: B105 false positive

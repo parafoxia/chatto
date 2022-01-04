@@ -28,24 +28,15 @@
 
 from __future__ import annotations
 
-import re
+import pytest
 
-from chatto import ux
-
-# This is a rough pattern -- no point being exact here.
-LOG_PATTERN = re.compile(
-    f"I: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}: {__name__}: This is a log message!"
-)
+from chatto.errors import HTTPError
 
 
-def test_splash() -> None:
-    ux.display_splash()
+def test_http_error() -> None:
+    with pytest.raises(HTTPError) as exc:
+        raise HTTPError(418, "I'm a teapot")
 
-
-def test_logging() -> None:
-    # This can't be tested properly because Pytest's logger overwrites
-    # Chatto's one.
-    handlers = ux.setup_logging()
-    assert len(handlers) == 1
-    handlers = ux.setup_logging(file="test.log")
-    assert len(handlers) == 2
+    assert exc.value.code == 418
+    assert exc.value.body == "I'm a teapot"
+    assert str(exc.value) == "418: I'm a teapot"

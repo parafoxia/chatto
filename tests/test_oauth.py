@@ -30,22 +30,40 @@ from __future__ import annotations
 
 import re
 
-from chatto import ux
+from chatto import oauth
+from chatto.secrets import Secrets
+from tests.fixtures import *  # noqa
 
-# This is a rough pattern -- no point being exact here.
-LOG_PATTERN = re.compile(
-    f"I: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}: {__name__}: This is a log message!"
-)
-
-
-def test_splash() -> None:
-    ux.display_splash()
+STATE_PATTERN = re.compile("[0-9a-f]{64}")
 
 
-def test_logging() -> None:
-    # This can't be tested properly because Pytest's logger overwrites
-    # Chatto's one.
-    handlers = ux.setup_logging()
-    assert len(handlers) == 1
-    handlers = ux.setup_logging(file="test.log")
-    assert len(handlers) == 2
+def test_create_state() -> None:
+    assert STATE_PATTERN.match(oauth.create_state())
+
+
+def test_get_auth_uri(secrets: Secrets) -> None:
+    url, state = oauth.get_auth_url(secrets)
+
+    assert url == (
+        "https://accounts.google.com/o/oauth2/auth"
+        "?response_type=code"
+        "&client_id=fn497gnwebg9wn98ghw8gh9"
+        "&redirect_uri=urn:ietf:wg:oauth:2.0:oob"
+        "&scope=https://www.googleapis.com/auth/youtube"
+        f"&state={state}"
+    )
+    assert STATE_PATTERN.match(state)
+
+
+def test_get_token_request_data(secrets: Secrets) -> None:
+    code = "4ng0843ng89n340gn4028ng084n"
+    data, headers = oauth.get_token_request_data(code, secrets=secrets)
+
+    assert data == {
+        "client_id": "fn497gnwebg9wn98ghw8gh9",
+        "client_secret": "gnfre09gnng094h309gn30bg98",
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+    }
+    assert headers == {"Content-Type": "application/x-www-form-urlencoded"}

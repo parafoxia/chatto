@@ -29,7 +29,6 @@
 from __future__ import annotations
 
 import logging
-import typing as t
 
 import chatto
 
@@ -51,9 +50,6 @@ CLRS = [
     "\33[38;5;4m",
     "\33[38;5;135m",
 ]
-
-if t.TYPE_CHECKING:
-    HandlersT = list[logging.StreamHandler[t.TextIO] | logging.FileHandler]
 
 
 def print_banner(extra: str | None = None) -> None:
@@ -82,7 +78,9 @@ def display_splash() -> None:
     )
 
 
-def setup_logging(level: int = logging.INFO, file: str | None = None) -> HandlersT:
+def setup_logging(
+    level: int = logging.INFO, file: str | None = None
+) -> list[logging.Handler]:
     LEVEL = "{levelname[0]}"
     ASCTIME = "\33[38;5;243m{asctime}\33[0m"
     BODY = "{name}: {message}"
@@ -103,7 +101,7 @@ def setup_logging(level: int = logging.INFO, file: str | None = None) -> Handler
 
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(StreamFormatter())
-    handlers: HandlersT = [stream_handler]
+    handlers: list[logging.Handler] = [stream_handler]
 
     if file:
 

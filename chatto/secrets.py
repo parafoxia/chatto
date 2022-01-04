@@ -26,7 +26,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 from __future__ import annotations
 
 import json
@@ -40,8 +39,7 @@ import aiofiles
 
 log = logging.getLogger(__name__)
 
-if t.TYPE_CHECKING:
-    SecretT = str | list[str]
+SecretT = t.Union[str, t.List[str], pathlib.Path]
 
 
 @dataclass(frozen=True)
@@ -59,7 +57,7 @@ class Secrets:
         return self.project_id
 
     def __getitem__(self, key: str) -> SecretT:
-        return t.cast(SecretT, getattr(self, key))
+        return getattr(self, key)  # type: ignore
 
     @classmethod
     def from_file(cls, path: pathlib.Path | str) -> Secrets:
@@ -67,7 +65,7 @@ class Secrets:
             path = pathlib.Path(path)
 
         if not path.is_file():
-            raise FileNotFoundError("you must provided a valid path to a secrets file")
+            raise FileNotFoundError("you must provide a valid path to a secrets file")
 
         with open(path, encoding="utf-8") as f:
             log.info(f"Loading secrets from {path.resolve()}")
@@ -82,14 +80,14 @@ class Secrets:
             path = pathlib.Path(path)
 
         if not os.path.isfile(path):
-            raise FileNotFoundError("you must provided a valid path to a secrets file")
+            raise FileNotFoundError("you must provide a valid path to a secrets file")
 
         async with aiofiles.open(path, encoding="utf-8") as f:
             log.info(f"Loading secrets from {path.resolve()}")
             data = json.loads(await f.read())["installed"]
 
         log.debug(f"Secrets data: {data}")
-        return cls(**data)
+        return cls(**data, path=path)
 
     def to_dict(self) -> dict[str, SecretT]:
         return {

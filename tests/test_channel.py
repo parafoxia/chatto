@@ -28,24 +28,24 @@
 
 from __future__ import annotations
 
-import re
+import typing as t
 
-from chatto import ux
-
-# This is a rough pattern -- no point being exact here.
-LOG_PATTERN = re.compile(
-    f"I: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}: {__name__}: This is a log message!"
-)
+from chatto.channel import Channel
+from tests.fixtures import *  # noqa
 
 
-def test_splash() -> None:
-    ux.display_splash()
+def test_create_channel(channel: Channel) -> None:
+    assert channel.id == "Ucn978gn48bg984b"
+    assert channel.url == "https://youtube.com/mychannel"
+    assert channel.name == "Test Channel"
+    assert channel.avatar_url == "https://youtube.com/myavatar"
+    assert channel.is_verified == True
+    assert channel.is_owner == False
+    assert channel.is_sponsor == True
+    assert channel.is_moderator == False
 
 
-def test_logging() -> None:
-    # This can't be tested properly because Pytest's logger overwrites
-    # Chatto's one.
-    handlers = ux.setup_logging()
-    assert len(handlers) == 1
-    handlers = ux.setup_logging(file="test.log")
-    assert len(handlers) == 2
+def test_create_channel_from_author(
+    channel: Channel, author_details: dict[str, t.Any]
+) -> None:
+    assert channel == Channel.from_author(author_details)

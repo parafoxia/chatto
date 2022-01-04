@@ -28,24 +28,13 @@
 
 from __future__ import annotations
 
-import re
+import datetime as dt
 
-from chatto import ux
-
-# This is a rough pattern -- no point being exact here.
-LOG_PATTERN = re.compile(
-    f"I: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}: {__name__}: This is a log message!"
-)
+from chatto.stream import Stream
+from tests.fixtures import *  # noqa
 
 
-def test_splash() -> None:
-    ux.display_splash()
-
-
-def test_logging() -> None:
-    # This can't be tested properly because Pytest's logger overwrites
-    # Chatto's one.
-    handlers = ux.setup_logging()
-    assert len(handlers) == 1
-    handlers = ux.setup_logging(file="test.log")
-    assert len(handlers) == 2
+def test_create_stream(stream: Stream) -> None:
+    assert stream.id == "437n439gn84ng89h430g49bg"
+    assert stream.chat_id == "tn389nt9832nbt8932nty80b3982yb"
+    assert stream.start_time == dt.datetime(2022, 1, 1, 0, 0, 0)

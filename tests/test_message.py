@@ -28,24 +28,27 @@
 
 from __future__ import annotations
 
-import re
+import datetime as dt
+import typing as t
 
-from chatto import ux
+from dateutil.tz import tzutc
 
-# This is a rough pattern -- no point being exact here.
-LOG_PATTERN = re.compile(
-    f"I: [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}: {__name__}: This is a log message!"
-)
-
-
-def test_splash() -> None:
-    ux.display_splash()
+from chatto.channel import Channel
+from chatto.message import Message
+from chatto.stream import Stream
+from tests.fixtures import *  # noqa
 
 
-def test_logging() -> None:
-    # This can't be tested properly because Pytest's logger overwrites
-    # Chatto's one.
-    handlers = ux.setup_logging()
-    assert len(handlers) == 1
-    handlers = ux.setup_logging(file="test.log")
-    assert len(handlers) == 2
+def test_create_message(message: Message, stream: Stream, channel: Channel) -> None:
+    assert message.id == "r398tn38g8943ng8b40g"
+    assert message.type == "textMessageEvent"
+    assert message.stream == stream
+    assert message.channel == channel
+    assert message.published_at == dt.datetime(2022, 1, 1, 0, 0, 0, tzinfo=tzutc())
+    assert message.content == "This is a test!"
+
+
+def test_create_from_youtube_data(
+    message: Message, youtube_message_data: dict[str, t.Any], stream: Stream
+) -> None:
+    assert message == Message.from_youtube(youtube_message_data, stream)

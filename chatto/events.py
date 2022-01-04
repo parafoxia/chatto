@@ -68,6 +68,8 @@ if t.TYPE_CHECKING:
 
 
 class EventHandler:
+    __slots__ = ("queue", "callbacks")
+
     def __init__(self) -> None:
         self.queue: asyncio.Queue[Event] = asyncio.Queue()
         self.callbacks: CallbacksT = defaultdict(list)

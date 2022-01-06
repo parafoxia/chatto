@@ -59,7 +59,12 @@ bot = YouTubeBot(
 # Listen for MessageCreatedEvents, and run this awaitable whenever a
 # new message is received.
 @bot.listen(MessageCreatedEvent)
-async def message_callback(event):
+async def on_message_created(event):
+    # Ignore messages sent by the broadcaster.
+    if event.message.channel.is_owner:
+        return
+
+    # Respond to messages starting with "!hello".
     if event.message.content.startswith("!hello"):
         await bot.send_message(f"Hi {event.message.channel.name}!")
 

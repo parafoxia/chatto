@@ -33,10 +33,8 @@ import json
 import logging
 import pathlib
 import time
-import typing as t
 
 import aiofiles
-import aiohttp
 from aiohttp.client import ClientSession
 
 import chatto

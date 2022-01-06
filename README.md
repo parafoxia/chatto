@@ -46,25 +46,25 @@ import os
 from chatto import YouTubeBot
 from chatto.events import MessageCreatedEvent
 
+bot = YouTubeBot(
+    # Your project's API key.
+    os.environ["API_KEY"],
+    # The ID of the channel whose stream you want to connect to.
+    os.environ["CHANNEL_ID"],
+    # Your OAuth client ID secrets file.
+    secrets_file="secrets.json",
+)
 
-async def message_callback(event: MessageCreatedEvent) -> None:
+
+# Listen for MessageCreatedEvents, and run this awaitable whenever a
+# new message is received.
+@bot.listen(MessageCreatedEvent)
+async def message_callback(event):
     if event.message.content.startswith("!hello"):
         await bot.send_message(f"Hi {event.message.channel.name}!")
 
 
 if __name__ == "__main__":
-    bot = YouTubeBot(
-        # Your project's API key.
-        os.environ["API_KEY"],
-        # The ID of the channel whose stream you want to connect to.
-        os.environ["CHANNEL_ID"],
-        # Your OAuth client ID secrets file.
-        secrets_file="secrets.json",
-    )
-
-    # Set a callback to execute whenever a new message is received.
-    bot.events.subscribe(MessageCreatedEvent, message_callback)
-
     # This is blocking, so should be the last thing you call.
     bot.run()
 ```

@@ -52,6 +52,17 @@ def test_subscribe_to_event() -> None:
     assert handler.callbacks == {events.MessageCreatedEvent: [test_cb]}
 
 
+def test_subscribe_through_decorator() -> None:
+    handler = events.EventHandler()
+
+    @handler.listen(events.MessageCreatedEvent)
+    async def decorated_test_cb(event: events.MessageCreatedEvent) -> None:
+        ...
+
+    # Can't do the same check as before because of the decorator.
+    assert len(handler.callbacks) == 1
+
+
 def test_dispatch_event(message: Message) -> None:
     if sys.version_info >= (3, 10):
         loop = asyncio.new_event_loop()

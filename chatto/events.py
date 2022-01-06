@@ -65,6 +65,7 @@ class StreamFetchedEvent(Event):
 
 if t.TYPE_CHECKING:
     CallbacksT = dict[t.Type[Event], list[t.Callable[[Event], Awaitable[t.Any]]]]
+    ListenerT = t.Callable[[t.Callable[[t.Any], t.Any]], None]
 
 
 class EventHandler:
@@ -102,3 +103,6 @@ class EventHandler:
                 f"Subscribed to {event_type.__name__} events "
                 f"with callback '{cb.__name__}'"
             )
+
+    def listen(self, event_type: type[Event]) -> ListenerT:
+        return lambda callback: self.subscribe(event_type, callback)

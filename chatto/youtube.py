@@ -112,6 +112,9 @@ class YouTubeBot(OAuthMixin):
     def platform(self) -> str:
         return "youtube"
 
+    def listen(self, event_type: type[events.Event]) -> t.Callable[[t.Callable[[t.Any], t.Any]], None]:
+        return self.events.listen(event_type)
+
     async def create_session(self, loop: AbstractEventLoop) -> None:
         self._session = ClientSession(loop=loop)
         log.info("New session created")

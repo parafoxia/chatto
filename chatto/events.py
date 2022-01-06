@@ -37,6 +37,7 @@ from collections.abc import Awaitable
 from dataclasses import dataclass
 
 from chatto.message import Message
+from chatto.secrets import Secrets
 from chatto.stream import Stream
 
 log = logging.getLogger(__name__)
@@ -61,6 +62,22 @@ class MessageCreatedEvent(Event):
 @dataclass(eq=True, frozen=True)
 class StreamFetchedEvent(Event):
     stream: Stream
+
+
+@dataclass(eq=True, frozen=True)
+class ChatPolledEvent(Event):
+    data: dict[str, t.Any]
+
+
+@dataclass(eq=True, frozen=True)
+class MessageSentEvent(Event):
+    message: Message
+
+
+@dataclass(eq=True, frozen=True)
+class AuthorisedEvent(Event):
+    secrets: Secrets
+    oauth_tokens: dict[str, t.Any]
 
 
 if t.TYPE_CHECKING:

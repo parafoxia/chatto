@@ -33,10 +33,14 @@ import json
 import logging
 import pathlib
 import time
+import typing as t
 
 import aiofiles
+import aiohttp
+from aiohttp.client import ClientSession
 
 import chatto
+from chatto import events
 from chatto.errors import NoSecrets, NoSession
 from chatto.secrets import Secrets
 from chatto.ux import CLRS
@@ -75,6 +79,12 @@ def get_token_request_data(
 
 
 class OAuthMixin:
+    events: events.EventHandler
+
+    @property
+    def session(self) -> ClientSession | None:
+        ...
+
     @property
     def secrets(self) -> Secrets | None:
         return getattr(self, "_secrets", None)
@@ -87,7 +97,7 @@ class OAuthMixin:
         if not secrets:
             raise NoSecrets("you need to provide your secrets before authorising")
 
-        session = self.session  # type: ignore
+        session = self.session
         if not session:
             raise NoSession("there is no active session")
 
@@ -96,6 +106,9 @@ class OAuthMixin:
             log.info(f"Loading tokens from {tokens_path.resolve()}")
             async with aiofiles.open(tokens_path) as f:
                 self.oauth_tokens = json.loads(await f.read())
+            await self.events.dispatch(
+                events.AuthorisedEvent, secrets, self.oauth_tokens
+            )
             return
 
         url, _ = get_auth_url(secrets)
@@ -114,5 +127,7 @@ class OAuthMixin:
         async with aiofiles.open(tokens_path, "w") as f:
             log.info(f"Storing tokens to {tokens_path.resolve()}")
             await f.write(json.dumps(self.oauth_tokens))
+
+        await self.events.dispatch(events.AuthorisedEvent, secrets, self.oauth_tokens)
 
     authorize = authorise

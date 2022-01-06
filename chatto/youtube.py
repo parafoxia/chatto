@@ -112,7 +112,9 @@ class YouTubeBot(OAuthMixin):
     def platform(self) -> str:
         return "youtube"
 
-    def listen(self, event_type: type[events.Event]) -> t.Callable[[t.Callable[[t.Any], t.Any]], None]:
+    def listen(
+        self, event_type: type[events.Event]
+    ) -> t.Callable[[t.Callable[[t.Any], t.Any]], None]:
         return self.events.listen(event_type)
 
     async def create_session(self, loop: AbstractEventLoop) -> None:
@@ -159,6 +161,7 @@ class YouTubeBot(OAuthMixin):
             try:
                 log.debug("Polling for new messages...")
                 data = await self.make_request(url + f"&pageToken={page_token}")
+                await self.events.dispatch(events.ChatPolledEvent, data)
                 new_items = data["items"]
 
                 if new_items and page_token:
@@ -207,7 +210,9 @@ class YouTubeBot(OAuthMixin):
             r.raise_for_status()
             data = await r.json()
 
-        return Message.from_youtube(data, self._stream)
+        message = Message.from_youtube(data, self._stream)
+        await self.events.dispatch(events.MessageSentEvent, message)
+        return message
 
     def run(
         self,

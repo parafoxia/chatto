@@ -51,9 +51,20 @@ class Stream:
     start_time: dt.datetime
 
     @classmethod
-    async def from_id(
-        cls, stream_id: str, token: str, session: ClientSession
-    ) -> Stream:
+    def from_data(cls, data: dict[str, t.Any]) -> Stream:
+        streaming_details = data["liveStreamingDetails"]
+        chat_id = streaming_details.get("activeLiveChatId", None)
+        if not chat_id:
+            raise ChannelNotLive("the stream has no active chat ID")
+        start_time = parse_ts(streaming_details["actualStartTime"])
+
+        log.info(f"Retrieved stream info for stream {data['id']}")
+        return cls(data["id"], chat_id, start_time)
+
+    @staticmethod
+    async def fetch_stream_data(
+        stream_id: str, token: str, session: ClientSession
+    ) -> dict[str, t.Any]:
         url = chatto.YOUTUBE_API_BASE_URL + (
             f"/videos?key={token}&part=liveStreamingDetails&id={stream_id}"
         )
@@ -65,19 +76,12 @@ class Stream:
         if err:
             raise HTTPError(err["code"], err["errors"][0]["message"])
 
-        streaming_details = data["items"][0]["liveStreamingDetails"]
-        chat_id = streaming_details.get("activeLiveChatId", None)
-        if not chat_id:
-            raise ChannelNotLive("the stream has no active chat ID")
-        start_time = parse_ts(streaming_details["actualStartTime"])
+        return data["items"][0]  # type: ignore
 
-        log.info(f"Retrieved stream info for stream {stream_id}")
-        return cls(stream_id, chat_id, start_time)
-
-    @classmethod
-    async def from_channel_id(
-        cls, channel_id: str, token: str, session: ClientSession
-    ) -> Stream:
+    @staticmethod
+    async def fetch_active_stream_data(
+        channel_id: str, token: str, session: ClientSession
+    ) -> dict[str, t.Any]:
         url = chatto.YOUTUBE_API_BASE_URL + (
             "/search"
             f"?key={token}"
@@ -100,4 +104,5 @@ class Stream:
 
         stream_id = items[0]["id"]["videoId"]
         log.info(f"Retrieved ID of currently live stream ({stream_id})")
-        return await cls.from_id(stream_id, token, session)
+
+        return await Stream.fetch_stream_data(stream_id, token, session)

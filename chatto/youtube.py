@@ -39,10 +39,11 @@ import typing as t
 from aiohttp import ClientSession
 
 import chatto
-from chatto import events, stream
+from chatto import events
 from chatto.errors import HTTPError, MissingRequiredInformation, NoSession
 from chatto.message import Message
 from chatto.oauth import OAuthMixin
+from chatto.stream import Stream
 
 if t.TYPE_CHECKING:
     from asyncio.events import AbstractEventLoop
@@ -97,7 +98,7 @@ class YouTubeBot(OAuthMixin):
         return getattr(self, "_session", None)
 
     @property
-    def stream(self) -> stream.Stream | None:
+    def stream(self) -> Stream | None:
         return getattr(self, "_stream", None)
 
     @property
@@ -126,12 +127,14 @@ class YouTubeBot(OAuthMixin):
             raise NoSession("no active session")
 
         if stream_id:
-            self._stream = await stream.Stream.from_id(
-                stream_id, self.token, self.session
+            self._stream = Stream.from_data(
+                await Stream.fetch_stream_data(stream_id, self.token, self.session)
             )
         else:
-            self._stream = await stream.Stream.from_channel_id(
-                self.channel_id, self.token, self.session
+            self._stream = Stream.from_data(
+                await Stream.fetch_active_stream_data(
+                    self.channel_id, self.token, self.session
+                )
             )
 
         await self.events.dispatch(events.StreamFetchedEvent, self._stream)

@@ -29,7 +29,12 @@
 from __future__ import annotations
 
 import datetime as dt
+import typing as t
 
+import pytest
+from dateutil.tz import tzutc
+
+from chatto import errors
 from chatto.stream import Stream
 from tests.fixtures import *  # noqa
 
@@ -37,4 +42,16 @@ from tests.fixtures import *  # noqa
 def test_create_stream(stream: Stream) -> None:
     assert stream.id == "437n439gn84ng89h430g49bg"
     assert stream.chat_id == "tn389nt9832nbt8932nty80b3982yb"
-    assert stream.start_time == dt.datetime(2022, 1, 1, 0, 0, 0)
+    assert stream.start_time == dt.datetime(2022, 1, 1, 0, 0, 0, tzinfo=tzutc())
+
+
+def test_create_stream_from_data(stream: Stream, stream_data: dict[str, t.Any]) -> None:
+    assert stream == Stream.from_data(stream_data)
+
+
+def test_create_stream_from_bad_data(
+    stream: Stream, bad_stream_data: dict[str, t.Any]
+) -> None:
+    with pytest.raises(errors.ChannelNotLive) as exc:
+        assert stream == Stream.from_data(bad_stream_data)
+    assert str(exc.value) == "the stream has no active chat ID"

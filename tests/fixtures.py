@@ -90,8 +90,29 @@ def stream() -> Stream:
     return Stream(
         id="437n439gn84ng89h430g49bg",
         chat_id="tn389nt9832nbt8932nty80b3982yb",
-        start_time=dt.datetime(2022, 1, 1, 0, 0, 0),
+        start_time=dt.datetime(2022, 1, 1, 0, 0, 0, tzinfo=tzutc()),
     )
+
+
+@pytest.fixture()  # type: ignore
+def stream_data() -> dict[str, t.Any]:
+    return {
+        "id": "437n439gn84ng89h430g49bg",
+        "liveStreamingDetails": {
+            "actualStartTime": "2022-01-01T00:00:00Z",
+            "activeLiveChatId": "tn389nt9832nbt8932nty80b3982yb",
+        },
+    }
+
+
+@pytest.fixture()  # type: ignore
+def bad_stream_data() -> dict[str, t.Any]:
+    return {
+        "id": "437n439gn84ng89h430g49bg",
+        "liveStreamingDetails": {
+            "actualStartTime": "2022-01-01T00:00:00Z",
+        },
+    }
 
 
 @pytest.fixture()  # type: ignore

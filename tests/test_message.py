@@ -37,11 +37,11 @@ from dateutil.tz import tzutc
 from chatto.channel import Channel
 from chatto.message import Message
 from chatto.stream import Stream
-from tests.test_channel import channel  # noqa
-from tests.test_stream import stream  # noqa
+from tests.test_channel import channel
+from tests.test_stream import stream
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def message(stream: Stream, channel: Channel) -> Message:
     return Message(
         id="r398tn38g8943ng8b40g",
@@ -53,7 +53,7 @@ def message(stream: Stream, channel: Channel) -> Message:
     )
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def youtube_message_data() -> dict[str, t.Any]:
     return {
         "id": "r398tn38g8943ng8b40g",

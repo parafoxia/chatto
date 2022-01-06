@@ -37,12 +37,12 @@ import pytest
 
 from chatto import events
 from chatto.message import Message
-from tests.test_channel import channel  # noqa
-from tests.test_message import message  # noqa
-from tests.test_stream import stream  # noqa
+from tests.test_channel import channel
+from tests.test_message import message
+from tests.test_stream import stream
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def event_handler() -> events.EventHandler:
     async def ready_cb(event: events.ReadyEvent) -> None:
         1 / 0

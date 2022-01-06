@@ -38,7 +38,7 @@ from chatto import errors
 from chatto.stream import Stream
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def stream() -> Stream:
     return Stream(
         id="437n439gn84ng89h430g49bg",
@@ -47,7 +47,7 @@ def stream() -> Stream:
     )
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def stream_data() -> dict[str, t.Any]:
     return {
         "id": "437n439gn84ng89h430g49bg",
@@ -58,7 +58,7 @@ def stream_data() -> dict[str, t.Any]:
     }
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def bad_stream_data() -> dict[str, t.Any]:
     return {
         "id": "437n439gn84ng89h430g49bg",

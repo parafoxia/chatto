@@ -78,7 +78,7 @@ def fetch_installs(*categories: str) -> list[str]:
     return installs
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def tests(session: nox.Session) -> None:
     session.install("-Ur", "requirements.txt", *fetch_installs("Tests"), ".")
     session.run(
@@ -94,19 +94,21 @@ def tests(session: nox.Session) -> None:
     os.remove("CALLBACK")
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_formatting(session: nox.Session) -> None:
     session.install("-U", *fetch_installs("Formatting"))
     session.run("black", ".", "--check")
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_imports(session: nox.Session) -> None:
     session.install("-U", *fetch_installs("Imports"))
     # flake8 doesn't use the gitignore so we have to be explicit.
     session.run(
         "flake8",
-        *CHECK_PATHS,
+        str(PROJECT_DIR / PROJECT_NAME),
+        str(PROJECT_DIR / "noxfile.py"),
+        str(PROJECT_DIR / "setup.py"),
         "--select",
         "F4",
         "--extend-ignore",
@@ -117,19 +119,19 @@ def check_imports(session: nox.Session) -> None:
     session.run("isort", *CHECK_PATHS, "-cq")
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_typing(session: nox.Session) -> None:
     session.install("-U", *fetch_installs("Typing"), "-r", "requirements.txt")
-    session.run("mypy", *CHECK_PATHS)
+    session.run("mypy", str(PROJECT_DIR / PROJECT_NAME), str(PROJECT_DIR / "setup.py"))
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_line_lengths(session: nox.Session) -> None:
     session.install("-U", *fetch_installs("Line lengths"))
     session.run("len8", *CHECK_PATHS)
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_licensing(session: nox.Session) -> None:
     missing = []
 
@@ -149,13 +151,13 @@ def check_licensing(session: nox.Session) -> None:
         )
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_spelling(session: nox.Session) -> None:
     session.install("-U", *fetch_installs("Spelling"))
     session.run("codespell", *CHECK_PATHS)
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_safety(session: nox.Session) -> None:
     if sys.version_info >= (3, 11):
         session.skip("Safety does not support Python 3.11")
@@ -173,7 +175,7 @@ def check_safety(session: nox.Session) -> None:
     session.run("safety", "check", "--full-report")
 
 
-@nox.session(reuse_venv=True)  # type: ignore
+@nox.session(reuse_venv=True)
 def check_security(session: nox.Session) -> None:
     session.install("-U", *fetch_installs("Security"))
     session.run("bandit", "-qr", *CHECK_PATHS, "-s", "B101")

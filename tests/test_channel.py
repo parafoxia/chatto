@@ -35,7 +35,7 @@ import pytest
 from chatto.channel import Channel
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def channel() -> Channel:
     return Channel(
         id="Ucn978gn48bg984b",
@@ -49,7 +49,7 @@ def channel() -> Channel:
     )
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def author_details() -> dict[str, t.Any]:
     return {
         "channelId": "Ucn978gn48bg984b",

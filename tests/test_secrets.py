@@ -39,12 +39,12 @@ from chatto.secrets import Secrets
 from tests.paths import SECRETS_PATH
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def secrets() -> Secrets:
     return Secrets.from_file(SECRETS_PATH)
 
 
-@pytest.fixture()  # type: ignore
+@pytest.fixture()
 def secrets_dict() -> dict[str, t.Any]:
     with open(SECRETS_PATH) as f:
         data = json.load(f)["installed"]

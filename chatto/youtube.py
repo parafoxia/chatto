@@ -69,7 +69,7 @@ class YouTubeBot(OAuthMixin):
         token: str,
         channel_id: str,
         *,
-        secrets_file: pathlib.Path | str,
+        secrets_file: pathlib.Path | str | None = None,
         log_level: int = logging.INFO,
         log_file: str | None = None,
     ) -> None:
@@ -104,6 +104,8 @@ class YouTubeBot(OAuthMixin):
     @property
     def authorised(self) -> bool:
         return bool(self.oauth_tokens)
+
+    authorized = authorised
 
     @property
     def access_token(self) -> str | None:
@@ -232,23 +234,17 @@ class YouTubeBot(OAuthMixin):
             self._loop = asyncio.get_event_loop()
 
         try:
-            # Create session.
-            if not self.session:
-                # It may have been created during authorisation.
-                self._loop.run_until_complete(self.create_session(self._loop))
+            self._loop.run_until_complete(self.events.create_queue())
+            self._loop.run_until_complete(self.create_session(self._loop))
 
-            # Authorise.
             if not read_only:
                 self._loop.run_until_complete(self.authorise(force=force_auth))
 
-            # Fetch stream info.
             self._loop.run_until_complete(self.fetch_stream_info(with_stream_id))
 
-            # Create tasks.
             task = self._loop.create_task(self.poll_for_messages())
             self._loop.create_task(self.events.process())
 
-            # Run loop.
             self._loop.run_until_complete(task)
 
         except Exception as exc:

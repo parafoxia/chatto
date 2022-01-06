@@ -30,16 +30,17 @@ from __future__ import annotations
 
 import asyncio
 import os
-import sys
+from asyncio.events import AbstractEventLoop
 
 import aiofiles
 import pytest
 
-from chatto import events
+from chatto import errors, events
 from chatto.message import Message
 from tests.test_channel import channel
 from tests.test_message import message
 from tests.test_stream import stream
+from tests.test_youtube import loop
 
 
 @pytest.fixture()
@@ -59,7 +60,7 @@ def event_handler() -> events.EventHandler:
 
 def test_create_handler() -> None:
     handler = events.EventHandler()
-    assert isinstance(handler.queue, asyncio.Queue)
+    assert handler.queue == None
     assert handler.callbacks == {}
 
 
@@ -83,31 +84,34 @@ def test_subscribe_through_decorator() -> None:
     assert len(handler.callbacks) == 1
 
 
-def test_dispatch_event(message: Message) -> None:
-    if sys.version_info >= (3, 10):
-        loop = asyncio.new_event_loop()
-    else:
-        loop = asyncio.get_event_loop()
-
+def test_dispatch_event(message: Message, loop: AbstractEventLoop) -> None:
     handler = events.EventHandler()
+    assert handler.queue_size == 0
+    loop.run_until_complete(handler.create_queue())
+    assert handler.queue_size == 0
     loop.run_until_complete(handler.dispatch(events.MessageCreatedEvent, message))
-    assert handler.queue.qsize() == 1
+    assert handler.queue_size == 1
 
-    event = loop.run_until_complete(handler.queue.get())
+    event = loop.run_until_complete(handler._queue.get())
     assert isinstance(event, events.MessageCreatedEvent)
 
 
-def test_process_events(event_handler: events.EventHandler, message: Message) -> None:
-    if sys.version_info >= (3, 10):
-        loop = asyncio.new_event_loop()
-    else:
-        loop = asyncio.get_event_loop()
+def test_dispatch_event_without_queue(loop: AbstractEventLoop) -> None:
+    handler = events.EventHandler()
+    with pytest.raises(errors.NoEventQueue) as exc:
+        loop.run_until_complete(handler.dispatch(events.ReadyEvent))
+    assert str(exc.value) == "there is no event queue"
 
+
+def test_process_events(
+    event_handler: events.EventHandler, message: Message, loop: AbstractEventLoop
+) -> None:
     async def kill_on_queue_empty() -> None:
         while True:
-            if not event_handler.queue.qsize():
+            if not event_handler.queue_size:
                 return
 
+    loop.run_until_complete(event_handler.create_queue())
     loop.run_until_complete(event_handler.dispatch(events.MessageCreatedEvent, message))
     killable = loop.create_task(event_handler.process())
     loop.run_until_complete(kill_on_queue_empty())
@@ -121,17 +125,15 @@ def test_process_events(event_handler: events.EventHandler, message: Message) ->
     assert os.path.isfile("CALLBACK")
 
 
-def test_process_bad_events(event_handler: events.EventHandler) -> None:
-    if sys.version_info >= (3, 10):
-        loop = asyncio.new_event_loop()
-    else:
-        loop = asyncio.get_event_loop()
-
+def test_process_bad_events(
+    event_handler: events.EventHandler, loop: AbstractEventLoop
+) -> None:
     async def kill_on_queue_empty() -> None:
         while True:
-            if not event_handler.queue.qsize():
+            if not event_handler.queue_size:
                 return
 
+    loop.run_until_complete(event_handler.create_queue())
     loop.run_until_complete(event_handler.dispatch(events.ReadyEvent))
     killable = loop.create_task(event_handler.process())
     loop.run_until_complete(kill_on_queue_empty())
@@ -140,3 +142,11 @@ def test_process_bad_events(event_handler: events.EventHandler) -> None:
         loop.run_until_complete(killable)
     except asyncio.CancelledError:
         ...
+
+
+def test_process_events_without_queue(
+    event_handler: events.EventHandler, loop: AbstractEventLoop
+) -> None:
+    with pytest.raises(errors.NoEventQueue) as exc:
+        loop.run_until_complete(event_handler.process())
+    assert str(exc.value) == "there is no event queue"

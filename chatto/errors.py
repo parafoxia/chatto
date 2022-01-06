@@ -46,6 +46,10 @@ class NoSession(ChattoError):
     ...
 
 
+class NoEventQueue(ChattoError):
+    ...
+
+
 class MissingRequiredInformation(ChattoError):
     ...
 

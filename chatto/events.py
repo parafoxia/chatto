@@ -36,6 +36,7 @@ from collections import defaultdict
 from collections.abc import Awaitable
 from dataclasses import dataclass
 
+from chatto.errors import NoEventQueue
 from chatto.message import Message
 from chatto.secrets import Secrets
 from chatto.stream import Stream
@@ -86,16 +87,34 @@ if t.TYPE_CHECKING:
 
 
 class EventHandler:
-    __slots__ = ("queue", "callbacks")
+    __slots__ = ("_queue", "callbacks")
 
     def __init__(self) -> None:
-        self.queue: asyncio.Queue[Event] = asyncio.Queue()
         self.callbacks: CallbacksT = defaultdict(list)
 
+    @property
+    def queue(self) -> asyncio.Queue[Event] | None:
+        return getattr(self, "_queue", None)
+
+    @property
+    def queue_size(self) -> int:
+        if not self.queue:
+            return 0
+
+        return self._queue.qsize()
+
+    async def create_queue(self) -> None:
+        if self.queue:
+            log.warning("The event handler already has an event queue")
+        self._queue: asyncio.Queue[Event] = asyncio.Queue()
+
     async def process(self) -> None:
+        if not self.queue:
+            raise NoEventQueue("there is no event queue")
+
         while True:
             try:
-                event = await self.queue.get()
+                event = await self._queue.get()
                 log.debug(f"Retrieved {event} event")
                 for cb in self.callbacks[event.__class__]:
                     log.debug(f"Running callback '{cb.__name__}' for event...")
@@ -106,8 +125,11 @@ class EventHandler:
                 traceback.print_exc()
 
     async def dispatch(self, event_type: t.Type[Event], *args: t.Any) -> Event:
+        if not self.queue:
+            raise NoEventQueue("there is no event queue")
+
         event = event_type(*args)
-        await self.queue.put(event)
+        await self._queue.put(event)
         log.debug(f"Dispatched {event_type.__name__} event")
         return event
 

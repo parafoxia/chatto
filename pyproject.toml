@@ -14,7 +14,7 @@ profile = "black"
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
-ignore = ["tests"]
+exclude = "tests"
 
 [tool.len8]
 exclude = ["tests"]

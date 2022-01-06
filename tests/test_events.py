@@ -32,9 +32,29 @@ import asyncio
 import os
 import sys
 
+import aiofiles
+import pytest
+
 from chatto import events
 from chatto.message import Message
-from tests.fixtures import *  # noqa
+from tests.test_channel import channel  # noqa
+from tests.test_message import message  # noqa
+from tests.test_stream import stream  # noqa
+
+
+@pytest.fixture()  # type: ignore
+def event_handler() -> events.EventHandler:
+    async def ready_cb(event: events.ReadyEvent) -> None:
+        1 / 0
+
+    async def message_cb(event: events.MessageCreatedEvent) -> None:
+        async with aiofiles.open("CALLBACK", "w") as f:
+            ...
+
+    e = events.EventHandler()
+    e.subscribe(events.MessageCreatedEvent, message_cb)
+    e.subscribe(events.ReadyEvent, ready_cb)
+    return e
 
 
 def test_create_handler() -> None:

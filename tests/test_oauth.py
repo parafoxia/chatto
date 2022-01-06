@@ -32,7 +32,7 @@ import re
 
 from chatto import oauth
 from chatto.secrets import Secrets
-from tests.fixtures import *  # noqa
+from tests.test_secrets import secrets  # noqa
 
 STATE_PATTERN = re.compile("[0-9a-f]{64}")
 

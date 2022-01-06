@@ -31,12 +31,50 @@ from __future__ import annotations
 import datetime as dt
 import typing as t
 
+import pytest
 from dateutil.tz import tzutc
 
 from chatto.channel import Channel
 from chatto.message import Message
 from chatto.stream import Stream
-from tests.fixtures import *  # noqa
+from tests.test_channel import channel  # noqa
+from tests.test_stream import stream  # noqa
+
+
+@pytest.fixture()  # type: ignore
+def message(stream: Stream, channel: Channel) -> Message:
+    return Message(
+        id="r398tn38g8943ng8b40g",
+        type="textMessageEvent",
+        stream=stream,
+        channel=channel,
+        published_at=dt.datetime(2022, 1, 1, 0, 0, 0, tzinfo=tzutc()),
+        content="This is a test!",
+    )
+
+
+@pytest.fixture()  # type: ignore
+def youtube_message_data() -> dict[str, t.Any]:
+    return {
+        "id": "r398tn38g8943ng8b40g",
+        "snippet": {
+            "type": "textMessageEvent",
+            "publishedAt": "2022-01-01T00:00:00.000+00:00",
+            "displayMessage": "This is a test!",
+        },
+        "authorDetails": {
+            # Apparently I can't use the fixture here for
+            # whatever reason.
+            "channelId": "Ucn978gn48bg984b",
+            "channelUrl": "https://youtube.com/mychannel",
+            "displayName": "Test Channel",
+            "profileImageUrl": "https://youtube.com/myavatar",
+            "isVerified": True,
+            "isChatOwner": False,
+            "isChatSponsor": True,
+            "isChatModerator": False,
+        },
+    }
 
 
 def test_create_message(message: Message, stream: Stream, channel: Channel) -> None:

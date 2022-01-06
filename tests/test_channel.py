@@ -30,8 +30,37 @@ from __future__ import annotations
 
 import typing as t
 
+import pytest
+
 from chatto.channel import Channel
-from tests.fixtures import *  # noqa
+
+
+@pytest.fixture()  # type: ignore
+def channel() -> Channel:
+    return Channel(
+        id="Ucn978gn48bg984b",
+        url="https://youtube.com/mychannel",
+        name="Test Channel",
+        avatar_url="https://youtube.com/myavatar",
+        is_verified=True,
+        is_owner=False,
+        is_sponsor=True,
+        is_moderator=False,
+    )
+
+
+@pytest.fixture()  # type: ignore
+def author_details() -> dict[str, t.Any]:
+    return {
+        "channelId": "Ucn978gn48bg984b",
+        "channelUrl": "https://youtube.com/mychannel",
+        "displayName": "Test Channel",
+        "profileImageUrl": "https://youtube.com/myavatar",
+        "isVerified": True,
+        "isChatOwner": False,
+        "isChatSponsor": True,
+        "isChatModerator": False,
+    }
 
 
 def test_create_channel(channel: Channel) -> None:

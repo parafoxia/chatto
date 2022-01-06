@@ -29,14 +29,27 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import typing as t
 from pathlib import Path
 
 import pytest
 
 from chatto.secrets import Secrets
-from tests.fixtures import *  # noqa
 from tests.paths import SECRETS_PATH
+
+
+@pytest.fixture()  # type: ignore
+def secrets() -> Secrets:
+    return Secrets.from_file(SECRETS_PATH)
+
+
+@pytest.fixture()  # type: ignore
+def secrets_dict() -> dict[str, t.Any]:
+    with open(SECRETS_PATH) as f:
+        data = json.load(f)["installed"]
+
+    return t.cast(t.Dict[str, t.Any], data)
 
 
 def test_load_from_file(secrets_dict: dict[str, t.Any]) -> None:

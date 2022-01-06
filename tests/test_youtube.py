@@ -63,15 +63,17 @@ def authed_youtube_bot() -> YouTubeBot:
 
 
 def test_create_youtube_bot(youtube_bot: YouTubeBot) -> None:
-    assert youtube_bot.token == "riuebg0843b9g8n4gb8493"
+    assert youtube_bot.api_key == "riuebg0843b9g8n4gb8493"
     assert youtube_bot.channel_id == "f84ng0409gj490gh43809gh"
+    assert youtube_bot.tokens == {}
 
 
 def test_create_authed_youtube_bot(
     authed_youtube_bot: YouTubeBot, secrets: Secrets
 ) -> None:
-    assert authed_youtube_bot.token == "riuebg0843b9g8n4gb8493"
+    assert authed_youtube_bot.api_key == "riuebg0843b9g8n4gb8493"
     assert authed_youtube_bot.channel_id == "f84ng0409gj490gh43809gh"
+    assert authed_youtube_bot.tokens == {}
     assert authed_youtube_bot._secrets == secrets
 
 

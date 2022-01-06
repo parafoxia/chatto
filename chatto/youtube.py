@@ -53,7 +53,7 @@ log = logging.getLogger(__name__)
 
 class YouTubeBot(OAuthMixin):
     __slots__ = (
-        "token",
+        "api_key",
         "channel_id",
         "_stream",
         "_loop",
@@ -61,12 +61,12 @@ class YouTubeBot(OAuthMixin):
         "_secrets",
         "commands",
         "events",
-        "oauth_tokens",
+        "tokens",
     )
 
     def __init__(
         self,
-        token: str,
+        api_key: str,
         channel_id: str,
         *,
         secrets_file: pathlib.Path | str | None = None,
@@ -79,12 +79,12 @@ class YouTubeBot(OAuthMixin):
             "Use `\33[1mpython -m chatto\33[0m` for more info.\n"
         )
 
-        self.token = token
+        self.api_key = api_key
         if not channel_id:
             raise MissingRequiredInformation("a channel ID must be provided")
         self.channel_id = channel_id
         self.events = events.EventHandler()
-        self.oauth_tokens = {}
+        self.tokens: dict[str, str | int] = {}
 
         if secrets_file:
             self.use_secrets(secrets_file)
@@ -103,13 +103,13 @@ class YouTubeBot(OAuthMixin):
 
     @property
     def authorised(self) -> bool:
-        return bool(self.oauth_tokens)
+        return bool(self.tokens)
 
     authorized = authorised
 
     @property
     def access_token(self) -> str | None:
-        return self.oauth_tokens.get("access_token", None)  # type: ignore
+        return self.tokens.get("access_token", None)  # type: ignore
 
     @property
     def platform(self) -> str:
@@ -130,12 +130,12 @@ class YouTubeBot(OAuthMixin):
 
         if stream_id:
             self._stream = Stream.from_data(
-                await Stream.fetch_stream_data(stream_id, self.token, self.session)
+                await Stream.fetch_stream_data(stream_id, self.api_key, self.session)
             )
         else:
             self._stream = Stream.from_data(
                 await Stream.fetch_active_stream_data(
-                    self.channel_id, self.token, self.session
+                    self.channel_id, self.api_key, self.session
                 )
             )
 
@@ -144,7 +144,6 @@ class YouTubeBot(OAuthMixin):
     async def make_request(self, url: str) -> dict[str, t.Any]:
         log.debug(f"Making request to {url}")
         async with self._session.get(url) as r:
-            log.debug(f"Request: {r}")
             data = await r.json()
 
         err = data.get("error", None)
@@ -157,7 +156,7 @@ class YouTubeBot(OAuthMixin):
         page_token = ""  # nosec: B105 false positive
         url = chatto.YOUTUBE_API_BASE_URL + (
             "/liveChat/messages"
-            f"?key={self.token}"
+            f"?key={self.api_key}"
             f"&liveChatId={self._stream.chat_id}"
             "&part=snippet,authorDetails"
         )
@@ -244,6 +243,9 @@ class YouTubeBot(OAuthMixin):
 
             task = self._loop.create_task(self.poll_for_messages())
             self._loop.create_task(self.events.process())
+            self._loop.create_task(
+                self.auto_refresh_tokens(self.tokens["expires_in"])  # type: ignore
+            )
 
             self._loop.run_until_complete(task)
 

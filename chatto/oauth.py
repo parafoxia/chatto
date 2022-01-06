@@ -28,11 +28,13 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import logging
 import pathlib
 import time
+import typing as t
 
 import aiofiles
 from aiohttp.client import ClientSession
@@ -44,6 +46,8 @@ from chatto.secrets import Secrets
 from chatto.ux import CLRS
 
 log = logging.getLogger(__name__)
+
+YOUTUBE_OAUTH_CHECK = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token="
 
 
 def create_state() -> str:
@@ -76,8 +80,22 @@ def get_token_request_data(
     return data, headers
 
 
+def get_token_refresh_data(
+    token: str, *, secrets: Secrets
+) -> tuple[dict[str, str], dict[str, str]]:
+    data = {
+        "client_id": secrets.client_id,
+        "client_secret": secrets.client_secret,
+        "grant_type": "refresh_token",
+        "refresh_token": token,
+    }
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    return data, headers
+
+
 class OAuthMixin:
     events: events.EventHandler
+    _session: ClientSession
 
     @property
     def session(self) -> ClientSession | None:
@@ -91,41 +109,88 @@ class OAuthMixin:
         self._secrets = Secrets.from_file(path)
 
     async def authorise(self, *, force: bool = False) -> None:
-        secrets = self.secrets
-        if not secrets:
+        log.info("Authorising bot")
+
+        if not self.secrets:
             raise NoSecrets("you need to provide your secrets before authorising")
 
-        session = self.session
-        if not session:
+        if not self.session:
             raise NoSession("there is no active session")
 
-        tokens_path = secrets.path.parent / "tokens.json"
-        if not force and tokens_path.is_file():
-            log.info(f"Loading tokens from {tokens_path.resolve()}")
-            async with aiofiles.open(tokens_path) as f:
-                self.oauth_tokens = json.loads(await f.read())
-            await self.events.dispatch(
-                events.AuthorisedEvent, secrets, self.oauth_tokens
-            )
+        tokens_path = self._secrets.path.parent / "tokens.json"
+
+        if force or not tokens_path.is_file():
+            log.info("No tokens found -- authorisation required")
+            self.tokens = await self._fetch_tokens(self._secrets, self._session)
+            await self.set_tokens(self.tokens, tokens_path)
             return
 
+        async with aiofiles.open(tokens_path) as f:
+            tokens = json.loads(await f.read())
+
+        async with self._session.get(YOUTUBE_OAUTH_CHECK + tokens["access_token"]) as r:
+            token_expires_in = int((await r.json())["expires_in"])
+            # Set this else this will more often than not be 3599.
+            tokens["expires_in"] = token_expires_in
+
+        if token_expires_in < 0:
+            log.info("Token has expired -- refreshing")
+            tokens = await self._refresh_tokens(self._secrets, self._session, tokens)
+        else:
+            log.info(f"Token expires in about {token_expires_in / 60:.0f} minutes")
+
+        if not tokens:
+            log.warning("Token refresh failed -- you will need to authorise manually")
+            tokens = await self._fetch_tokens(self._secrets, self._session)
+
+        await self.set_tokens(tokens, tokens_path)
+
+    authorize = authorise
+
+    async def set_tokens(self, tokens: dict[str, t.Any], path: pathlib.Path) -> None:
+        self.tokens = tokens
+
+        async with aiofiles.open(path, "w") as f:
+            await f.write(json.dumps(tokens))
+
+        await self.events.dispatch(events.AuthorisedEvent, self.secrets, tokens)
+
+    async def _fetch_tokens(
+        self, secrets: Secrets, session: ClientSession
+    ) -> dict[str, t.Any]:
         url, _ = get_auth_url(secrets)
         code = input(
             f"\33[1m{CLRS[4]}You need to authorise this session:\n{url}\n"
             "Paste code here: \33[0m"
         )
         data, headers = get_token_request_data(code, secrets=secrets)
-        log.debug(f"Request data: {data}")
-        log.debug(f"Req. headers: {headers}")
 
         async with session.post(secrets.token_uri, data=data, headers=headers) as r:
             r.raise_for_status()
-            self.oauth_tokens = await r.json()
+            return await r.json()  # type: ignore
 
-        async with aiofiles.open(tokens_path, "w") as f:
-            log.info(f"Storing tokens to {tokens_path.resolve()}")
-            await f.write(json.dumps(self.oauth_tokens))
+    async def _refresh_tokens(
+        self, secrets: Secrets, session: ClientSession, tokens: dict[str, t.Any]
+    ) -> dict[str, t.Any]:
+        data, headers = get_token_refresh_data(tokens["refresh_token"], secrets=secrets)
 
-        await self.events.dispatch(events.AuthorisedEvent, secrets, self.oauth_tokens)
+        async with session.post(secrets.token_uri, data=data, headers=headers) as r:
+            if not r.ok:
+                return {}
 
-    authorize = authorise
+            data = await r.json()
+
+        data.update({"refresh_token": tokens["refresh_token"]})
+        return data
+
+    async def auto_refresh_tokens(self, initial_delay: int) -> None:
+        tokens_path = self._secrets.path.parent / "tokens.json"
+        await asyncio.sleep(initial_delay)
+
+        while True:
+            await self.set_tokens(
+                await self._refresh_tokens(self._secrets, self._session, self.tokens),
+                tokens_path,
+            )
+            log.info("Token refreshed -- will repeat in one hour")
+            await asyncio.sleep(3600)

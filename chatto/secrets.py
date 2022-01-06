@@ -68,10 +68,9 @@ class Secrets:
             raise FileNotFoundError("you must provide a valid path to a secrets file")
 
         with open(path, encoding="utf-8") as f:
-            log.info(f"Loading secrets from {path.resolve()}")
+            log.debug(f"Loading secrets from {path.resolve()}")
             data = json.load(f)["installed"]
 
-        log.debug(f"Secrets data: {data}")
         return cls(**data, path=path)
 
     @classmethod
@@ -83,10 +82,9 @@ class Secrets:
             raise FileNotFoundError("you must provide a valid path to a secrets file")
 
         async with aiofiles.open(path, encoding="utf-8") as f:
-            log.info(f"Loading secrets from {path.resolve()}")
+            log.debug(f"Loading secrets from {path.resolve()}")
             data = json.loads(await f.read())["installed"]
 
-        log.debug(f"Secrets data: {data}")
         return cls(**data, path=path)
 
     def to_dict(self) -> dict[str, SecretT]:

@@ -34,7 +34,7 @@ You may need to prefix these commands with a call to the Python interpreter depe
 
 Before you begin, you will need to have a Google Developers project with the YouTube Data API V3 enabled. You need an API key, and if you want to send and delete messages, you will need an OAuth client ID.
 
-Although this project is currently undocumented, one of my other projects [has a guide](https://analytix.readthedocs.io/en/latest/refs/yt-analytics-setup.html). Just make sure to select the Data API and not the Analytics API as mentioned in that guide.
+Although this project is currently undocumented, I [made a video](https://www.youtube.com/watch?v=1Xday10ZWeg) walking through all the necessary steps.
 
 ## Creating a YouTube bot
 

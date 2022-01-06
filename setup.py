@@ -71,7 +71,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url=attrs["url"],
     author=attrs["author"],
-    author_email=attrs["email"],
+    author_email=attrs["author_email"],
     license=attrs["license"],
     classifiers=[
         # "Development Status :: 1 - Planning",

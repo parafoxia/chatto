@@ -91,6 +91,7 @@ def test_process_events(event_handler: events.EventHandler, message: Message) ->
     loop.run_until_complete(event_handler.dispatch(events.MessageCreatedEvent, message))
     killable = loop.create_task(event_handler.process())
     loop.run_until_complete(kill_on_queue_empty())
+    loop.run_until_complete(asyncio.sleep(0.5))
     killable.cancel()
     try:
         loop.run_until_complete(killable)

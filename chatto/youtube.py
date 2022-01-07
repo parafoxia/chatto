@@ -211,8 +211,12 @@ class YouTubeBot(OAuthMixin):
         }
 
         async with self._session.post(url, data=json.dumps(data), headers=headers) as r:
-            r.raise_for_status()
             data = await r.json()
+
+        err = data.get("error", None)
+        if err:
+            # These ARE the right types -- Mypy just has no idea.
+            raise HTTPError(err["code"], err["message"])  # type: ignore
 
         message = Message.from_youtube(data, self._stream)
         await self.events.dispatch(events.MessageSentEvent, message)

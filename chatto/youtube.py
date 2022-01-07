@@ -251,6 +251,7 @@ class YouTubeBot(OAuthMixin):
                 self.auto_refresh_tokens(self.tokens["expires_in"])  # type: ignore
             )
 
+            self._loop.run_until_complete(self.events.dispatch(events.ReadyEvent))
             self._loop.run_until_complete(task)
 
         except Exception as exc:

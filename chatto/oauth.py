@@ -129,11 +129,11 @@ class OAuthMixin:
             tokens = json.loads(await f.read())
 
         async with self._session.get(YOUTUBE_OAUTH_CHECK + tokens["access_token"]) as r:
-            token_expires_in = int((await r.json())["expires_in"])
+            token_expires_in = int((await r.json()).get("expires_in", 0))
             # Set this else this will more often than not be 3599.
             tokens["expires_in"] = token_expires_in
 
-        if token_expires_in < 0:
+        if not token_expires_in:
             log.info("Token has expired -- refreshing")
             tokens = await self._refresh_tokens(self._secrets, self._session, tokens)
         else:

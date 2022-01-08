@@ -162,8 +162,6 @@ def check_safety(session: nox.Session) -> None:
     if sys.version_info >= (3, 11):
         session.skip("Safety does not support Python 3.11")
 
-    # with open(PROJECT_DIR / "docs/requirements.txt") as f:
-    #     installs = f.read().splitlines()[1:]
     installs = []
 
     for p in list(PROJECT_DIR.glob("requirements*.txt")):

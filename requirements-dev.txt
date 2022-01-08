@@ -6,8 +6,7 @@
 nox==2021.10.1
 
 # Docs
-furo==2021.10.9
-sphinx<5,>=4
+git+https://github.com/pm5k/pdoc@feature/theming-and-dark-mode-support
 
 # Formatting
 black==21.12b0

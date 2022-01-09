@@ -35,7 +35,7 @@ import pytest
 from dateutil.tz import tzutc
 
 from chatto.channel import Channel
-from chatto.message import Message, MessageTypes
+from chatto.message import Message, MessageType
 from chatto.stream import Stream
 from tests.test_channel import channel
 from tests.test_stream import stream

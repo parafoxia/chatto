@@ -79,7 +79,7 @@ class Message:
         snippet = item["snippet"]
         return cls(
             id=item["id"],
-            type=cls.get_type(snippet["type"]),
+            type=MessageType(snippet["type"]),
             stream=stream,
             channel=Channel.from_author(item["authorDetails"]),
             published_at=parse_ts(snippet["publishedAt"]),

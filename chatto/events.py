@@ -46,39 +46,62 @@ log = logging.getLogger(__name__)
 
 @dataclass(eq=True, frozen=True)
 class Event:
+    """The base dataclass for all events."""
+
     def __str__(self) -> str:
         return self.__class__.__name__
 
 
 @dataclass(eq=True, frozen=True)
 class ReadyEvent(Event):
-    ...
+    """Event dispatched once the bot is ready to start receiving
+    messages."""
 
 
 @dataclass(eq=True, frozen=True)
 class MessageCreatedEvent(Event):
+    """Event dispatched when a message has been sent to the live
+    chat by a user."""
+
     message: Message
+    """The received message."""
 
 
 @dataclass(eq=True, frozen=True)
 class StreamFetchedEvent(Event):
+    """Event dispatched when stream information has been fetched."""
+
     stream: Stream
+    """The stream for which information has been fetched for."""
 
 
 @dataclass(eq=True, frozen=True)
 class ChatPolledEvent(Event):
+    """Event dispatched when the YouTube live chat is polled."""
+
     data: dict[str, t.Any]
+    """The data received from the poll."""
 
 
 @dataclass(eq=True, frozen=True)
 class MessageSentEvent(Event):
+    """Event dispatched when a message has been sent to the live
+    chat by the bot."""
+
     message: Message
+    """The sent message."""
 
 
 @dataclass(eq=True, frozen=True)
 class AuthorisedEvent(Event):
+    """Event dispatched once the bot has been authorised with
+    OAuth 2."""
+
     secrets: Secrets
-    oauth_tokens: dict[str, t.Any]
+    """The secrets data."""
+
+    tokens: dict[str, t.Any]
+    """The OAuth tokens."""
 
 
 if t.TYPE_CHECKING:
@@ -87,28 +110,38 @@ if t.TYPE_CHECKING:
 
 
 class EventHandler:
+    """A class that can be attached to the bot to handle events."""
+
     __slots__ = ("_queue", "callbacks")
 
     def __init__(self) -> None:
         self.callbacks: CallbacksT = defaultdict(list)
+        """A mapping of events to their respective callbacks."""
 
     @property
     def queue(self) -> asyncio.Queue[Event] | None:
+        """The event queue the bot is using. If the event queue has not
+        been created, this will be `None`."""
         return getattr(self, "_queue", None)
 
     @property
     def queue_size(self) -> int:
+        """The size of the event queue. If the event queue has not been
+        created, this will be 0."""
         if not self.queue:
             return 0
 
         return self._queue.qsize()
 
     async def create_queue(self) -> None:
+        """Create the event queue. This is handled for you."""
         if self.queue:
             log.warning("The event handler already has an event queue")
         self._queue: asyncio.Queue[Event] = asyncio.Queue()
 
     async def process(self) -> None:
+        """A forever-looping task that processes events once they are
+        pushed onto the queue."""
         if not self.queue:
             raise NoEventQueue("there is no event queue")
 
@@ -125,6 +158,23 @@ class EventHandler:
                 traceback.print_exc()
 
     async def dispatch(self, event_type: t.Type[Event], *args: t.Any) -> Event:
+        """Dispatch an event. This puts the event on the event queue.
+
+        ## Arguments
+        * `event_type` -
+            The event type to put on the queue. This **must** be a
+            subclass of `Event`.
+        * `*args` -
+            A series of arguments to be passed to the event callback
+            when called.
+
+        ## Returns
+        The event instance.
+
+        ## Raises
+        `NoEventQueue` -
+            The event queue has not been created.
+        """
         if not self.queue:
             raise NoEventQueue("there is no event queue")
 
@@ -136,6 +186,19 @@ class EventHandler:
     def subscribe(
         self, event_type: t.Type[Event], *callbacks: t.Callable[[t.Any], t.Any]
     ) -> None:
+        """Subscribe callbacks to an event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe the callback to. This **must**
+            be a subclass of `Event`.
+        * `*callbacks` -
+            A series of callbacks to subscribe to the event.
+
+        ## Raises
+        `NoEventQueue` -
+            The event queue has not been created.
+        """
         for cb in callbacks:
             self.callbacks[event_type].append(cb)
             log.info(
@@ -144,4 +207,19 @@ class EventHandler:
             )
 
     def listen(self, event_type: type[Event]) -> ListenerT:
+        """A decorator used to subscribe the wrapped callback to an
+        event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe to. This **must** be a subclass
+            of `events.Event`.
+
+        ## Example
+        ```py
+        @bot.events.listen(events.StreamFetchedEvent)
+        async def on_stream_fetched(event):
+            print(f"Fetched stream with ID: {event.stream.id}")
+        ```
+        """
         return lambda callback: self.subscribe(event_type, callback)

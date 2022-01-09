@@ -34,17 +34,46 @@ from dataclasses import dataclass
 
 @dataclass
 class Channel:
+    """A dataclass representing a channel. All class variables are also
+    parameters that should be passed into the constructor."""
+
     id: str
+    """The channel ID."""
+
     url: str
+    """The URL of the channel."""
+
     name: str
+    """The display name of the channel."""
+
     avatar_url: str
+    """The URL of the channel's avatar."""
+
     is_verified: bool
+    """Whether the channel's identity has been verified by YouTube."""
+
     is_owner: bool
+    """Whether the channel is the owner of the live chat."""
+
     is_sponsor: bool
+    """Whether the channel is a sponsor of the live chat."""
+
     is_moderator: bool
+    """Whether the channel is a moderator of the live chat."""
 
     @classmethod
     def from_author(cls, data: dict[str, t.Any]) -> Channel:
+        """Create a `Channel` object from the author details of a
+        liveChatMessage resource from the YouTube Live Streaming API.
+
+        ## Arguments
+        * `data` -
+            The author details from the liveChatMessage resource.
+
+        ## Returns
+        * `Channel` -
+            The newly created channel object.
+        """
         return cls(
             id=data["channelId"],
             url=data["channelUrl"],

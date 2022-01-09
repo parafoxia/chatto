@@ -94,6 +94,9 @@ def get_token_refresh_data(
 
 
 class OAuthMixin:
+    """A mix-in class that provides OAuth capabilities to classes that
+    inherit it."""
+
     events: events.EventHandler
     _session: ClientSession
 
@@ -103,12 +106,28 @@ class OAuthMixin:
 
     @property
     def secrets(self) -> Secrets | None:
+        """The secrets the bot is using. If the bot has not been
+        authorised, this will be `None`."""
         return getattr(self, "_secrets", None)
 
     def use_secrets(self, path: pathlib.Path | str) -> None:
+        """Tell the bot to use the secrets from the given file.
+
+        ## Arguments
+        * `path` -
+            The path of the secrets file.
+        """
         self._secrets = Secrets.from_file(path)
 
     async def authorise(self, *, force: bool = False) -> None:
+        """Authorise the bot, automatically refreshing tokens if needed.
+
+        ## Arguments
+        * `force` -
+            Whether to force authorisation regardless of whether
+            existing tokens are already available.
+        """
+
         log.info("Authorising bot")
 
         if not self.secrets:

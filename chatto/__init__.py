@@ -29,7 +29,7 @@
 __all__ = ("YOUTUBE_API_BASE_URL", "YOUTUBE_API_SCOPES", "YouTubeBot", "ux")
 
 __productname__ = "chatto"
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 __description__ = "A unified API wrapper for YouTube and Twitch chat bots."
 __url__ = "https://github.com/parafoxia/chatto"
 __docs__ = "https://chatto.readthedocs.io/en/latest"

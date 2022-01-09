@@ -28,35 +28,53 @@
 
 
 class ChattoError(Exception):
-    ...
+    """The base exception class for Chatto."""
 
 
 class HTTPError(ChattoError):
+    """Exception thrown when API requests return errors.
+
+    ## Arguments
+    * code (`int`):
+        The status code of the error.
+    * body (`str`):
+        The error message.
+    """
+
     def __init__(self, code: int, body: str) -> None:
         super().__init__(f"{code}: {body}")
         self.code = code
+        """The status code of the error."""
+
         self.body = body
+        """The error message."""
 
 
 class ChannelNotLive(ChattoError):
-    ...
+    """Exception thrown when the specified channel is not live when the
+    bot attempts to run."""
 
 
 class NoSession(ChattoError):
-    ...
+    """Exception thrown when attempting to perform an action that
+    requires a session, but it has not been made."""
 
 
 class NoEventQueue(ChattoError):
-    ...
+    """Exception thrown when attempting to perform an action that
+    requires an event queue, but it has not been made."""
 
 
 class MissingRequiredInformation(ChattoError):
-    ...
+    """Exception thrown when insufficient information has been provided
+    to perform the required task."""
 
 
 class NoSecrets(ChattoError):
-    ...
+    """Exception thrown when attempting to perform an action that
+    requires OAuth secrets, but they have not been set."""
 
 
 class NotAuthorised(ChattoError):
-    ...
+    """Exception thrown when attempting to perform an action that
+    requires OAuth authentication, but it has not been done."""

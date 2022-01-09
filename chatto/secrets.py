@@ -44,6 +44,10 @@ SecretT = t.Union[str, t.List[str], pathlib.Path]
 
 @dataclass(frozen=True)
 class Secrets:
+    """A dataclass representing an OAuth secrets file. All class
+    variables are also parameters that should be passed into the
+    constructor."""
+
     client_id: str
     project_id: str
     auth_uri: str
@@ -61,6 +65,16 @@ class Secrets:
 
     @classmethod
     def from_file(cls, path: pathlib.Path | str) -> Secrets:
+        """Create a `Secrets` object from a secrets file.
+
+        ## Arguments
+        * `path` -
+            The path of the secrets file.
+
+        ## Returns
+        * `Secrets` -
+            The newly created secrets object.
+        """
         if not isinstance(path, pathlib.Path):
             path = pathlib.Path(path)
 
@@ -75,6 +89,16 @@ class Secrets:
 
     @classmethod
     async def afrom_file(cls, path: pathlib.Path | str) -> Secrets:
+        """Asynchronously create a `Secrets` object from a secrets file.
+
+        ## Arguments
+        * `path` -
+            The path of the secrets file.
+
+        ## Returns
+        * `Secrets` -
+            The newly created secrets object.
+        """
         if not isinstance(path, pathlib.Path):
             path = pathlib.Path(path)
 
@@ -88,6 +112,12 @@ class Secrets:
         return cls(**data, path=path)
 
     def to_dict(self) -> dict[str, SecretT]:
+        """Output secrets data as a dictionary.
+
+        ## Returns
+        * `dict` -
+            The secrets data.
+        """
         return {
             "client_id": self.client_id,
             "project_id": self.project_id,

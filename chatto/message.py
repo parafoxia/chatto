@@ -40,21 +40,49 @@ from chatto.stream import Stream
 
 @dataclass(eq=True, frozen=True)
 class Message:
+    """A dataclass representing a message. All class variables are also
+    parameters that should be passed into the constructor."""
+
     id: str
+    """The message's ID."""
+
     type: str
+    """The message's type."""
+
     stream: Stream
+    """The stream instance the """
+
     channel: Channel
+    """The channel in which the message was sent."""
+
     published_at: dt.datetime
+    """The date and time the message was published at."""
+
     content: str
+    """The content of the message."""
 
     @classmethod
-    def from_youtube(cls, item: dict[str, t.Any], stream: Stream) -> Message:
-        snippet = item["snippet"]
+    def from_youtube(cls, resource: dict[str, t.Any], stream: Stream) -> Message:
+        """Create a `Message` object from a liveChatMessage resource
+        from the YouTube Live Streaming API.
+
+        ## Arguments
+        * `resource` -
+            The liveChatMessage resource.
+        * `stream` -
+            The `Stream` instance of the stream the bot is currently
+            connected to.
+
+        ## Returns
+        * `Message`:
+            The newly created message object.
+        """
+        snippet = resource["snippet"]
         return cls(
-            id=item["id"],
+            id=resource["id"],
             type=snippet["type"],
             stream=stream,
-            channel=Channel.from_author(item["authorDetails"]),
+            channel=Channel.from_author(resource["authorDetails"]),
             published_at=parse_ts(snippet["publishedAt"]),
             content=snippet["displayMessage"],
         )

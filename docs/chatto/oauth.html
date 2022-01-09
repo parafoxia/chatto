@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.3.dev22+g601fb40" />
+<title>chatto.oauth API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link id="hljs" rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style id="css-theme">
+:root[data-theme='theme-light']{--bg-highlight-color:#FFEE99;--bg-default:#FFFFFF;--bg-code:#EEEEEE;--bg-code-hover:#e0e0e0;--fc-default:#0F1A20;--fc-muted:#666666;--link-primary:#005588;--link-hover:#ee8822;--ident-primary:#990000;--hr-default:#666666;--bd-default:#DDDDDD;--bd-pre:#DDDDDD;--bd-primary:#666666;--adm-note:#abeeff;--adm-todo:#ddffdd;--adm-warning:#ffdd44;--adm-error:#feb6c1;--adm-bd-note:#abeeff;--adm-bd-todo:#ddffdd;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}:root[data-theme='theme-dark']{--bg-highlight-color:#3e4951;--bg-default:#22282D;--bg-code:#3e4951;--bg-code-hover:#313b42;--fc-default:#ACBAC7;--fc-muted:#ACBAC7;--link-primary:#539bf5;--link-hover:#abcdf9;--ident-primary:#539bf5;--hr-default:#444d56;--bd-default:#444d56;--bd-pre:#3e4951;--bd-primary:#539bf5;--adm-note:rgba(65,132,288,0.1);--adm-todo:rgba(165,255,169,0.1);--adm-warning:rgba(255,221,68,0.2);--adm-error:rgba(254,182,193,0.2);--adm-bd-note:#539bf5;--adm-bd-todo:#a5ffa9;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}@media (prefers-color-scheme:light){:root[data-theme='theme-light']{--bg-highlight-color:#FFEE99;--bg-default:#FFFFFF;--bg-code:#EEEEEE;--bg-code-hover:#e0e0e0;--fc-default:#0F1A20;--fc-muted:#666666;--link-primary:#005588;--link-hover:#ee8822;--ident-primary:#990000;--hr-default:#666666;--bd-default:#DDDDDD;--bd-pre:#DDDDDD;--bd-primary:#666666;--adm-note:#abeeff;--adm-todo:#ddffdd;--adm-warning:#ffdd44;--adm-error:#feb6c1;--adm-bd-note:#abeeff;--adm-bd-todo:#ddffdd;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}}@media (prefers-color-scheme:dark){:root[data-theme='theme-dark']{--bg-highlight-color:#3e4951;--bg-default:#22282D;--bg-code:#3e4951;--bg-code-hover:#313b42;--fc-default:#ACBAC7;--fc-muted:#ACBAC7;--link-primary:#539bf5;--link-hover:#abcdf9;--ident-primary:#539bf5;--hr-default:#444d56;--bd-default:#444d56;--bd-pre:#3e4951;--bd-primary:#539bf5;--adm-note:rgba(65,132,288,0.1);--adm-todo:rgba(165,255,169,0.1);--adm-warning:rgba(255,221,68,0.2);--adm-error:rgba(254,182,193,0.2);--adm-bd-note:#539bf5;--adm-bd-todo:#a5ffa9;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}}
+html {
+background-color: var(--bg-default);
+cursor: auto;
+}
+#dark-mode-toggle {
+display: none;
+border: 1px solid;
+border-color: var(--bd-primary);
+color: var(--bd-primary);
+border-radius: 20px;
+padding-left: 6px;
+padding-right: 6px;
+cursor: pointer;
+}
+.hidden {
+visibility: hidden;
+}
+.dm-icon-off, .dm-icon-on {
+display: inline;
+width: 14px;
+height: 14px;
+margin-bottom: 4px;
+}
+h1:target,
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target {
+background: var(--bg-highlight-color);
+padding: .2em 0;
+}
+.flex {
+display: flex;
+}
+body {
+line-height: 1.5em;
+color: var(--fc-default);
+}
+hr {
+border-color: var(--hr-default);
+}
+#sidebar {
+padding: 30px;
+overflow: hidden;
+}
+#sidebar > *:last-child {
+margin-bottom: 2cm;
+}
+.http-server-breadcrumbs {
+font-size: 130%;
+margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+font-weight: 300;
+color: var(--fc-default);
+}
+h1 {
+font-size: 2.5em;
+line-height: 1.1em;
+}
+h2 {
+font-size: 1.75em;
+margin: 1em 0 .50em 0;
+}
+h3 {
+font-size: 1.4em;
+margin: 25px 0 10px 0;
+}
+h4 {
+margin: 0;
+font-size: 105%;
+}
+#footer {
+font-size: .75em;
+padding: 5px 30px;
+border-top: 1px solid;
+border-color: var(--bd-default);
+text-align: right;
+}
+#footer p {
+margin: 0 0 0 1em;
+display: inline-block;
+}
+#footer p:last-child {
+margin-right: 30px;
+}
+a {
+color: var(--link-primary);
+text-decoration: none;
+transition: color .3s ease-in-out;
+}
+a:hover {
+color: var(--link-hover);
+}
+.title code {
+font-weight: bold;
+}
+h2[id^="header-"] {
+margin-top: 2em;
+}
+.ident {
+color: var(--ident-primary);
+}
+pre code {
+background: var(--bg-code);
+font-size: .8em;
+line-height: 1.4em;
+}
+code {
+background: var(--bg-code);
+padding: 1px 4px;
+overflow-wrap: break-word;
+}
+h1 code { background: transparent }
+pre {
+border-top: 1px solid;
+border-bottom: 1px solid;
+border-color: var(--bd-pre);
+}
+#http-server-module-list {
+display: flex;
+flex-flow: column;
+}
+#http-server-module-list div {
+display: flex;
+}
+#http-server-module-list dt {
+min-width: 10%;
+}
+#http-server-module-list p {
+margin-top: 0;
+}
+.toc ul, #index {
+list-style-type: none;
+margin: 0;
+padding: 0;
+}
+#index code {
+background: transparent;
+}
+#index h3 {
+border-bottom: 1px solid;
+border-color: var(--bd-default);
+}
+#index ul {
+padding: 0;
+}
+#index h4 {
+margin-top: .6em;
+font-weight: bold;
+}
+/*
+Make TOC lists have 2+ columns when viewport is wide enough.
+Assuming ~20-character identifiers and ~30% wide sidebar.
+*/
+@media (min-width: 200ex) { #index .two-column { column-count: 2 } }
+@media (min-width: 300ex) { #index .two-column { column-count: 3 } }
+dl {
+margin-bottom: 2em;
+}
+dl dl:last-child {
+margin-bottom: 4em;
+}
+dd {
+margin: 0 0 1em 3em;
+}
+#header-classes + dl > dd {
+margin-bottom: 3em;
+}
+dd dd {
+margin-left: 2em;
+}
+dd p {
+margin: 10px 0;
+}
+.name {
+background: var(--bg-code);
+font-weight: bold;
+font-size: .85em;
+padding: 5px 10px;
+display: inline-block;
+min-width: 40%;
+}
+.name:hover {
+background: var(--bg-code-hover);
+}
+dt:target .name {
+background: var(--highlight-color);
+}
+.name > span:first-child {
+white-space: nowrap;
+}
+.name.class > span:nth-child(2) {
+margin-left: .4em;
+}
+.inherited {
+color: #999; /* NOTE: Not entirely sure how to check this one.. Seems ok already?? */
+border-left: 5px solid #eee;
+padding-left: 1em;
+}
+.inheritance em {
+font-style: normal;
+font-weight: bold;
+}
+/* Docstrings titles, e.g. in numpydoc format */
+.desc h2 {
+font-weight: 400;
+font-size: 1.25em;
+}
+.desc h3 {
+font-size: 1em;
+}
+.desc dt code {
+background: inherit;
+/* Don't grey-back parameters */
+}
+.source summary, .git-link-div {
+outline: none;
+color: var(--fc-muted);
+text-align: right;
+font-weight: 400;
+font-size: .8em;
+text-transform: uppercase;
+}
+.source summary > * {
+white-space: nowrap;
+cursor: pointer;
+}
+.git-link {
+color: inherit;
+margin-left: 1em;
+}
+.source pre {
+max-height: 500px;
+overflow: auto;
+margin: 0;
+}
+.source pre code {
+font-size: 12px;
+overflow: visible;
+}
+.hlist {
+list-style: none;
+}
+.hlist li {
+display: inline;
+}
+.hlist li:after {
+content: ',\2002';
+}
+.hlist li:last-child:after {
+content: none;
+}
+.hlist .hlist {
+display: inline;
+padding-left: 1em;
+}
+img {
+max-width: 100%;
+}
+td {
+padding: 0 .5em;
+}
+.admonition {
+padding: .1em .5em;
+margin-bottom: 1em;
+border-radius: 8px;
+border: 1px solid;
+}
+.admonition-title {
+font-weight: bold;
+}
+.admonition.note,
+.admonition.info,
+.admonition.important {
+background: var(--adm-note);
+border-color: var(--adm-bd-note);
+}
+.admonition.todo,
+.admonition.versionadded,
+.admonition.tip,
+.admonition.hint {
+background: var(--adm-todo);
+border-color: var(--adm-bd-todo);
+}
+.admonition.warning,
+.admonition.versionchanged,
+.admonition.deprecated {
+background: var(--adm-warning);
+border-color: var(--adm-bd-warning);
+}
+.admonition.error,
+.admonition.danger,
+.admonition.caution {
+background: var(--adm-error);
+border-color: var(--adm-bd-error);
+}
+/*
+Desktop MQuery
+* Standard desktop breakpoint is 1024, below are tablets and portables.
+* No need to limit the max-width of #content, otherwise space is being wasted.
+*/
+@media screen and (min-width: 1024px) {
+#dark-mode-toggle {
+display: block;
+position: absolute;
+top: 5px;
+right: 5px;
+}
+#sidebar {
+width: 30%;
+height: 100vh;
+overflow: auto;
+position: sticky;
+top: 0;
+}
+#content {
+width: 100%;
+padding: 3em 4em;
+border-left: 1px solid var(--bd-default);
+}
+pre code {
+font-size: 1em;
+}
+.item .name {
+font-size: 1em;
+}
+main {
+display: flex;
+flex-direction: row-reverse;
+justify-content: flex-end;
+}
+.toc ul ul, #index ul {
+padding-left: 1.5em;
+}
+.toc > ul > li {
+margin-top: .5em;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: #000 !important; /* Black prints faster: h5bp.com/s */
+box-shadow: none !important;
+text-shadow: none !important;
+}
+#sidebar h1 {
+page-break-before: always;
+}
+.source {
+display: none;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+font-size: 90%;
+}
+/* Internal, documentation links, recognized by having a title, don't need the URL explicity stated. */
+a[href][title]:after {
+content: none;
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+/* Don't show links for images, or javascript/internal links */
+.ir a:after,
+a[href^="javascript:"]:after,
+a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+page-break-inside: avoid;
+}
+thead {
+display: table-header-group; /* h5bp.com/t */
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page {
+margin: 0.5cm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h1, h2, h3, h4, h5, h6 {
+page-break-after: avoid;
+}
+}
+</style>
+<script>
+const html = document.querySelector("html");
+const isDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const changeHLJS = (style) => {
+const hljsStyle = document.querySelector("#hljs");
+const styleURL = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/" + style + ".min.css";
+hljsStyle.href = styleURL;
+}
+const loadedTheme = window.localStorage.getItem("theme");
+if (loadedTheme) {
+html.dataset.theme = loadedTheme;
+if (loadedTheme == "theme-dark") {
+changeHLJS(`atom-one-dark`);
+} else {
+changeHLJS(`github`);
+}
+}
+const onSystemThemeChange = (event) => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (event.matches) {
+html.dataset.theme = "theme-dark";
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+window.localStorage.setItem("theme", "theme-dark");
+} else {
+html.dataset.theme = "theme-light";
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+window.localStorage.setItem("theme", "theme-light");
+}
+};
+isDarkQuery.addEventListener("change", onSystemThemeChange);
+window.addEventListener("DOMContentLoaded", () => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (isDarkQuery.matches || loadedTheme == "theme-dark") {
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+}
+if ((!isDarkQuery.matches || loadedTheme == "theme-light") || !loadedTheme) {
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+}
+});
+const toggleDarkMode = () => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (html.dataset.theme == "theme-dark") {
+html.dataset.theme = "theme-light";
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+window.localStorage.setItem("theme", "theme-light");
+} else {
+html.dataset.theme = "theme-dark";
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+window.localStorage.setItem("theme", "theme-dark");
+}
+};
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chatto.oauth</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Copyright (c) 2021-2022, Ethan Henderson
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its
+#    contributors may be used to endorse or promote products derived from
+#    this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &#34;AS IS&#34;
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+from __future__ import annotations
+
+import asyncio
+import hashlib
+import json
+import logging
+import pathlib
+import time
+import typing as t
+
+import aiofiles
+from aiohttp.client import ClientSession
+
+import chatto
+from chatto import events
+from chatto.errors import NoSecrets, NoSession
+from chatto.secrets import Secrets
+from chatto.ux import CLRS
+
+log = logging.getLogger(__name__)
+
+YOUTUBE_OAUTH_CHECK = &#34;https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=&#34;
+
+
+def create_state() -&gt; str:
+    return hashlib.sha256(f&#34;{time.time()}&#34;.encode(&#34;utf-8&#34;)).hexdigest()
+
+
+def get_auth_url(secrets: Secrets) -&gt; tuple[str, str]:
+    state = create_state()
+    auth_url = secrets.auth_uri + (
+        &#34;?response_type=code&#34;
+        f&#34;&amp;client_id={secrets.client_id}&#34;
+        f&#34;&amp;redirect_uri={secrets.redirect_uris[0]}&#34;
+        f&#34;&amp;scope={&#39;+&#39;.join(chatto.YOUTUBE_API_SCOPES)}&#34;
+        f&#34;&amp;state={state}&#34;
+    )
+    return auth_url, state
+
+
+def get_token_request_data(
+    code: str, *, secrets: Secrets
+) -&gt; tuple[dict[str, str], dict[str, str]]:
+    data = {
+        &#34;client_id&#34;: secrets.client_id,
+        &#34;client_secret&#34;: secrets.client_secret,
+        &#34;grant_type&#34;: &#34;authorization_code&#34;,
+        &#34;code&#34;: code,
+        &#34;redirect_uri&#34;: secrets.redirect_uris[0],
+    }
+    headers = {&#34;Content-Type&#34;: &#34;application/x-www-form-urlencoded&#34;}
+    return data, headers
+
+
+def get_token_refresh_data(
+    token: str, *, secrets: Secrets
+) -&gt; tuple[dict[str, str], dict[str, str]]:
+    data = {
+        &#34;client_id&#34;: secrets.client_id,
+        &#34;client_secret&#34;: secrets.client_secret,
+        &#34;grant_type&#34;: &#34;refresh_token&#34;,
+        &#34;refresh_token&#34;: token,
+    }
+    headers = {&#34;Content-Type&#34;: &#34;application/x-www-form-urlencoded&#34;}
+    return data, headers
+
+
+class OAuthMixin:
+    &#34;&#34;&#34;A mix-in class that provides OAuth capabilities to classes that
+    inherit it.&#34;&#34;&#34;
+
+    events: events.EventHandler
+    _session: ClientSession
+
+    @property
+    def session(self) -&gt; ClientSession | None:
+        ...
+
+    @property
+    def secrets(self) -&gt; Secrets | None:
+        &#34;&#34;&#34;The secrets the bot is using. If the bot has not been
+        authorised, this will be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_secrets&#34;, None)
+
+    def use_secrets(self, path: pathlib.Path | str) -&gt; None:
+        &#34;&#34;&#34;Tell the bot to use the secrets from the given file.
+
+        ## Arguments
+        * `path` -
+            The path of the secrets file.
+        &#34;&#34;&#34;
+        self._secrets = Secrets.from_file(path)
+
+    async def authorise(self, *, force: bool = False) -&gt; None:
+        &#34;&#34;&#34;Authorise the bot, automatically refreshing tokens if needed.
+
+        ## Arguments
+        * `force` -
+            Whether to force authorisation regardless of whether
+            existing tokens are already available.
+        &#34;&#34;&#34;
+
+        log.info(&#34;Authorising bot&#34;)
+
+        if not self.secrets:
+            raise NoSecrets(&#34;you need to provide your secrets before authorising&#34;)
+
+        if not self.session:
+            raise NoSession(&#34;there is no active session&#34;)
+
+        tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+
+        if force or not tokens_path.is_file():
+            log.info(&#34;No tokens found -- authorisation required&#34;)
+            self.tokens = await self._fetch_tokens(self._secrets, self._session)
+            await self.set_tokens(self.tokens, tokens_path)
+            return
+
+        async with aiofiles.open(tokens_path) as f:
+            tokens = json.loads(await f.read())
+
+        async with self._session.get(YOUTUBE_OAUTH_CHECK + tokens[&#34;access_token&#34;]) as r:
+            token_expires_in = int((await r.json()).get(&#34;expires_in&#34;, 0))
+            # Set this else this will more often than not be 3599.
+            tokens[&#34;expires_in&#34;] = token_expires_in
+
+        if not token_expires_in:
+            log.info(&#34;Token has expired -- refreshing&#34;)
+            tokens = await self._refresh_tokens(self._secrets, self._session, tokens)
+        else:
+            log.info(f&#34;Token expires in about {token_expires_in / 60:.0f} minutes&#34;)
+
+        if not tokens:
+            log.warning(&#34;Token refresh failed -- you will need to authorise manually&#34;)
+            tokens = await self._fetch_tokens(self._secrets, self._session)
+
+        await self.set_tokens(tokens, tokens_path)
+
+    authorize = authorise
+
+    async def set_tokens(self, tokens: dict[str, t.Any], path: pathlib.Path) -&gt; None:
+        self.tokens = tokens
+
+        async with aiofiles.open(path, &#34;w&#34;) as f:
+            await f.write(json.dumps(tokens))
+
+        await self.events.dispatch(events.AuthorisedEvent, self.secrets, tokens)
+
+    async def _fetch_tokens(
+        self, secrets: Secrets, session: ClientSession
+    ) -&gt; dict[str, t.Any]:
+        url, _ = get_auth_url(secrets)
+        code = input(
+            f&#34;\33[1m{CLRS[4]}You need to authorise this session:\n{url}\n&#34;
+            &#34;Paste code here: \33[0m&#34;
+        )
+        data, headers = get_token_request_data(code, secrets=secrets)
+
+        async with session.post(secrets.token_uri, data=data, headers=headers) as r:
+            r.raise_for_status()
+            return await r.json()  # type: ignore
+
+    async def _refresh_tokens(
+        self, secrets: Secrets, session: ClientSession, tokens: dict[str, t.Any]
+    ) -&gt; dict[str, t.Any]:
+        data, headers = get_token_refresh_data(tokens[&#34;refresh_token&#34;], secrets=secrets)
+
+        async with session.post(secrets.token_uri, data=data, headers=headers) as r:
+            if not r.ok:
+                return {}
+
+            data = await r.json()
+
+        data.update({&#34;refresh_token&#34;: tokens[&#34;refresh_token&#34;]})
+        return data
+
+    async def auto_refresh_tokens(self, initial_delay: int) -&gt; None:
+        tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+        await asyncio.sleep(initial_delay)
+
+        while True:
+            await self.set_tokens(
+                await self._refresh_tokens(self._secrets, self._session, self.tokens),
+                tokens_path,
+            )
+            log.info(&#34;Token refreshed -- will repeat in one hour&#34;)
+            await asyncio.sleep(3600)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="chatto.oauth.create_state"><code class="name flex">
+<span>def <span class="ident">create_state</span></span>(<span>) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_state() -&gt; str:
+    return hashlib.sha256(f&#34;{time.time()}&#34;.encode(&#34;utf-8&#34;)).hexdigest()</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.get_auth_url"><code class="name flex">
+<span>def <span class="ident">get_auth_url</span></span>(<span>secrets: Secrets) ‑> tuple[str, str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_auth_url(secrets: Secrets) -&gt; tuple[str, str]:
+    state = create_state()
+    auth_url = secrets.auth_uri + (
+        &#34;?response_type=code&#34;
+        f&#34;&amp;client_id={secrets.client_id}&#34;
+        f&#34;&amp;redirect_uri={secrets.redirect_uris[0]}&#34;
+        f&#34;&amp;scope={&#39;+&#39;.join(chatto.YOUTUBE_API_SCOPES)}&#34;
+        f&#34;&amp;state={state}&#34;
+    )
+    return auth_url, state</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.get_token_refresh_data"><code class="name flex">
+<span>def <span class="ident">get_token_refresh_data</span></span>(<span>token: str, *, secrets: Secrets) ‑> tuple[dict[str, str], dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_token_refresh_data(
+    token: str, *, secrets: Secrets
+) -&gt; tuple[dict[str, str], dict[str, str]]:
+    data = {
+        &#34;client_id&#34;: secrets.client_id,
+        &#34;client_secret&#34;: secrets.client_secret,
+        &#34;grant_type&#34;: &#34;refresh_token&#34;,
+        &#34;refresh_token&#34;: token,
+    }
+    headers = {&#34;Content-Type&#34;: &#34;application/x-www-form-urlencoded&#34;}
+    return data, headers</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.get_token_request_data"><code class="name flex">
+<span>def <span class="ident">get_token_request_data</span></span>(<span>code: str, *, secrets: Secrets) ‑> tuple[dict[str, str], dict[str, str]]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_token_request_data(
+    code: str, *, secrets: Secrets
+) -&gt; tuple[dict[str, str], dict[str, str]]:
+    data = {
+        &#34;client_id&#34;: secrets.client_id,
+        &#34;client_secret&#34;: secrets.client_secret,
+        &#34;grant_type&#34;: &#34;authorization_code&#34;,
+        &#34;code&#34;: code,
+        &#34;redirect_uri&#34;: secrets.redirect_uris[0],
+    }
+    headers = {&#34;Content-Type&#34;: &#34;application/x-www-form-urlencoded&#34;}
+    return data, headers</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chatto.oauth.OAuthMixin"><code class="flex name class">
+<span>class <span class="ident">OAuthMixin</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A mix-in class that provides OAuth capabilities to classes that
+inherit it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OAuthMixin:
+    &#34;&#34;&#34;A mix-in class that provides OAuth capabilities to classes that
+    inherit it.&#34;&#34;&#34;
+
+    events: events.EventHandler
+    _session: ClientSession
+
+    @property
+    def session(self) -&gt; ClientSession | None:
+        ...
+
+    @property
+    def secrets(self) -&gt; Secrets | None:
+        &#34;&#34;&#34;The secrets the bot is using. If the bot has not been
+        authorised, this will be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_secrets&#34;, None)
+
+    def use_secrets(self, path: pathlib.Path | str) -&gt; None:
+        &#34;&#34;&#34;Tell the bot to use the secrets from the given file.
+
+        ## Arguments
+        * `path` -
+            The path of the secrets file.
+        &#34;&#34;&#34;
+        self._secrets = Secrets.from_file(path)
+
+    async def authorise(self, *, force: bool = False) -&gt; None:
+        &#34;&#34;&#34;Authorise the bot, automatically refreshing tokens if needed.
+
+        ## Arguments
+        * `force` -
+            Whether to force authorisation regardless of whether
+            existing tokens are already available.
+        &#34;&#34;&#34;
+
+        log.info(&#34;Authorising bot&#34;)
+
+        if not self.secrets:
+            raise NoSecrets(&#34;you need to provide your secrets before authorising&#34;)
+
+        if not self.session:
+            raise NoSession(&#34;there is no active session&#34;)
+
+        tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+
+        if force or not tokens_path.is_file():
+            log.info(&#34;No tokens found -- authorisation required&#34;)
+            self.tokens = await self._fetch_tokens(self._secrets, self._session)
+            await self.set_tokens(self.tokens, tokens_path)
+            return
+
+        async with aiofiles.open(tokens_path) as f:
+            tokens = json.loads(await f.read())
+
+        async with self._session.get(YOUTUBE_OAUTH_CHECK + tokens[&#34;access_token&#34;]) as r:
+            token_expires_in = int((await r.json()).get(&#34;expires_in&#34;, 0))
+            # Set this else this will more often than not be 3599.
+            tokens[&#34;expires_in&#34;] = token_expires_in
+
+        if not token_expires_in:
+            log.info(&#34;Token has expired -- refreshing&#34;)
+            tokens = await self._refresh_tokens(self._secrets, self._session, tokens)
+        else:
+            log.info(f&#34;Token expires in about {token_expires_in / 60:.0f} minutes&#34;)
+
+        if not tokens:
+            log.warning(&#34;Token refresh failed -- you will need to authorise manually&#34;)
+            tokens = await self._fetch_tokens(self._secrets, self._session)
+
+        await self.set_tokens(tokens, tokens_path)
+
+    authorize = authorise
+
+    async def set_tokens(self, tokens: dict[str, t.Any], path: pathlib.Path) -&gt; None:
+        self.tokens = tokens
+
+        async with aiofiles.open(path, &#34;w&#34;) as f:
+            await f.write(json.dumps(tokens))
+
+        await self.events.dispatch(events.AuthorisedEvent, self.secrets, tokens)
+
+    async def _fetch_tokens(
+        self, secrets: Secrets, session: ClientSession
+    ) -&gt; dict[str, t.Any]:
+        url, _ = get_auth_url(secrets)
+        code = input(
+            f&#34;\33[1m{CLRS[4]}You need to authorise this session:\n{url}\n&#34;
+            &#34;Paste code here: \33[0m&#34;
+        )
+        data, headers = get_token_request_data(code, secrets=secrets)
+
+        async with session.post(secrets.token_uri, data=data, headers=headers) as r:
+            r.raise_for_status()
+            return await r.json()  # type: ignore
+
+    async def _refresh_tokens(
+        self, secrets: Secrets, session: ClientSession, tokens: dict[str, t.Any]
+    ) -&gt; dict[str, t.Any]:
+        data, headers = get_token_refresh_data(tokens[&#34;refresh_token&#34;], secrets=secrets)
+
+        async with session.post(secrets.token_uri, data=data, headers=headers) as r:
+            if not r.ok:
+                return {}
+
+            data = await r.json()
+
+        data.update({&#34;refresh_token&#34;: tokens[&#34;refresh_token&#34;]})
+        return data
+
+    async def auto_refresh_tokens(self, initial_delay: int) -&gt; None:
+        tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+        await asyncio.sleep(initial_delay)
+
+        while True:
+            await self.set_tokens(
+                await self._refresh_tokens(self._secrets, self._session, self.tokens),
+                tokens_path,
+            )
+            log.info(&#34;Token refreshed -- will repeat in one hour&#34;)
+            await asyncio.sleep(3600)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chatto.youtube.YouTubeBot" href="youtube.html#chatto.youtube.YouTubeBot">YouTubeBot</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chatto.oauth.OAuthMixin.events"><code class="name">var <span class="ident">events</span> : <a title="chatto.events.EventHandler" href="events.html#chatto.events.EventHandler">EventHandler</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="chatto.oauth.OAuthMixin.secrets"><code class="name">var <span class="ident">secrets</span> : <a title="chatto.secrets.Secrets" href="secrets.html#chatto.secrets.Secrets">Secrets</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The secrets the bot is using. If the bot has not been
+authorised, this will be <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def secrets(self) -&gt; Secrets | None:
+    &#34;&#34;&#34;The secrets the bot is using. If the bot has not been
+    authorised, this will be `None`.&#34;&#34;&#34;
+    return getattr(self, &#34;_secrets&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.OAuthMixin.session"><code class="name">var <span class="ident">session</span> : aiohttp.client.ClientSession | None</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def session(self) -&gt; ClientSession | None:
+    ...</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chatto.oauth.OAuthMixin.authorise"><code class="name flex">
+<span>async def <span class="ident">authorise</span></span>(<span>self, *, force: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Authorise the bot, automatically refreshing tokens if needed.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>force</code> -
+Whether to force authorisation regardless of whether
+existing tokens are already available.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def authorise(self, *, force: bool = False) -&gt; None:
+    &#34;&#34;&#34;Authorise the bot, automatically refreshing tokens if needed.
+
+    ## Arguments
+    * `force` -
+        Whether to force authorisation regardless of whether
+        existing tokens are already available.
+    &#34;&#34;&#34;
+
+    log.info(&#34;Authorising bot&#34;)
+
+    if not self.secrets:
+        raise NoSecrets(&#34;you need to provide your secrets before authorising&#34;)
+
+    if not self.session:
+        raise NoSession(&#34;there is no active session&#34;)
+
+    tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+
+    if force or not tokens_path.is_file():
+        log.info(&#34;No tokens found -- authorisation required&#34;)
+        self.tokens = await self._fetch_tokens(self._secrets, self._session)
+        await self.set_tokens(self.tokens, tokens_path)
+        return
+
+    async with aiofiles.open(tokens_path) as f:
+        tokens = json.loads(await f.read())
+
+    async with self._session.get(YOUTUBE_OAUTH_CHECK + tokens[&#34;access_token&#34;]) as r:
+        token_expires_in = int((await r.json()).get(&#34;expires_in&#34;, 0))
+        # Set this else this will more often than not be 3599.
+        tokens[&#34;expires_in&#34;] = token_expires_in
+
+    if not token_expires_in:
+        log.info(&#34;Token has expired -- refreshing&#34;)
+        tokens = await self._refresh_tokens(self._secrets, self._session, tokens)
+    else:
+        log.info(f&#34;Token expires in about {token_expires_in / 60:.0f} minutes&#34;)
+
+    if not tokens:
+        log.warning(&#34;Token refresh failed -- you will need to authorise manually&#34;)
+        tokens = await self._fetch_tokens(self._secrets, self._session)
+
+    await self.set_tokens(tokens, tokens_path)</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.OAuthMixin.authorize"><code class="name flex">
+<span>async def <span class="ident">authorize</span></span>(<span>self, *, force: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Authorise the bot, automatically refreshing tokens if needed.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>force</code> -
+Whether to force authorisation regardless of whether
+existing tokens are already available.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def authorise(self, *, force: bool = False) -&gt; None:
+    &#34;&#34;&#34;Authorise the bot, automatically refreshing tokens if needed.
+
+    ## Arguments
+    * `force` -
+        Whether to force authorisation regardless of whether
+        existing tokens are already available.
+    &#34;&#34;&#34;
+
+    log.info(&#34;Authorising bot&#34;)
+
+    if not self.secrets:
+        raise NoSecrets(&#34;you need to provide your secrets before authorising&#34;)
+
+    if not self.session:
+        raise NoSession(&#34;there is no active session&#34;)
+
+    tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+
+    if force or not tokens_path.is_file():
+        log.info(&#34;No tokens found -- authorisation required&#34;)
+        self.tokens = await self._fetch_tokens(self._secrets, self._session)
+        await self.set_tokens(self.tokens, tokens_path)
+        return
+
+    async with aiofiles.open(tokens_path) as f:
+        tokens = json.loads(await f.read())
+
+    async with self._session.get(YOUTUBE_OAUTH_CHECK + tokens[&#34;access_token&#34;]) as r:
+        token_expires_in = int((await r.json()).get(&#34;expires_in&#34;, 0))
+        # Set this else this will more often than not be 3599.
+        tokens[&#34;expires_in&#34;] = token_expires_in
+
+    if not token_expires_in:
+        log.info(&#34;Token has expired -- refreshing&#34;)
+        tokens = await self._refresh_tokens(self._secrets, self._session, tokens)
+    else:
+        log.info(f&#34;Token expires in about {token_expires_in / 60:.0f} minutes&#34;)
+
+    if not tokens:
+        log.warning(&#34;Token refresh failed -- you will need to authorise manually&#34;)
+        tokens = await self._fetch_tokens(self._secrets, self._session)
+
+    await self.set_tokens(tokens, tokens_path)</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.OAuthMixin.auto_refresh_tokens"><code class="name flex">
+<span>async def <span class="ident">auto_refresh_tokens</span></span>(<span>self, initial_delay: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def auto_refresh_tokens(self, initial_delay: int) -&gt; None:
+    tokens_path = self._secrets.path.parent / &#34;tokens.json&#34;
+    await asyncio.sleep(initial_delay)
+
+    while True:
+        await self.set_tokens(
+            await self._refresh_tokens(self._secrets, self._session, self.tokens),
+            tokens_path,
+        )
+        log.info(&#34;Token refreshed -- will repeat in one hour&#34;)
+        await asyncio.sleep(3600)</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.OAuthMixin.set_tokens"><code class="name flex">
+<span>async def <span class="ident">set_tokens</span></span>(<span>self, tokens: dict[str, t.Any], path: pathlib.Path) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def set_tokens(self, tokens: dict[str, t.Any], path: pathlib.Path) -&gt; None:
+    self.tokens = tokens
+
+    async with aiofiles.open(path, &#34;w&#34;) as f:
+        await f.write(json.dumps(tokens))
+
+    await self.events.dispatch(events.AuthorisedEvent, self.secrets, tokens)</code></pre>
+</details>
+</dd>
+<dt id="chatto.oauth.OAuthMixin.use_secrets"><code class="name flex">
+<span>def <span class="ident">use_secrets</span></span>(<span>self, path: pathlib.Path | str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tell the bot to use the secrets from the given file.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>path</code> -
+The path of the secrets file.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def use_secrets(self, path: pathlib.Path | str) -&gt; None:
+    &#34;&#34;&#34;Tell the bot to use the secrets from the given file.
+
+    ## Arguments
+    * `path` -
+        The path of the secrets file.
+    &#34;&#34;&#34;
+    self._secrets = Secrets.from_file(path)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div id="dark-mode-toggle" onclick="toggleDarkMode()">
+<svg class="dm-icon-off" viewBox="0 0 16 16">
+<path d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.414-1.414zM14 7h2v2h-2zM12.95 14.433l-1.415-1.414 1.414-1.414 1.415 1.413zM7 14h2v2H7zM2.98 14.363L1.566 12.95l1.415-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.707L4.465 3.12 3.05 4.535 1.636 3.121z" />
+<path d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z" />
+</svg>
+<svg class="dm-icon-on" viewBox="0 0 16 16">
+<path d="M6,0C2.5,0.9,0,4.1,0,7.9C0,12.4,3.6,16,8.1,16c3.8,0,6.9-2.5,7.9-6C9.9,11.7,4.3,6.1,6,0z"></path>
+</svg>
+</div>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chatto" href="index.html">chatto</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="chatto.oauth.create_state" href="#chatto.oauth.create_state">create_state</a></code></li>
+<li><code><a title="chatto.oauth.get_auth_url" href="#chatto.oauth.get_auth_url">get_auth_url</a></code></li>
+<li><code><a title="chatto.oauth.get_token_refresh_data" href="#chatto.oauth.get_token_refresh_data">get_token_refresh_data</a></code></li>
+<li><code><a title="chatto.oauth.get_token_request_data" href="#chatto.oauth.get_token_request_data">get_token_request_data</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chatto.oauth.OAuthMixin" href="#chatto.oauth.OAuthMixin">OAuthMixin</a></code></h4>
+<ul class="two-column">
+<li><code><a title="chatto.oauth.OAuthMixin.authorise" href="#chatto.oauth.OAuthMixin.authorise">authorise</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.authorize" href="#chatto.oauth.OAuthMixin.authorize">authorize</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.auto_refresh_tokens" href="#chatto.oauth.OAuthMixin.auto_refresh_tokens">auto_refresh_tokens</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.events" href="#chatto.oauth.OAuthMixin.events">events</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.secrets" href="#chatto.oauth.OAuthMixin.secrets">secrets</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.session" href="#chatto.oauth.OAuthMixin.session">session</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.set_tokens" href="#chatto.oauth.OAuthMixin.set_tokens">set_tokens</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.use_secrets" href="#chatto.oauth.OAuthMixin.use_secrets">use_secrets</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.3.dev22+g601fb40</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.3.dev22+g601fb40" />
+<title>chatto.events API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link id="hljs" rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style id="css-theme">
+:root[data-theme='theme-light']{--bg-highlight-color:#FFEE99;--bg-default:#FFFFFF;--bg-code:#EEEEEE;--bg-code-hover:#e0e0e0;--fc-default:#0F1A20;--fc-muted:#666666;--link-primary:#005588;--link-hover:#ee8822;--ident-primary:#990000;--hr-default:#666666;--bd-default:#DDDDDD;--bd-pre:#DDDDDD;--bd-primary:#666666;--adm-note:#abeeff;--adm-todo:#ddffdd;--adm-warning:#ffdd44;--adm-error:#feb6c1;--adm-bd-note:#abeeff;--adm-bd-todo:#ddffdd;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}:root[data-theme='theme-dark']{--bg-highlight-color:#3e4951;--bg-default:#22282D;--bg-code:#3e4951;--bg-code-hover:#313b42;--fc-default:#ACBAC7;--fc-muted:#ACBAC7;--link-primary:#539bf5;--link-hover:#abcdf9;--ident-primary:#539bf5;--hr-default:#444d56;--bd-default:#444d56;--bd-pre:#3e4951;--bd-primary:#539bf5;--adm-note:rgba(65,132,288,0.1);--adm-todo:rgba(165,255,169,0.1);--adm-warning:rgba(255,221,68,0.2);--adm-error:rgba(254,182,193,0.2);--adm-bd-note:#539bf5;--adm-bd-todo:#a5ffa9;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}@media (prefers-color-scheme:light){:root[data-theme='theme-light']{--bg-highlight-color:#FFEE99;--bg-default:#FFFFFF;--bg-code:#EEEEEE;--bg-code-hover:#e0e0e0;--fc-default:#0F1A20;--fc-muted:#666666;--link-primary:#005588;--link-hover:#ee8822;--ident-primary:#990000;--hr-default:#666666;--bd-default:#DDDDDD;--bd-pre:#DDDDDD;--bd-primary:#666666;--adm-note:#abeeff;--adm-todo:#ddffdd;--adm-warning:#ffdd44;--adm-error:#feb6c1;--adm-bd-note:#abeeff;--adm-bd-todo:#ddffdd;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}}@media (prefers-color-scheme:dark){:root[data-theme='theme-dark']{--bg-highlight-color:#3e4951;--bg-default:#22282D;--bg-code:#3e4951;--bg-code-hover:#313b42;--fc-default:#ACBAC7;--fc-muted:#ACBAC7;--link-primary:#539bf5;--link-hover:#abcdf9;--ident-primary:#539bf5;--hr-default:#444d56;--bd-default:#444d56;--bd-pre:#3e4951;--bd-primary:#539bf5;--adm-note:rgba(65,132,288,0.1);--adm-todo:rgba(165,255,169,0.1);--adm-warning:rgba(255,221,68,0.2);--adm-error:rgba(254,182,193,0.2);--adm-bd-note:#539bf5;--adm-bd-todo:#a5ffa9;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}}
+html {
+background-color: var(--bg-default);
+cursor: auto;
+}
+#dark-mode-toggle {
+display: none;
+border: 1px solid;
+border-color: var(--bd-primary);
+color: var(--bd-primary);
+border-radius: 20px;
+padding-left: 6px;
+padding-right: 6px;
+cursor: pointer;
+}
+.hidden {
+visibility: hidden;
+}
+.dm-icon-off, .dm-icon-on {
+display: inline;
+width: 14px;
+height: 14px;
+margin-bottom: 4px;
+}
+h1:target,
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target {
+background: var(--bg-highlight-color);
+padding: .2em 0;
+}
+.flex {
+display: flex;
+}
+body {
+line-height: 1.5em;
+color: var(--fc-default);
+}
+hr {
+border-color: var(--hr-default);
+}
+#sidebar {
+padding: 30px;
+overflow: hidden;
+}
+#sidebar > *:last-child {
+margin-bottom: 2cm;
+}
+.http-server-breadcrumbs {
+font-size: 130%;
+margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+font-weight: 300;
+color: var(--fc-default);
+}
+h1 {
+font-size: 2.5em;
+line-height: 1.1em;
+}
+h2 {
+font-size: 1.75em;
+margin: 1em 0 .50em 0;
+}
+h3 {
+font-size: 1.4em;
+margin: 25px 0 10px 0;
+}
+h4 {
+margin: 0;
+font-size: 105%;
+}
+#footer {
+font-size: .75em;
+padding: 5px 30px;
+border-top: 1px solid;
+border-color: var(--bd-default);
+text-align: right;
+}
+#footer p {
+margin: 0 0 0 1em;
+display: inline-block;
+}
+#footer p:last-child {
+margin-right: 30px;
+}
+a {
+color: var(--link-primary);
+text-decoration: none;
+transition: color .3s ease-in-out;
+}
+a:hover {
+color: var(--link-hover);
+}
+.title code {
+font-weight: bold;
+}
+h2[id^="header-"] {
+margin-top: 2em;
+}
+.ident {
+color: var(--ident-primary);
+}
+pre code {
+background: var(--bg-code);
+font-size: .8em;
+line-height: 1.4em;
+}
+code {
+background: var(--bg-code);
+padding: 1px 4px;
+overflow-wrap: break-word;
+}
+h1 code { background: transparent }
+pre {
+border-top: 1px solid;
+border-bottom: 1px solid;
+border-color: var(--bd-pre);
+}
+#http-server-module-list {
+display: flex;
+flex-flow: column;
+}
+#http-server-module-list div {
+display: flex;
+}
+#http-server-module-list dt {
+min-width: 10%;
+}
+#http-server-module-list p {
+margin-top: 0;
+}
+.toc ul, #index {
+list-style-type: none;
+margin: 0;
+padding: 0;
+}
+#index code {
+background: transparent;
+}
+#index h3 {
+border-bottom: 1px solid;
+border-color: var(--bd-default);
+}
+#index ul {
+padding: 0;
+}
+#index h4 {
+margin-top: .6em;
+font-weight: bold;
+}
+/*
+Make TOC lists have 2+ columns when viewport is wide enough.
+Assuming ~20-character identifiers and ~30% wide sidebar.
+*/
+@media (min-width: 200ex) { #index .two-column { column-count: 2 } }
+@media (min-width: 300ex) { #index .two-column { column-count: 3 } }
+dl {
+margin-bottom: 2em;
+}
+dl dl:last-child {
+margin-bottom: 4em;
+}
+dd {
+margin: 0 0 1em 3em;
+}
+#header-classes + dl > dd {
+margin-bottom: 3em;
+}
+dd dd {
+margin-left: 2em;
+}
+dd p {
+margin: 10px 0;
+}
+.name {
+background: var(--bg-code);
+font-weight: bold;
+font-size: .85em;
+padding: 5px 10px;
+display: inline-block;
+min-width: 40%;
+}
+.name:hover {
+background: var(--bg-code-hover);
+}
+dt:target .name {
+background: var(--highlight-color);
+}
+.name > span:first-child {
+white-space: nowrap;
+}
+.name.class > span:nth-child(2) {
+margin-left: .4em;
+}
+.inherited {
+color: #999; /* NOTE: Not entirely sure how to check this one.. Seems ok already?? */
+border-left: 5px solid #eee;
+padding-left: 1em;
+}
+.inheritance em {
+font-style: normal;
+font-weight: bold;
+}
+/* Docstrings titles, e.g. in numpydoc format */
+.desc h2 {
+font-weight: 400;
+font-size: 1.25em;
+}
+.desc h3 {
+font-size: 1em;
+}
+.desc dt code {
+background: inherit;
+/* Don't grey-back parameters */
+}
+.source summary, .git-link-div {
+outline: none;
+color: var(--fc-muted);
+text-align: right;
+font-weight: 400;
+font-size: .8em;
+text-transform: uppercase;
+}
+.source summary > * {
+white-space: nowrap;
+cursor: pointer;
+}
+.git-link {
+color: inherit;
+margin-left: 1em;
+}
+.source pre {
+max-height: 500px;
+overflow: auto;
+margin: 0;
+}
+.source pre code {
+font-size: 12px;
+overflow: visible;
+}
+.hlist {
+list-style: none;
+}
+.hlist li {
+display: inline;
+}
+.hlist li:after {
+content: ',\2002';
+}
+.hlist li:last-child:after {
+content: none;
+}
+.hlist .hlist {
+display: inline;
+padding-left: 1em;
+}
+img {
+max-width: 100%;
+}
+td {
+padding: 0 .5em;
+}
+.admonition {
+padding: .1em .5em;
+margin-bottom: 1em;
+border-radius: 8px;
+border: 1px solid;
+}
+.admonition-title {
+font-weight: bold;
+}
+.admonition.note,
+.admonition.info,
+.admonition.important {
+background: var(--adm-note);
+border-color: var(--adm-bd-note);
+}
+.admonition.todo,
+.admonition.versionadded,
+.admonition.tip,
+.admonition.hint {
+background: var(--adm-todo);
+border-color: var(--adm-bd-todo);
+}
+.admonition.warning,
+.admonition.versionchanged,
+.admonition.deprecated {
+background: var(--adm-warning);
+border-color: var(--adm-bd-warning);
+}
+.admonition.error,
+.admonition.danger,
+.admonition.caution {
+background: var(--adm-error);
+border-color: var(--adm-bd-error);
+}
+/*
+Desktop MQuery
+* Standard desktop breakpoint is 1024, below are tablets and portables.
+* No need to limit the max-width of #content, otherwise space is being wasted.
+*/
+@media screen and (min-width: 1024px) {
+#dark-mode-toggle {
+display: block;
+position: absolute;
+top: 5px;
+right: 5px;
+}
+#sidebar {
+width: 30%;
+height: 100vh;
+overflow: auto;
+position: sticky;
+top: 0;
+}
+#content {
+width: 100%;
+padding: 3em 4em;
+border-left: 1px solid var(--bd-default);
+}
+pre code {
+font-size: 1em;
+}
+.item .name {
+font-size: 1em;
+}
+main {
+display: flex;
+flex-direction: row-reverse;
+justify-content: flex-end;
+}
+.toc ul ul, #index ul {
+padding-left: 1.5em;
+}
+.toc > ul > li {
+margin-top: .5em;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: #000 !important; /* Black prints faster: h5bp.com/s */
+box-shadow: none !important;
+text-shadow: none !important;
+}
+#sidebar h1 {
+page-break-before: always;
+}
+.source {
+display: none;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+font-size: 90%;
+}
+/* Internal, documentation links, recognized by having a title, don't need the URL explicity stated. */
+a[href][title]:after {
+content: none;
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+/* Don't show links for images, or javascript/internal links */
+.ir a:after,
+a[href^="javascript:"]:after,
+a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+page-break-inside: avoid;
+}
+thead {
+display: table-header-group; /* h5bp.com/t */
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page {
+margin: 0.5cm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h1, h2, h3, h4, h5, h6 {
+page-break-after: avoid;
+}
+}
+</style>
+<script>
+const html = document.querySelector("html");
+const isDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const changeHLJS = (style) => {
+const hljsStyle = document.querySelector("#hljs");
+const styleURL = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/" + style + ".min.css";
+hljsStyle.href = styleURL;
+}
+const loadedTheme = window.localStorage.getItem("theme");
+if (loadedTheme) {
+html.dataset.theme = loadedTheme;
+if (loadedTheme == "theme-dark") {
+changeHLJS(`atom-one-dark`);
+} else {
+changeHLJS(`github`);
+}
+}
+const onSystemThemeChange = (event) => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (event.matches) {
+html.dataset.theme = "theme-dark";
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+window.localStorage.setItem("theme", "theme-dark");
+} else {
+html.dataset.theme = "theme-light";
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+window.localStorage.setItem("theme", "theme-light");
+}
+};
+isDarkQuery.addEventListener("change", onSystemThemeChange);
+window.addEventListener("DOMContentLoaded", () => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (isDarkQuery.matches || loadedTheme == "theme-dark") {
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+}
+if ((!isDarkQuery.matches || loadedTheme == "theme-light") || !loadedTheme) {
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+}
+});
+const toggleDarkMode = () => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (html.dataset.theme == "theme-dark") {
+html.dataset.theme = "theme-light";
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+window.localStorage.setItem("theme", "theme-light");
+} else {
+html.dataset.theme = "theme-dark";
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+window.localStorage.setItem("theme", "theme-dark");
+}
+};
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>chatto.events</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Copyright (c) 2021-2022, Ethan Henderson
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its
+#    contributors may be used to endorse or promote products derived from
+#    this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &#34;AS IS&#34;
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+from __future__ import annotations
+
+import asyncio
+import logging
+import traceback
+import typing as t
+from collections import defaultdict
+from collections.abc import Awaitable
+from dataclasses import dataclass
+
+from chatto.errors import NoEventQueue
+from chatto.message import Message
+from chatto.secrets import Secrets
+from chatto.stream import Stream
+
+log = logging.getLogger(__name__)
+
+
+@dataclass(eq=True, frozen=True)
+class Event:
+    &#34;&#34;&#34;The base dataclass for all events.&#34;&#34;&#34;
+
+    def __str__(self) -&gt; str:
+        return self.__class__.__name__
+
+
+@dataclass(eq=True, frozen=True)
+class ReadyEvent(Event):
+    &#34;&#34;&#34;Event dispatched once the bot is ready to start receiving
+    messages.&#34;&#34;&#34;
+
+
+@dataclass(eq=True, frozen=True)
+class MessageCreatedEvent(Event):
+    &#34;&#34;&#34;Event dispatched when a message has been sent to the live
+    chat by a user.&#34;&#34;&#34;
+
+    message: Message
+    &#34;&#34;&#34;The received message.&#34;&#34;&#34;
+
+
+@dataclass(eq=True, frozen=True)
+class StreamFetchedEvent(Event):
+    &#34;&#34;&#34;Event dispatched when stream information has been fetched.&#34;&#34;&#34;
+
+    stream: Stream
+    &#34;&#34;&#34;The stream for which information has been fetched for.&#34;&#34;&#34;
+
+
+@dataclass(eq=True, frozen=True)
+class ChatPolledEvent(Event):
+    &#34;&#34;&#34;Event dispatched when the YouTube live chat is polled.&#34;&#34;&#34;
+
+    data: dict[str, t.Any]
+    &#34;&#34;&#34;The data received from the poll.&#34;&#34;&#34;
+
+
+@dataclass(eq=True, frozen=True)
+class MessageSentEvent(Event):
+    &#34;&#34;&#34;Event dispatched when a message has been sent to the live
+    chat by the bot.&#34;&#34;&#34;
+
+    message: Message
+    &#34;&#34;&#34;The sent message.&#34;&#34;&#34;
+
+
+@dataclass(eq=True, frozen=True)
+class AuthorisedEvent(Event):
+    &#34;&#34;&#34;Event dispatched once the bot has been authorised with
+    OAuth 2.&#34;&#34;&#34;
+
+    secrets: Secrets
+    &#34;&#34;&#34;The secrets data.&#34;&#34;&#34;
+
+    tokens: dict[str, t.Any]
+    &#34;&#34;&#34;The OAuth tokens.&#34;&#34;&#34;
+
+
+if t.TYPE_CHECKING:
+    CallbacksT = dict[t.Type[Event], list[t.Callable[[Event], Awaitable[t.Any]]]]
+    ListenerT = t.Callable[[t.Callable[[t.Any], t.Any]], None]
+
+
+class EventHandler:
+    &#34;&#34;&#34;A class that can be attached to the bot to handle events.&#34;&#34;&#34;
+
+    __slots__ = (&#34;_queue&#34;, &#34;callbacks&#34;)
+
+    def __init__(self) -&gt; None:
+        self.callbacks: CallbacksT = defaultdict(list)
+        &#34;&#34;&#34;A mapping of events to their respective callbacks.&#34;&#34;&#34;
+
+    @property
+    def queue(self) -&gt; asyncio.Queue[Event] | None:
+        &#34;&#34;&#34;The event queue the bot is using. If the event queue has not
+        been created, this will be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_queue&#34;, None)
+
+    @property
+    def queue_size(self) -&gt; int:
+        &#34;&#34;&#34;The size of the event queue. If the event queue has not been
+        created, this will be 0.&#34;&#34;&#34;
+        if not self.queue:
+            return 0
+
+        return self._queue.qsize()
+
+    async def create_queue(self) -&gt; None:
+        &#34;&#34;&#34;Create the event queue. This is handled for you.&#34;&#34;&#34;
+        if self.queue:
+            log.warning(&#34;The event handler already has an event queue&#34;)
+        self._queue: asyncio.Queue[Event] = asyncio.Queue()
+
+    async def process(self) -&gt; None:
+        &#34;&#34;&#34;A forever-looping task that processes events once they are
+        pushed onto the queue.&#34;&#34;&#34;
+        if not self.queue:
+            raise NoEventQueue(&#34;there is no event queue&#34;)
+
+        while True:
+            try:
+                event = await self._queue.get()
+                log.debug(f&#34;Retrieved {event} event&#34;)
+                for cb in self.callbacks[event.__class__]:
+                    log.debug(f&#34;Running callback &#39;{cb.__name__}&#39; for event...&#34;)
+                    await cb(event)
+
+            except Exception:
+                log.error(f&#34;Ignoring error processing {event} event:&#34;)
+                traceback.print_exc()
+
+    async def dispatch(self, event_type: t.Type[Event], *args: t.Any) -&gt; Event:
+        &#34;&#34;&#34;Dispatch an event. This puts the event on the event queue.
+
+        ## Arguments
+        * `event_type` -
+            The event type to put on the queue. This **must** be a
+            subclass of `Event`.
+        * `*args` -
+            A series of arguments to be passed to the event callback
+            when called.
+
+        ## Returns
+        The event instance.
+
+        ## Raises
+        `NoEventQueue` -
+            The event queue has not been created.
+        &#34;&#34;&#34;
+        if not self.queue:
+            raise NoEventQueue(&#34;there is no event queue&#34;)
+
+        event = event_type(*args)
+        await self._queue.put(event)
+        log.debug(f&#34;Dispatched {event_type.__name__} event&#34;)
+        return event
+
+    def subscribe(
+        self, event_type: t.Type[Event], *callbacks: t.Callable[[t.Any], t.Any]
+    ) -&gt; None:
+        &#34;&#34;&#34;Subscribe callbacks to an event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe the callback to. This **must**
+            be a subclass of `Event`.
+        * `*callbacks` -
+            A series of callbacks to subscribe to the event.
+
+        ## Raises
+        `NoEventQueue` -
+            The event queue has not been created.
+        &#34;&#34;&#34;
+        for cb in callbacks:
+            self.callbacks[event_type].append(cb)
+            log.info(
+                f&#34;Subscribed to {event_type.__name__} events &#34;
+                f&#34;with callback &#39;{cb.__name__}&#39;&#34;
+            )
+
+    def listen(self, event_type: type[Event]) -&gt; ListenerT:
+        &#34;&#34;&#34;A decorator used to subscribe the wrapped callback to an
+        event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe to. This **must** be a subclass
+            of `events.Event`.
+
+        ## Example
+        ```py
+        @bot.events.listen(events.StreamFetchedEvent)
+        async def on_stream_fetched(event):
+            print(f&#34;Fetched stream with ID: {event.stream.id}&#34;)
+        ```
+        &#34;&#34;&#34;
+        return lambda callback: self.subscribe(event_type, callback)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chatto.events.AuthorisedEvent"><code class="flex name class">
+<span>class <span class="ident">AuthorisedEvent</span></span>
+<span>(</span><span>secrets: Secrets, tokens: dict[str, t.Any])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Event dispatched once the bot has been authorised with
+OAuth 2.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class AuthorisedEvent(Event):
+    &#34;&#34;&#34;Event dispatched once the bot has been authorised with
+    OAuth 2.&#34;&#34;&#34;
+
+    secrets: Secrets
+    &#34;&#34;&#34;The secrets data.&#34;&#34;&#34;
+
+    tokens: dict[str, t.Any]
+    &#34;&#34;&#34;The OAuth tokens.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chatto.events.AuthorisedEvent.secrets"><code class="name">var <span class="ident">secrets</span> : <a title="chatto.secrets.Secrets" href="secrets.html#chatto.secrets.Secrets">Secrets</a></code></dt>
+<dd>
+<div class="desc"><p>The secrets data.</p></div>
+</dd>
+<dt id="chatto.events.AuthorisedEvent.tokens"><code class="name">var <span class="ident">tokens</span> : dict[str, typing.Any]</code></dt>
+<dd>
+<div class="desc"><p>The OAuth tokens.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="chatto.events.ChatPolledEvent"><code class="flex name class">
+<span>class <span class="ident">ChatPolledEvent</span></span>
+<span>(</span><span>data: dict[str, t.Any])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Event dispatched when the YouTube live chat is polled.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class ChatPolledEvent(Event):
+    &#34;&#34;&#34;Event dispatched when the YouTube live chat is polled.&#34;&#34;&#34;
+
+    data: dict[str, t.Any]
+    &#34;&#34;&#34;The data received from the poll.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chatto.events.ChatPolledEvent.data"><code class="name">var <span class="ident">data</span> : dict[str, typing.Any]</code></dt>
+<dd>
+<div class="desc"><p>The data received from the poll.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="chatto.events.Event"><code class="flex name class">
+<span>class <span class="ident">Event</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base dataclass for all events.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class Event:
+    &#34;&#34;&#34;The base dataclass for all events.&#34;&#34;&#34;
+
+    def __str__(self) -&gt; str:
+        return self.__class__.__name__</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="chatto.events.AuthorisedEvent" href="#chatto.events.AuthorisedEvent">AuthorisedEvent</a></li>
+<li><a title="chatto.events.ChatPolledEvent" href="#chatto.events.ChatPolledEvent">ChatPolledEvent</a></li>
+<li><a title="chatto.events.MessageCreatedEvent" href="#chatto.events.MessageCreatedEvent">MessageCreatedEvent</a></li>
+<li><a title="chatto.events.MessageSentEvent" href="#chatto.events.MessageSentEvent">MessageSentEvent</a></li>
+<li><a title="chatto.events.ReadyEvent" href="#chatto.events.ReadyEvent">ReadyEvent</a></li>
+<li><a title="chatto.events.StreamFetchedEvent" href="#chatto.events.StreamFetchedEvent">StreamFetchedEvent</a></li>
+</ul>
+</dd>
+<dt id="chatto.events.EventHandler"><code class="flex name class">
+<span>class <span class="ident">EventHandler</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class that can be attached to the bot to handle events.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EventHandler:
+    &#34;&#34;&#34;A class that can be attached to the bot to handle events.&#34;&#34;&#34;
+
+    __slots__ = (&#34;_queue&#34;, &#34;callbacks&#34;)
+
+    def __init__(self) -&gt; None:
+        self.callbacks: CallbacksT = defaultdict(list)
+        &#34;&#34;&#34;A mapping of events to their respective callbacks.&#34;&#34;&#34;
+
+    @property
+    def queue(self) -&gt; asyncio.Queue[Event] | None:
+        &#34;&#34;&#34;The event queue the bot is using. If the event queue has not
+        been created, this will be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_queue&#34;, None)
+
+    @property
+    def queue_size(self) -&gt; int:
+        &#34;&#34;&#34;The size of the event queue. If the event queue has not been
+        created, this will be 0.&#34;&#34;&#34;
+        if not self.queue:
+            return 0
+
+        return self._queue.qsize()
+
+    async def create_queue(self) -&gt; None:
+        &#34;&#34;&#34;Create the event queue. This is handled for you.&#34;&#34;&#34;
+        if self.queue:
+            log.warning(&#34;The event handler already has an event queue&#34;)
+        self._queue: asyncio.Queue[Event] = asyncio.Queue()
+
+    async def process(self) -&gt; None:
+        &#34;&#34;&#34;A forever-looping task that processes events once they are
+        pushed onto the queue.&#34;&#34;&#34;
+        if not self.queue:
+            raise NoEventQueue(&#34;there is no event queue&#34;)
+
+        while True:
+            try:
+                event = await self._queue.get()
+                log.debug(f&#34;Retrieved {event} event&#34;)
+                for cb in self.callbacks[event.__class__]:
+                    log.debug(f&#34;Running callback &#39;{cb.__name__}&#39; for event...&#34;)
+                    await cb(event)
+
+            except Exception:
+                log.error(f&#34;Ignoring error processing {event} event:&#34;)
+                traceback.print_exc()
+
+    async def dispatch(self, event_type: t.Type[Event], *args: t.Any) -&gt; Event:
+        &#34;&#34;&#34;Dispatch an event. This puts the event on the event queue.
+
+        ## Arguments
+        * `event_type` -
+            The event type to put on the queue. This **must** be a
+            subclass of `Event`.
+        * `*args` -
+            A series of arguments to be passed to the event callback
+            when called.
+
+        ## Returns
+        The event instance.
+
+        ## Raises
+        `NoEventQueue` -
+            The event queue has not been created.
+        &#34;&#34;&#34;
+        if not self.queue:
+            raise NoEventQueue(&#34;there is no event queue&#34;)
+
+        event = event_type(*args)
+        await self._queue.put(event)
+        log.debug(f&#34;Dispatched {event_type.__name__} event&#34;)
+        return event
+
+    def subscribe(
+        self, event_type: t.Type[Event], *callbacks: t.Callable[[t.Any], t.Any]
+    ) -&gt; None:
+        &#34;&#34;&#34;Subscribe callbacks to an event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe the callback to. This **must**
+            be a subclass of `Event`.
+        * `*callbacks` -
+            A series of callbacks to subscribe to the event.
+
+        ## Raises
+        `NoEventQueue` -
+            The event queue has not been created.
+        &#34;&#34;&#34;
+        for cb in callbacks:
+            self.callbacks[event_type].append(cb)
+            log.info(
+                f&#34;Subscribed to {event_type.__name__} events &#34;
+                f&#34;with callback &#39;{cb.__name__}&#39;&#34;
+            )
+
+    def listen(self, event_type: type[Event]) -&gt; ListenerT:
+        &#34;&#34;&#34;A decorator used to subscribe the wrapped callback to an
+        event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe to. This **must** be a subclass
+            of `events.Event`.
+
+        ## Example
+        ```py
+        @bot.events.listen(events.StreamFetchedEvent)
+        async def on_stream_fetched(event):
+            print(f&#34;Fetched stream with ID: {event.stream.id}&#34;)
+        ```
+        &#34;&#34;&#34;
+        return lambda callback: self.subscribe(event_type, callback)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="chatto.events.EventHandler.callbacks"><code class="name">var <span class="ident">callbacks</span></code></dt>
+<dd>
+<div class="desc"><p>A mapping of events to their respective callbacks.</p></div>
+</dd>
+<dt id="chatto.events.EventHandler.queue"><code class="name">var <span class="ident">queue</span> : asyncio.queues.Queue | None</code></dt>
+<dd>
+<div class="desc"><p>The event queue the bot is using. If the event queue has not
+been created, this will be <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def queue(self) -&gt; asyncio.Queue[Event] | None:
+    &#34;&#34;&#34;The event queue the bot is using. If the event queue has not
+    been created, this will be `None`.&#34;&#34;&#34;
+    return getattr(self, &#34;_queue&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="chatto.events.EventHandler.queue_size"><code class="name">var <span class="ident">queue_size</span> : int</code></dt>
+<dd>
+<div class="desc"><p>The size of the event queue. If the event queue has not been
+created, this will be 0.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def queue_size(self) -&gt; int:
+    &#34;&#34;&#34;The size of the event queue. If the event queue has not been
+    created, this will be 0.&#34;&#34;&#34;
+    if not self.queue:
+        return 0
+
+    return self._queue.qsize()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chatto.events.EventHandler.create_queue"><code class="name flex">
+<span>async def <span class="ident">create_queue</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create the event queue. This is handled for you.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def create_queue(self) -&gt; None:
+    &#34;&#34;&#34;Create the event queue. This is handled for you.&#34;&#34;&#34;
+    if self.queue:
+        log.warning(&#34;The event handler already has an event queue&#34;)
+    self._queue: asyncio.Queue[Event] = asyncio.Queue()</code></pre>
+</details>
+</dd>
+<dt id="chatto.events.EventHandler.dispatch"><code class="name flex">
+<span>async def <span class="ident">dispatch</span></span>(<span>self, event_type: t.Type[<a title="chatto.events.Event" href="#chatto.events.Event">Event</a>], *args: t.Any) ‑> <a title="chatto.events.Event" href="#chatto.events.Event">Event</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dispatch an event. This puts the event on the event queue.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>event_type</code> -
+The event type to put on the queue. This <strong>must</strong> be a
+subclass of <code><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></code>.</li>
+<li><code>*args</code> -
+A series of arguments to be passed to the event callback
+when called.</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<p>The event instance.</p>
+<h2 id="raises">Raises</h2>
+<p><code>NoEventQueue</code> -
+The event queue has not been created.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def dispatch(self, event_type: t.Type[Event], *args: t.Any) -&gt; Event:
+    &#34;&#34;&#34;Dispatch an event. This puts the event on the event queue.
+
+    ## Arguments
+    * `event_type` -
+        The event type to put on the queue. This **must** be a
+        subclass of `Event`.
+    * `*args` -
+        A series of arguments to be passed to the event callback
+        when called.
+
+    ## Returns
+    The event instance.
+
+    ## Raises
+    `NoEventQueue` -
+        The event queue has not been created.
+    &#34;&#34;&#34;
+    if not self.queue:
+        raise NoEventQueue(&#34;there is no event queue&#34;)
+
+    event = event_type(*args)
+    await self._queue.put(event)
+    log.debug(f&#34;Dispatched {event_type.__name__} event&#34;)
+    return event</code></pre>
+</details>
+</dd>
+<dt id="chatto.events.EventHandler.listen"><code class="name flex">
+<span>def <span class="ident">listen</span></span>(<span>self, event_type: type[<a title="chatto.events.Event" href="#chatto.events.Event">Event</a>]) ‑> ListenerT</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A decorator used to subscribe the wrapped callback to an
+event.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>event_type</code> -
+The event type to subscribe to. This <strong>must</strong> be a subclass
+of <code>events.Event</code>.</li>
+</ul>
+<h2 id="example">Example</h2>
+<pre><code class="language-py">@bot.events.listen(events.StreamFetchedEvent)
+async def on_stream_fetched(event):
+    print(f&quot;Fetched stream with ID: {event.stream.id}&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def listen(self, event_type: type[Event]) -&gt; ListenerT:
+    &#34;&#34;&#34;A decorator used to subscribe the wrapped callback to an
+    event.
+
+    ## Arguments
+    * `event_type` -
+        The event type to subscribe to. This **must** be a subclass
+        of `events.Event`.
+
+    ## Example
+    ```py
+    @bot.events.listen(events.StreamFetchedEvent)
+    async def on_stream_fetched(event):
+        print(f&#34;Fetched stream with ID: {event.stream.id}&#34;)
+    ```
+    &#34;&#34;&#34;
+    return lambda callback: self.subscribe(event_type, callback)</code></pre>
+</details>
+</dd>
+<dt id="chatto.events.EventHandler.process"><code class="name flex">
+<span>async def <span class="ident">process</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A forever-looping task that processes events once they are
+pushed onto the queue.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def process(self) -&gt; None:
+    &#34;&#34;&#34;A forever-looping task that processes events once they are
+    pushed onto the queue.&#34;&#34;&#34;
+    if not self.queue:
+        raise NoEventQueue(&#34;there is no event queue&#34;)
+
+    while True:
+        try:
+            event = await self._queue.get()
+            log.debug(f&#34;Retrieved {event} event&#34;)
+            for cb in self.callbacks[event.__class__]:
+                log.debug(f&#34;Running callback &#39;{cb.__name__}&#39; for event...&#34;)
+                await cb(event)
+
+        except Exception:
+            log.error(f&#34;Ignoring error processing {event} event:&#34;)
+            traceback.print_exc()</code></pre>
+</details>
+</dd>
+<dt id="chatto.events.EventHandler.subscribe"><code class="name flex">
+<span>def <span class="ident">subscribe</span></span>(<span>self, event_type: t.Type[<a title="chatto.events.Event" href="#chatto.events.Event">Event</a>], *callbacks: t.Callable[[t.Any], t.Any]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Subscribe callbacks to an event.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>event_type</code> -
+The event type to subscribe the callback to. This <strong>must</strong>
+be a subclass of <code><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></code>.</li>
+<li><code>*callbacks</code> -
+A series of callbacks to subscribe to the event.</li>
+</ul>
+<h2 id="raises">Raises</h2>
+<p><code>NoEventQueue</code> -
+The event queue has not been created.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe(
+    self, event_type: t.Type[Event], *callbacks: t.Callable[[t.Any], t.Any]
+) -&gt; None:
+    &#34;&#34;&#34;Subscribe callbacks to an event.
+
+    ## Arguments
+    * `event_type` -
+        The event type to subscribe the callback to. This **must**
+        be a subclass of `Event`.
+    * `*callbacks` -
+        A series of callbacks to subscribe to the event.
+
+    ## Raises
+    `NoEventQueue` -
+        The event queue has not been created.
+    &#34;&#34;&#34;
+    for cb in callbacks:
+        self.callbacks[event_type].append(cb)
+        log.info(
+            f&#34;Subscribed to {event_type.__name__} events &#34;
+            f&#34;with callback &#39;{cb.__name__}&#39;&#34;
+        )</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="chatto.events.MessageCreatedEvent"><code class="flex name class">
+<span>class <span class="ident">MessageCreatedEvent</span></span>
+<span>(</span><span>message: Message)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Event dispatched when a message has been sent to the live
+chat by a user.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class MessageCreatedEvent(Event):
+    &#34;&#34;&#34;Event dispatched when a message has been sent to the live
+    chat by a user.&#34;&#34;&#34;
+
+    message: Message
+    &#34;&#34;&#34;The received message.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chatto.events.MessageCreatedEvent.message"><code class="name">var <span class="ident">message</span> : <a title="chatto.message.Message" href="message.html#chatto.message.Message">Message</a></code></dt>
+<dd>
+<div class="desc"><p>The received message.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="chatto.events.MessageSentEvent"><code class="flex name class">
+<span>class <span class="ident">MessageSentEvent</span></span>
+<span>(</span><span>message: Message)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Event dispatched when a message has been sent to the live
+chat by the bot.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class MessageSentEvent(Event):
+    &#34;&#34;&#34;Event dispatched when a message has been sent to the live
+    chat by the bot.&#34;&#34;&#34;
+
+    message: Message
+    &#34;&#34;&#34;The sent message.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chatto.events.MessageSentEvent.message"><code class="name">var <span class="ident">message</span> : <a title="chatto.message.Message" href="message.html#chatto.message.Message">Message</a></code></dt>
+<dd>
+<div class="desc"><p>The sent message.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="chatto.events.ReadyEvent"><code class="flex name class">
+<span>class <span class="ident">ReadyEvent</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Event dispatched once the bot is ready to start receiving
+messages.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class ReadyEvent(Event):
+    &#34;&#34;&#34;Event dispatched once the bot is ready to start receiving
+    messages.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></li>
+</ul>
+</dd>
+<dt id="chatto.events.StreamFetchedEvent"><code class="flex name class">
+<span>class <span class="ident">StreamFetchedEvent</span></span>
+<span>(</span><span>stream: Stream)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Event dispatched when stream information has been fetched.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(eq=True, frozen=True)
+class StreamFetchedEvent(Event):
+    &#34;&#34;&#34;Event dispatched when stream information has been fetched.&#34;&#34;&#34;
+
+    stream: Stream
+    &#34;&#34;&#34;The stream for which information has been fetched for.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="chatto.events.StreamFetchedEvent.stream"><code class="name">var <span class="ident">stream</span> : <a title="chatto.stream.Stream" href="stream.html#chatto.stream.Stream">Stream</a></code></dt>
+<dd>
+<div class="desc"><p>The stream for which information has been fetched for.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div id="dark-mode-toggle" onclick="toggleDarkMode()">
+<svg class="dm-icon-off" viewBox="0 0 16 16">
+<path d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.414-1.414zM14 7h2v2h-2zM12.95 14.433l-1.415-1.414 1.414-1.414 1.415 1.413zM7 14h2v2H7zM2.98 14.363L1.566 12.95l1.415-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.707L4.465 3.12 3.05 4.535 1.636 3.121z" />
+<path d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z" />
+</svg>
+<svg class="dm-icon-on" viewBox="0 0 16 16">
+<path d="M6,0C2.5,0.9,0,4.1,0,7.9C0,12.4,3.6,16,8.1,16c3.8,0,6.9-2.5,7.9-6C9.9,11.7,4.3,6.1,6,0z"></path>
+</svg>
+</div>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="chatto" href="index.html">chatto</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chatto.events.AuthorisedEvent" href="#chatto.events.AuthorisedEvent">AuthorisedEvent</a></code></h4>
+<ul class="">
+<li><code><a title="chatto.events.AuthorisedEvent.secrets" href="#chatto.events.AuthorisedEvent.secrets">secrets</a></code></li>
+<li><code><a title="chatto.events.AuthorisedEvent.tokens" href="#chatto.events.AuthorisedEvent.tokens">tokens</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chatto.events.ChatPolledEvent" href="#chatto.events.ChatPolledEvent">ChatPolledEvent</a></code></h4>
+<ul class="">
+<li><code><a title="chatto.events.ChatPolledEvent.data" href="#chatto.events.ChatPolledEvent.data">data</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chatto.events.Event" href="#chatto.events.Event">Event</a></code></h4>
+</li>
+<li>
+<h4><code><a title="chatto.events.EventHandler" href="#chatto.events.EventHandler">EventHandler</a></code></h4>
+<ul class="two-column">
+<li><code><a title="chatto.events.EventHandler.callbacks" href="#chatto.events.EventHandler.callbacks">callbacks</a></code></li>
+<li><code><a title="chatto.events.EventHandler.create_queue" href="#chatto.events.EventHandler.create_queue">create_queue</a></code></li>
+<li><code><a title="chatto.events.EventHandler.dispatch" href="#chatto.events.EventHandler.dispatch">dispatch</a></code></li>
+<li><code><a title="chatto.events.EventHandler.listen" href="#chatto.events.EventHandler.listen">listen</a></code></li>
+<li><code><a title="chatto.events.EventHandler.process" href="#chatto.events.EventHandler.process">process</a></code></li>
+<li><code><a title="chatto.events.EventHandler.queue" href="#chatto.events.EventHandler.queue">queue</a></code></li>
+<li><code><a title="chatto.events.EventHandler.queue_size" href="#chatto.events.EventHandler.queue_size">queue_size</a></code></li>
+<li><code><a title="chatto.events.EventHandler.subscribe" href="#chatto.events.EventHandler.subscribe">subscribe</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chatto.events.MessageCreatedEvent" href="#chatto.events.MessageCreatedEvent">MessageCreatedEvent</a></code></h4>
+<ul class="">
+<li><code><a title="chatto.events.MessageCreatedEvent.message" href="#chatto.events.MessageCreatedEvent.message">message</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chatto.events.MessageSentEvent" href="#chatto.events.MessageSentEvent">MessageSentEvent</a></code></h4>
+<ul class="">
+<li><code><a title="chatto.events.MessageSentEvent.message" href="#chatto.events.MessageSentEvent.message">message</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="chatto.events.ReadyEvent" href="#chatto.events.ReadyEvent">ReadyEvent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="chatto.events.StreamFetchedEvent" href="#chatto.events.StreamFetchedEvent">StreamFetchedEvent</a></code></h4>
+<ul class="">
+<li><code><a title="chatto.events.StreamFetchedEvent.stream" href="#chatto.events.StreamFetchedEvent.stream">stream</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.3.dev22+g601fb40</a>.</p>
+</footer>
+</body>
+</html>

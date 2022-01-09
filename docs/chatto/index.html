@@ -1,0 +1,1662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.3.dev22+g601fb40" />
+<title>chatto API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link id="hljs" rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style id="css-theme">
+:root[data-theme='theme-light']{--bg-highlight-color:#FFEE99;--bg-default:#FFFFFF;--bg-code:#EEEEEE;--bg-code-hover:#e0e0e0;--fc-default:#0F1A20;--fc-muted:#666666;--link-primary:#005588;--link-hover:#ee8822;--ident-primary:#990000;--hr-default:#666666;--bd-default:#DDDDDD;--bd-pre:#DDDDDD;--bd-primary:#666666;--adm-note:#abeeff;--adm-todo:#ddffdd;--adm-warning:#ffdd44;--adm-error:#feb6c1;--adm-bd-note:#abeeff;--adm-bd-todo:#ddffdd;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}:root[data-theme='theme-dark']{--bg-highlight-color:#3e4951;--bg-default:#22282D;--bg-code:#3e4951;--bg-code-hover:#313b42;--fc-default:#ACBAC7;--fc-muted:#ACBAC7;--link-primary:#539bf5;--link-hover:#abcdf9;--ident-primary:#539bf5;--hr-default:#444d56;--bd-default:#444d56;--bd-pre:#3e4951;--bd-primary:#539bf5;--adm-note:rgba(65,132,288,0.1);--adm-todo:rgba(165,255,169,0.1);--adm-warning:rgba(255,221,68,0.2);--adm-error:rgba(254,182,193,0.2);--adm-bd-note:#539bf5;--adm-bd-todo:#a5ffa9;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}@media (prefers-color-scheme:light){:root[data-theme='theme-light']{--bg-highlight-color:#FFEE99;--bg-default:#FFFFFF;--bg-code:#EEEEEE;--bg-code-hover:#e0e0e0;--fc-default:#0F1A20;--fc-muted:#666666;--link-primary:#005588;--link-hover:#ee8822;--ident-primary:#990000;--hr-default:#666666;--bd-default:#DDDDDD;--bd-pre:#DDDDDD;--bd-primary:#666666;--adm-note:#abeeff;--adm-todo:#ddffdd;--adm-warning:#ffdd44;--adm-error:#feb6c1;--adm-bd-note:#abeeff;--adm-bd-todo:#ddffdd;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}}@media (prefers-color-scheme:dark){:root[data-theme='theme-dark']{--bg-highlight-color:#3e4951;--bg-default:#22282D;--bg-code:#3e4951;--bg-code-hover:#313b42;--fc-default:#ACBAC7;--fc-muted:#ACBAC7;--link-primary:#539bf5;--link-hover:#abcdf9;--ident-primary:#539bf5;--hr-default:#444d56;--bd-default:#444d56;--bd-pre:#3e4951;--bd-primary:#539bf5;--adm-note:rgba(65,132,288,0.1);--adm-todo:rgba(165,255,169,0.1);--adm-warning:rgba(255,221,68,0.2);--adm-error:rgba(254,182,193,0.2);--adm-bd-note:#539bf5;--adm-bd-todo:#a5ffa9;--adm-bd-warning:#ffdd44;--adm-bd-error:#feb6c1}}
+html {
+background-color: var(--bg-default);
+cursor: auto;
+}
+#dark-mode-toggle {
+display: none;
+border: 1px solid;
+border-color: var(--bd-primary);
+color: var(--bd-primary);
+border-radius: 20px;
+padding-left: 6px;
+padding-right: 6px;
+cursor: pointer;
+}
+.hidden {
+visibility: hidden;
+}
+.dm-icon-off, .dm-icon-on {
+display: inline;
+width: 14px;
+height: 14px;
+margin-bottom: 4px;
+}
+h1:target,
+h2:target,
+h3:target,
+h4:target,
+h5:target,
+h6:target {
+background: var(--bg-highlight-color);
+padding: .2em 0;
+}
+.flex {
+display: flex;
+}
+body {
+line-height: 1.5em;
+color: var(--fc-default);
+}
+hr {
+border-color: var(--hr-default);
+}
+#sidebar {
+padding: 30px;
+overflow: hidden;
+}
+#sidebar > *:last-child {
+margin-bottom: 2cm;
+}
+.http-server-breadcrumbs {
+font-size: 130%;
+margin: 0 0 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+font-weight: 300;
+color: var(--fc-default);
+}
+h1 {
+font-size: 2.5em;
+line-height: 1.1em;
+}
+h2 {
+font-size: 1.75em;
+margin: 1em 0 .50em 0;
+}
+h3 {
+font-size: 1.4em;
+margin: 25px 0 10px 0;
+}
+h4 {
+margin: 0;
+font-size: 105%;
+}
+#footer {
+font-size: .75em;
+padding: 5px 30px;
+border-top: 1px solid;
+border-color: var(--bd-default);
+text-align: right;
+}
+#footer p {
+margin: 0 0 0 1em;
+display: inline-block;
+}
+#footer p:last-child {
+margin-right: 30px;
+}
+a {
+color: var(--link-primary);
+text-decoration: none;
+transition: color .3s ease-in-out;
+}
+a:hover {
+color: var(--link-hover);
+}
+.title code {
+font-weight: bold;
+}
+h2[id^="header-"] {
+margin-top: 2em;
+}
+.ident {
+color: var(--ident-primary);
+}
+pre code {
+background: var(--bg-code);
+font-size: .8em;
+line-height: 1.4em;
+}
+code {
+background: var(--bg-code);
+padding: 1px 4px;
+overflow-wrap: break-word;
+}
+h1 code { background: transparent }
+pre {
+border-top: 1px solid;
+border-bottom: 1px solid;
+border-color: var(--bd-pre);
+}
+#http-server-module-list {
+display: flex;
+flex-flow: column;
+}
+#http-server-module-list div {
+display: flex;
+}
+#http-server-module-list dt {
+min-width: 10%;
+}
+#http-server-module-list p {
+margin-top: 0;
+}
+.toc ul, #index {
+list-style-type: none;
+margin: 0;
+padding: 0;
+}
+#index code {
+background: transparent;
+}
+#index h3 {
+border-bottom: 1px solid;
+border-color: var(--bd-default);
+}
+#index ul {
+padding: 0;
+}
+#index h4 {
+margin-top: .6em;
+font-weight: bold;
+}
+/*
+Make TOC lists have 2+ columns when viewport is wide enough.
+Assuming ~20-character identifiers and ~30% wide sidebar.
+*/
+@media (min-width: 200ex) { #index .two-column { column-count: 2 } }
+@media (min-width: 300ex) { #index .two-column { column-count: 3 } }
+dl {
+margin-bottom: 2em;
+}
+dl dl:last-child {
+margin-bottom: 4em;
+}
+dd {
+margin: 0 0 1em 3em;
+}
+#header-classes + dl > dd {
+margin-bottom: 3em;
+}
+dd dd {
+margin-left: 2em;
+}
+dd p {
+margin: 10px 0;
+}
+.name {
+background: var(--bg-code);
+font-weight: bold;
+font-size: .85em;
+padding: 5px 10px;
+display: inline-block;
+min-width: 40%;
+}
+.name:hover {
+background: var(--bg-code-hover);
+}
+dt:target .name {
+background: var(--highlight-color);
+}
+.name > span:first-child {
+white-space: nowrap;
+}
+.name.class > span:nth-child(2) {
+margin-left: .4em;
+}
+.inherited {
+color: #999; /* NOTE: Not entirely sure how to check this one.. Seems ok already?? */
+border-left: 5px solid #eee;
+padding-left: 1em;
+}
+.inheritance em {
+font-style: normal;
+font-weight: bold;
+}
+/* Docstrings titles, e.g. in numpydoc format */
+.desc h2 {
+font-weight: 400;
+font-size: 1.25em;
+}
+.desc h3 {
+font-size: 1em;
+}
+.desc dt code {
+background: inherit;
+/* Don't grey-back parameters */
+}
+.source summary, .git-link-div {
+outline: none;
+color: var(--fc-muted);
+text-align: right;
+font-weight: 400;
+font-size: .8em;
+text-transform: uppercase;
+}
+.source summary > * {
+white-space: nowrap;
+cursor: pointer;
+}
+.git-link {
+color: inherit;
+margin-left: 1em;
+}
+.source pre {
+max-height: 500px;
+overflow: auto;
+margin: 0;
+}
+.source pre code {
+font-size: 12px;
+overflow: visible;
+}
+.hlist {
+list-style: none;
+}
+.hlist li {
+display: inline;
+}
+.hlist li:after {
+content: ',\2002';
+}
+.hlist li:last-child:after {
+content: none;
+}
+.hlist .hlist {
+display: inline;
+padding-left: 1em;
+}
+img {
+max-width: 100%;
+}
+td {
+padding: 0 .5em;
+}
+.admonition {
+padding: .1em .5em;
+margin-bottom: 1em;
+border-radius: 8px;
+border: 1px solid;
+}
+.admonition-title {
+font-weight: bold;
+}
+.admonition.note,
+.admonition.info,
+.admonition.important {
+background: var(--adm-note);
+border-color: var(--adm-bd-note);
+}
+.admonition.todo,
+.admonition.versionadded,
+.admonition.tip,
+.admonition.hint {
+background: var(--adm-todo);
+border-color: var(--adm-bd-todo);
+}
+.admonition.warning,
+.admonition.versionchanged,
+.admonition.deprecated {
+background: var(--adm-warning);
+border-color: var(--adm-bd-warning);
+}
+.admonition.error,
+.admonition.danger,
+.admonition.caution {
+background: var(--adm-error);
+border-color: var(--adm-bd-error);
+}
+/*
+Desktop MQuery
+* Standard desktop breakpoint is 1024, below are tablets and portables.
+* No need to limit the max-width of #content, otherwise space is being wasted.
+*/
+@media screen and (min-width: 1024px) {
+#dark-mode-toggle {
+display: block;
+position: absolute;
+top: 5px;
+right: 5px;
+}
+#sidebar {
+width: 30%;
+height: 100vh;
+overflow: auto;
+position: sticky;
+top: 0;
+}
+#content {
+width: 100%;
+padding: 3em 4em;
+border-left: 1px solid var(--bd-default);
+}
+pre code {
+font-size: 1em;
+}
+.item .name {
+font-size: 1em;
+}
+main {
+display: flex;
+flex-direction: row-reverse;
+justify-content: flex-end;
+}
+.toc ul ul, #index ul {
+padding-left: 1.5em;
+}
+.toc > ul > li {
+margin-top: .5em;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: #000 !important; /* Black prints faster: h5bp.com/s */
+box-shadow: none !important;
+text-shadow: none !important;
+}
+#sidebar h1 {
+page-break-before: always;
+}
+.source {
+display: none;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+font-size: 90%;
+}
+/* Internal, documentation links, recognized by having a title, don't need the URL explicity stated. */
+a[href][title]:after {
+content: none;
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+/* Don't show links for images, or javascript/internal links */
+.ir a:after,
+a[href^="javascript:"]:after,
+a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+page-break-inside: avoid;
+}
+thead {
+display: table-header-group; /* h5bp.com/t */
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page {
+margin: 0.5cm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h1, h2, h3, h4, h5, h6 {
+page-break-after: avoid;
+}
+}
+</style>
+<script>
+const html = document.querySelector("html");
+const isDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const changeHLJS = (style) => {
+const hljsStyle = document.querySelector("#hljs");
+const styleURL = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/" + style + ".min.css";
+hljsStyle.href = styleURL;
+}
+const loadedTheme = window.localStorage.getItem("theme");
+if (loadedTheme) {
+html.dataset.theme = loadedTheme;
+if (loadedTheme == "theme-dark") {
+changeHLJS(`atom-one-dark`);
+} else {
+changeHLJS(`github`);
+}
+}
+const onSystemThemeChange = (event) => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (event.matches) {
+html.dataset.theme = "theme-dark";
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+window.localStorage.setItem("theme", "theme-dark");
+} else {
+html.dataset.theme = "theme-light";
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+window.localStorage.setItem("theme", "theme-light");
+}
+};
+isDarkQuery.addEventListener("change", onSystemThemeChange);
+window.addEventListener("DOMContentLoaded", () => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (isDarkQuery.matches || loadedTheme == "theme-dark") {
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+}
+if ((!isDarkQuery.matches || loadedTheme == "theme-light") || !loadedTheme) {
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+}
+});
+const toggleDarkMode = () => {
+const iconOff = document.querySelector(".dm-icon-off");
+const iconOn = document.querySelector(".dm-icon-on");
+if (html.dataset.theme == "theme-dark") {
+html.dataset.theme = "theme-light";
+iconOff.classList.remove("hidden");
+iconOn.classList.add("hidden");
+changeHLJS(`github`);
+window.localStorage.setItem("theme", "theme-light");
+} else {
+html.dataset.theme = "theme-dark";
+iconOff.classList.add("hidden");
+iconOn.classList.remove("hidden");
+changeHLJS(`atom-one-dark`);
+window.localStorage.setItem("theme", "theme-dark");
+}
+};
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>chatto</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Copyright (c) 2021-2022, Ethan Henderson
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its
+#    contributors may be used to endorse or promote products derived from
+#    this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &#34;AS IS&#34;
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+__all__ = (&#34;YOUTUBE_API_BASE_URL&#34;, &#34;YOUTUBE_API_SCOPES&#34;, &#34;YouTubeBot&#34;, &#34;ux&#34;)
+
+__productname__ = &#34;chatto&#34;
+__version__ = &#34;0.4.2&#34;
+__description__ = &#34;A unified API wrapper for YouTube and Twitch chat bots.&#34;
+__url__ = &#34;https://github.com/parafoxia/chatto&#34;
+__docs__ = &#34;https://chatto.readthedocs.io/en/latest&#34;
+__author__ = &#34;Ethan Henderson&#34;
+__author_email__ = &#34;ethan.henderson.1998@gmail.com&#34;
+__license__ = &#34;BSD 3-Clause &#39;New&#39; or &#39;Revised&#39; License&#34;
+__bugtracker__ = &#34;https://github.com/parafoxia/chatto/issues&#34;
+__ci__ = &#34;https://github.com/parafoxia/chatto/actions&#34;
+
+from . import ux
+from .youtube import YouTubeBot
+
+YOUTUBE_API_BASE_URL = &#34;https://www.googleapis.com/youtube/v3&#34;
+YOUTUBE_API_SCOPES = (&#34;https://www.googleapis.com/auth/youtube&#34;,)</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="chatto.channel" href="channel.html">chatto.channel</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.errors" href="errors.html">chatto.errors</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.events" href="events.html">chatto.events</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.message" href="message.html">chatto.message</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.oauth" href="oauth.html">chatto.oauth</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.secrets" href="secrets.html">chatto.secrets</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.stream" href="stream.html">chatto.stream</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.ux" href="ux.html">chatto.ux</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="chatto.youtube" href="youtube.html">chatto.youtube</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="chatto.YouTubeBot"><code class="flex name class">
+<span>class <span class="ident">YouTubeBot</span></span>
+<span>(</span><span>api_key: str, channel_id: str, *, secrets_file: pathlib.Path | str | None = None, log_level: int = 20, log_file: str | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class representing a YouTube bot.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>api_key</code> -
+The API key your bot will use.</li>
+<li><code>channel_id</code> -
+The ID (or seed) of the channel you want your bot to connect to.</li>
+</ul>
+<h2 id="keyword-arguments">Keyword arguments:</h2>
+<ul>
+<li><code>secrets_file</code> -
+The path to your OAuth client secrets file. If this is not
+provided, your OAuth secrets will not be set, and you will not
+be able to authorise your bot. If you want your bot to be able
+to send and delete messages, you will need to provide one.</li>
+<li><code>log_level</code> -
+The minimum logging level to output information for. To disable
+logging entirely, set this to 0. The default level is INFO.</li>
+<li><code>log_file</code> -
+The file to save log messages to. If this is not set, Chatto
+will not log to a file.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YouTubeBot(OAuthMixin):
+    &#34;&#34;&#34;A class representing a YouTube bot.
+
+    ## Arguments
+    * `api_key` -
+        The API key your bot will use.
+    * `channel_id` -
+        The ID (or seed) of the channel you want your bot to connect to.
+
+    ## Keyword arguments:
+    * `secrets_file` -
+        The path to your OAuth client secrets file. If this is not
+        provided, your OAuth secrets will not be set, and you will not
+        be able to authorise your bot. If you want your bot to be able
+        to send and delete messages, you will need to provide one.
+    * `log_level` -
+        The minimum logging level to output information for. To disable
+        logging entirely, set this to 0. The default level is INFO.
+    * `log_file` -
+        The file to save log messages to. If this is not set, Chatto
+        will not log to a file.
+    &#34;&#34;&#34;
+
+    __slots__ = (
+        &#34;api_key&#34;,
+        &#34;channel_id&#34;,
+        &#34;_stream&#34;,
+        &#34;_loop&#34;,
+        &#34;_session&#34;,
+        &#34;_secrets&#34;,
+        &#34;commands&#34;,
+        &#34;events&#34;,
+        &#34;tokens&#34;,
+    )
+
+    def __init__(
+        self,
+        api_key: str,
+        channel_id: str,
+        *,
+        secrets_file: pathlib.Path | str | None = None,
+        log_level: int = logging.INFO,
+        log_file: str | None = None,
+    ) -&gt; None:
+        chatto.ux.setup_logging(log_level, log_file)
+        chatto.ux.print_banner(
+            f&#34;Running version \33[1m{chatto.__version__}\33[0m. &#34;
+            &#34;Use `\33[1mpython -m chatto\33[0m` for more info.\n&#34;
+        )
+
+        self.api_key = api_key
+        &#34;&#34;&#34;The API key the bot will use.&#34;&#34;&#34;
+
+        if not channel_id:
+            raise MissingRequiredInformation(&#34;a channel ID must be provided&#34;)
+        self.channel_id = channel_id
+        &#34;&#34;&#34;The ID of the channel the bot will connect to.&#34;&#34;&#34;
+
+        self.events = events.EventHandler()
+        &#34;&#34;&#34;The event handler.&#34;&#34;&#34;
+
+        self.tokens: dict[str, str | int] = {}
+        &#34;&#34;&#34;The OAuth tokens the bot will use.&#34;&#34;&#34;
+
+        if secrets_file:
+            self.use_secrets(secrets_file)
+
+    @property
+    def loop(self) -&gt; AbstractEventLoop | None:
+        &#34;&#34;&#34;The asyncio loop the bot is using. If the bot is not running,
+        this will be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_loop&#34;, None)
+
+    @property
+    def session(self) -&gt; ClientSession | None:
+        &#34;&#34;&#34;The aiohttp session the bot is using. If the bot is not
+        running, this will likely be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_session&#34;, None)
+
+    @property
+    def stream(self) -&gt; Stream | None:
+        &#34;&#34;&#34;The stream the bot is in the live chat for. If the bot is not
+        connected to a stream, this will be `None`.&#34;&#34;&#34;
+        return getattr(self, &#34;_stream&#34;, None)
+
+    @property
+    def authorised(self) -&gt; bool:
+        &#34;&#34;&#34;Whether the bot has been authorised using OAuth.&#34;&#34;&#34;
+        return bool(self.tokens)
+
+    authorized = authorised
+
+    @property
+    def access_token(self) -&gt; str | None:
+        &#34;&#34;&#34;The bot&#39;s access token. If the bot has not been authorised
+        using OAuth, this will be `None`.&#34;&#34;&#34;
+        return self.tokens.get(&#34;access_token&#34;, None)  # type: ignore
+
+    @property
+    def platform(self) -&gt; str:
+        &#34;&#34;&#34;The platform the bot is connected to. This will always be
+        &#34;youtube&#34;.&#34;&#34;&#34;
+        return &#34;youtube&#34;
+
+    def listen(
+        self, event_type: type[events.Event]
+    ) -&gt; t.Callable[[t.Callable[[t.Any], t.Any]], None]:
+        &#34;&#34;&#34;A decorator used to subscribe the wrapped callback to an
+        event.
+
+        ## Arguments
+        * `event_type` -
+            The event type to subscribe to. This **must** be a subclass
+            of `events.Event`.
+
+        ## Example
+        ```py
+        @bot.listen(events.StreamFetchedEvent)
+        async def on_stream_fetched(event):
+            print(f&#34;Fetched stream with ID: {event.stream.id}&#34;)
+        ```
+        &#34;&#34;&#34;
+        return self.events.listen(event_type)
+
+    async def create_session(self, loop: AbstractEventLoop) -&gt; None:
+        &#34;&#34;&#34;Create a session. This is handled for you.
+
+        ## Arguments
+        * `loop` -
+            The loop the session should use.
+        &#34;&#34;&#34;
+        self._session = ClientSession(loop=loop)
+        log.info(&#34;New session created&#34;)
+
+    async def fetch_stream_info(self, stream_id: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Fetch stream info. This is handled for you.
+
+        ## Arguments
+        * `stream_id` -
+            The stream ID to fetch information for. If this is not set,
+            Chatto will attempt to find the stream using the
+            `channel_id`.
+
+        ## Raises
+        * `NoSession` -
+            There is no active session to use.
+        * `HTTPError` -
+            An invalid API request was made.
+        * `ChannelNotLive` -
+            An attempt to get the active stream from a channel that is
+            not live was not made. This can sometimes be thrown in
+            error, as the YouTube Data API&#39;s search endpoint is not 100%
+            reliable. See `run` for more information.
+        &#34;&#34;&#34;
+        if not self.session:
+            raise NoSession(&#34;no active session&#34;)
+
+        if stream_id:
+            self._stream = Stream.from_youtube(
+                await Stream.fetch_stream_data(stream_id, self.api_key, self.session)
+            )
+        else:
+            self._stream = Stream.from_youtube(
+                await Stream.fetch_active_stream_data(
+                    self.channel_id, self.api_key, self.session
+                )
+            )
+
+        await self.events.dispatch(events.StreamFetchedEvent, self._stream)
+
+    async def make_request(self, url: str) -&gt; dict[str, t.Any]:
+        &#34;&#34;&#34;A helper method for making requests. This should only be used
+        for GET requests.
+
+        ## Arguments
+        * `url` -
+            The URL to make a request to.
+
+        ## Returns
+        The data returned by the YouTube API.
+
+        ## Raises
+        * `HTTPError` -
+            Something is wrong with the request.
+        &#34;&#34;&#34;
+        log.debug(f&#34;Making request to {url}&#34;)
+        async with self._session.get(url) as r:
+            data = await r.json()
+
+        err = data.get(&#34;error&#34;, None)
+        if err:
+            raise HTTPError(err[&#34;code&#34;], err[&#34;errors&#34;][0][&#34;message&#34;])
+
+        return data  # type: ignore
+
+    async def poll_for_messages(self) -&gt; None:
+        &#34;&#34;&#34;A forever-looping task that polls the YouTube Live Streaming
+        API for new messages. This is handles for you.
+
+        Errors are generally logged and ignored when they occur, except
+        for some HTTPErrors.
+
+        ## Raises
+        * `HTTPError` -
+            An invalid API request was made. This error only
+            perpetuates when the status code is between 400 and 499
+            inclusive.
+        &#34;&#34;&#34;
+        page_token = &#34;&#34;  # nosec: B105 false positive
+        url = chatto.YOUTUBE_API_BASE_URL + (
+            &#34;/liveChat/messages&#34;
+            f&#34;?key={self.api_key}&#34;
+            f&#34;&amp;liveChatId={self._stream.chat_id}&#34;
+            &#34;&amp;part=snippet,authorDetails&#34;
+        )
+
+        while True:
+            try:
+                log.debug(&#34;Polling for new messages...&#34;)
+                data = await self.make_request(url + f&#34;&amp;pageToken={page_token}&#34;)
+                await self.events.dispatch(events.ChatPolledEvent, data)
+                new_items = data[&#34;items&#34;]
+
+                if new_items and page_token:
+                    log.info(f&#34;Processing {len(new_items):,} new message(s)&#34;)
+
+                    for item in new_items:
+                        message = Message.from_youtube(item, self._stream)
+                        await self.events.dispatch(events.MessageCreatedEvent, message)
+
+                page_token = data[&#34;nextPageToken&#34;]
+                next_poll_in = data[&#34;pollingIntervalMillis&#34;] / 1_000
+                log.debug(f&#34;Waiting {next_poll_in:,} seconds before next poll&#34;)
+                await asyncio.sleep(next_poll_in)
+
+            except Exception as exc:
+                if isinstance(exc, HTTPError):
+                    if 400 &lt;= exc.code &lt;= 499:
+                        log.critical(&#34;Received 4xx error, cannot continue&#34;)
+                        return traceback.print_exc()
+
+                log.error(f&#34;Ignoring error during polling (will retry in 5 seconds):&#34;)
+                traceback.print_exc()
+                await asyncio.sleep(5)
+
+    async def send_message(self, content: str) -&gt; Message:
+        &#34;&#34;&#34;Send a message to the live chat.
+
+        ## Arguments
+        * `content` -
+            The message text you want to send.
+
+        ## Returns
+        `Message` -
+            The message that has been sent.
+
+        ## Raises
+        `HTTPError` -
+            The API request was invalid.
+        &#34;&#34;&#34;
+        url = (
+            chatto.YOUTUBE_API_BASE_URL
+            + f&#34;/liveChat/messages?part=id,snippet,authorDetails&#34;
+        )
+        data = {
+            &#34;snippet&#34;: {
+                &#34;type&#34;: &#34;textMessageEvent&#34;,
+                &#34;liveChatId&#34;: self._stream.chat_id,
+                &#34;textMessageDetails&#34;: {
+                    &#34;messageText&#34;: content,
+                },
+            }
+        }
+        headers = {
+            &#34;Authorization&#34;: f&#34;Bearer {self.access_token}&#34;,
+            &#34;Accept&#34;: &#34;application/json&#34;,
+            &#34;Content-Type&#34;: &#34;application/json&#34;,
+        }
+
+        async with self._session.post(url, data=json.dumps(data), headers=headers) as r:
+            data = await r.json()
+
+        err = data.get(&#34;error&#34;, None)
+        if err:
+            # These ARE the right types -- Mypy just has no idea.
+            raise HTTPError(err[&#34;code&#34;], err[&#34;message&#34;])  # type: ignore
+
+        message = Message.from_youtube(data, self._stream)
+        await self.events.dispatch(events.MessageSentEvent, message)
+        return message
+
+    def run(
+        self,
+        *,
+        read_only: bool = False,
+        force_auth: bool = False,
+        with_stream_id: str | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Run the bot.
+
+        WARNING:
+            This is blocking, and thus should be the last thing you run.
+
+        ## Keyword Arguments
+        * `read_only` -
+            Whether to launch the bot in read-only mode. You will not be
+            able to send or delete messages in this mode, but you will
+            also bypass the need to authenticate the bot with OAuth 2.
+        * `force_auth` -
+            Whether to force OAuth 2 authorisation, irrespective of
+            whether existing tokens are available.
+        * `with_stream_id` -
+            Connectly directly to a specific stream. This is a fallback
+            in case the YouTube Data API does not recognise your channel
+            is currently live.
+
+        ## Raises
+        `Exception` -
+            A critical error occured and Chatto has to shut down.
+            Non-critical errors are ignored and logged.
+        &#34;&#34;&#34;
+        log.info(&#34;\33[1mNow starting bot!\33[0m&#34;)
+
+        if sys.version_info &gt;= (3, 10):
+            self._loop = asyncio.new_event_loop()
+        else:
+            self._loop = asyncio.get_event_loop()
+
+        try:
+            self._loop.run_until_complete(self.events.create_queue())
+            self._loop.run_until_complete(self.create_session(self._loop))
+
+            if not read_only:
+                self._loop.run_until_complete(self.authorise(force=force_auth))
+
+            self._loop.run_until_complete(self.fetch_stream_info(with_stream_id))
+
+            task = self._loop.create_task(self.poll_for_messages())
+            self._loop.create_task(self.events.process())
+            self._loop.create_task(
+                self.auto_refresh_tokens(self.tokens[&#34;expires_in&#34;])  # type: ignore
+            )
+
+            self._loop.run_until_complete(self.events.dispatch(events.ReadyEvent))
+            self._loop.run_until_complete(task)
+
+        except Exception as exc:
+            log.critical(&#34;A critical error occurred, and Chatto cannot continue&#34;)
+            raise exc
+
+        except KeyboardInterrupt:
+            ...
+
+        finally:
+            self.close(self._loop)
+
+    def close(self, loop: AbstractEventLoop) -&gt; None:
+        &#34;&#34;&#34;Shut the bot down.
+
+        ## Arguments
+        * `loop` -
+            The event loop the bot is using.
+        &#34;&#34;&#34;
+        log.debug(&#34;Shutting bot down...&#34;)
+
+        if self.session:
+            loop.run_until_complete(self._session.close())
+            log.info(&#34;Session closed&#34;)
+
+        pending = asyncio.all_tasks(loop)
+        for task in pending:
+            task.cancel()
+            try:
+                log.debug(f&#34;Cancelling task {task}&#34;)
+                loop.run_until_complete(task)
+            except asyncio.CancelledError:
+                ...
+
+        loop.close()
+        asyncio.set_event_loop(None)
+        log.info(&#34;Loop closed. See ya later!&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="chatto.oauth.OAuthMixin" href="oauth.html#chatto.oauth.OAuthMixin">OAuthMixin</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="chatto.YouTubeBot.access_token"><code class="name">var <span class="ident">access_token</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>The bot's access token. If the bot has not been authorised
+using OAuth, this will be <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def access_token(self) -&gt; str | None:
+    &#34;&#34;&#34;The bot&#39;s access token. If the bot has not been authorised
+    using OAuth, this will be `None`.&#34;&#34;&#34;
+    return self.tokens.get(&#34;access_token&#34;, None)  # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.api_key"><code class="name">var <span class="ident">api_key</span></code></dt>
+<dd>
+<div class="desc"><p>The API key the bot will use.</p></div>
+</dd>
+<dt id="chatto.YouTubeBot.authorised"><code class="name">var <span class="ident">authorised</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Whether the bot has been authorised using OAuth.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def authorised(self) -&gt; bool:
+    &#34;&#34;&#34;Whether the bot has been authorised using OAuth.&#34;&#34;&#34;
+    return bool(self.tokens)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.authorized"><code class="name">var <span class="ident">authorized</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Whether the bot has been authorised using OAuth.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def authorised(self) -&gt; bool:
+    &#34;&#34;&#34;Whether the bot has been authorised using OAuth.&#34;&#34;&#34;
+    return bool(self.tokens)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.channel_id"><code class="name">var <span class="ident">channel_id</span></code></dt>
+<dd>
+<div class="desc"><p>The ID of the channel the bot will connect to.</p></div>
+</dd>
+<dt id="chatto.YouTubeBot.commands"><code class="name">var <span class="ident">commands</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="chatto.YouTubeBot.events"><code class="name">var <span class="ident">events</span> : <a title="chatto.events.EventHandler" href="events.html#chatto.events.EventHandler">EventHandler</a></code></dt>
+<dd>
+<div class="desc"><p>The event handler.</p></div>
+</dd>
+<dt id="chatto.YouTubeBot.loop"><code class="name">var <span class="ident">loop</span> : AbstractEventLoop | None</code></dt>
+<dd>
+<div class="desc"><p>The asyncio loop the bot is using. If the bot is not running,
+this will be <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def loop(self) -&gt; AbstractEventLoop | None:
+    &#34;&#34;&#34;The asyncio loop the bot is using. If the bot is not running,
+    this will be `None`.&#34;&#34;&#34;
+    return getattr(self, &#34;_loop&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.platform"><code class="name">var <span class="ident">platform</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The platform the bot is connected to. This will always be
+"youtube".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def platform(self) -&gt; str:
+    &#34;&#34;&#34;The platform the bot is connected to. This will always be
+    &#34;youtube&#34;.&#34;&#34;&#34;
+    return &#34;youtube&#34;</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.session"><code class="name">var <span class="ident">session</span> : aiohttp.client.ClientSession | None</code></dt>
+<dd>
+<div class="desc"><p>The aiohttp session the bot is using. If the bot is not
+running, this will likely be <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def session(self) -&gt; ClientSession | None:
+    &#34;&#34;&#34;The aiohttp session the bot is using. If the bot is not
+    running, this will likely be `None`.&#34;&#34;&#34;
+    return getattr(self, &#34;_session&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.stream"><code class="name">var <span class="ident">stream</span> : <a title="chatto.stream.Stream" href="stream.html#chatto.stream.Stream">Stream</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The stream the bot is in the live chat for. If the bot is not
+connected to a stream, this will be <code>None</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def stream(self) -&gt; Stream | None:
+    &#34;&#34;&#34;The stream the bot is in the live chat for. If the bot is not
+    connected to a stream, this will be `None`.&#34;&#34;&#34;
+    return getattr(self, &#34;_stream&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.tokens"><code class="name">var <span class="ident">tokens</span></code></dt>
+<dd>
+<div class="desc"><p>The OAuth tokens the bot will use.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="chatto.YouTubeBot.close"><code class="name flex">
+<span>def <span class="ident">close</span></span>(<span>self, loop: AbstractEventLoop) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Shut the bot down.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>loop</code> -
+The event loop the bot is using.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def close(self, loop: AbstractEventLoop) -&gt; None:
+    &#34;&#34;&#34;Shut the bot down.
+
+    ## Arguments
+    * `loop` -
+        The event loop the bot is using.
+    &#34;&#34;&#34;
+    log.debug(&#34;Shutting bot down...&#34;)
+
+    if self.session:
+        loop.run_until_complete(self._session.close())
+        log.info(&#34;Session closed&#34;)
+
+    pending = asyncio.all_tasks(loop)
+    for task in pending:
+        task.cancel()
+        try:
+            log.debug(f&#34;Cancelling task {task}&#34;)
+            loop.run_until_complete(task)
+        except asyncio.CancelledError:
+            ...
+
+    loop.close()
+    asyncio.set_event_loop(None)
+    log.info(&#34;Loop closed. See ya later!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.create_session"><code class="name flex">
+<span>async def <span class="ident">create_session</span></span>(<span>self, loop: AbstractEventLoop) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a session. This is handled for you.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>loop</code> -
+The loop the session should use.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def create_session(self, loop: AbstractEventLoop) -&gt; None:
+    &#34;&#34;&#34;Create a session. This is handled for you.
+
+    ## Arguments
+    * `loop` -
+        The loop the session should use.
+    &#34;&#34;&#34;
+    self._session = ClientSession(loop=loop)
+    log.info(&#34;New session created&#34;)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.fetch_stream_info"><code class="name flex">
+<span>async def <span class="ident">fetch_stream_info</span></span>(<span>self, stream_id: str | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fetch stream info. This is handled for you.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>stream_id</code> -
+The stream ID to fetch information for. If this is not set,
+Chatto will attempt to find the stream using the
+<code>channel_id</code>.</li>
+</ul>
+<h2 id="raises">Raises</h2>
+<ul>
+<li><code>NoSession</code> -
+There is no active session to use.</li>
+<li><code>HTTPError</code> -
+An invalid API request was made.</li>
+<li><code>ChannelNotLive</code> -
+An attempt to get the active stream from a channel that is
+not live was not made. This can sometimes be thrown in
+error, as the YouTube Data API's search endpoint is not 100%
+reliable. See <code>run</code> for more information.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def fetch_stream_info(self, stream_id: str | None = None) -&gt; None:
+    &#34;&#34;&#34;Fetch stream info. This is handled for you.
+
+    ## Arguments
+    * `stream_id` -
+        The stream ID to fetch information for. If this is not set,
+        Chatto will attempt to find the stream using the
+        `channel_id`.
+
+    ## Raises
+    * `NoSession` -
+        There is no active session to use.
+    * `HTTPError` -
+        An invalid API request was made.
+    * `ChannelNotLive` -
+        An attempt to get the active stream from a channel that is
+        not live was not made. This can sometimes be thrown in
+        error, as the YouTube Data API&#39;s search endpoint is not 100%
+        reliable. See `run` for more information.
+    &#34;&#34;&#34;
+    if not self.session:
+        raise NoSession(&#34;no active session&#34;)
+
+    if stream_id:
+        self._stream = Stream.from_youtube(
+            await Stream.fetch_stream_data(stream_id, self.api_key, self.session)
+        )
+    else:
+        self._stream = Stream.from_youtube(
+            await Stream.fetch_active_stream_data(
+                self.channel_id, self.api_key, self.session
+            )
+        )
+
+    await self.events.dispatch(events.StreamFetchedEvent, self._stream)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.listen"><code class="name flex">
+<span>def <span class="ident">listen</span></span>(<span>self, event_type: type[<a title="chatto.events.Event" href="events.html#chatto.events.Event">Event</a>]) ‑> Callable[[Callable[[Any], Any]], None]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A decorator used to subscribe the wrapped callback to an
+event.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>event_type</code> -
+The event type to subscribe to. This <strong>must</strong> be a subclass
+of <code><a title="chatto.events.Event" href="events.html#chatto.events.Event">Event</a></code>.</li>
+</ul>
+<h2 id="example">Example</h2>
+<pre><code class="language-py">@bot.listen(events.StreamFetchedEvent)
+async def on_stream_fetched(event):
+    print(f&quot;Fetched stream with ID: {event.stream.id}&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def listen(
+    self, event_type: type[events.Event]
+) -&gt; t.Callable[[t.Callable[[t.Any], t.Any]], None]:
+    &#34;&#34;&#34;A decorator used to subscribe the wrapped callback to an
+    event.
+
+    ## Arguments
+    * `event_type` -
+        The event type to subscribe to. This **must** be a subclass
+        of `events.Event`.
+
+    ## Example
+    ```py
+    @bot.listen(events.StreamFetchedEvent)
+    async def on_stream_fetched(event):
+        print(f&#34;Fetched stream with ID: {event.stream.id}&#34;)
+    ```
+    &#34;&#34;&#34;
+    return self.events.listen(event_type)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.make_request"><code class="name flex">
+<span>async def <span class="ident">make_request</span></span>(<span>self, url: str) ‑> dict[str, typing.Any]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A helper method for making requests. This should only be used
+for GET requests.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>url</code> -
+The URL to make a request to.</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<p>The data returned by the YouTube API.</p>
+<h2 id="raises">Raises</h2>
+<ul>
+<li><code>HTTPError</code> -
+Something is wrong with the request.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def make_request(self, url: str) -&gt; dict[str, t.Any]:
+    &#34;&#34;&#34;A helper method for making requests. This should only be used
+    for GET requests.
+
+    ## Arguments
+    * `url` -
+        The URL to make a request to.
+
+    ## Returns
+    The data returned by the YouTube API.
+
+    ## Raises
+    * `HTTPError` -
+        Something is wrong with the request.
+    &#34;&#34;&#34;
+    log.debug(f&#34;Making request to {url}&#34;)
+    async with self._session.get(url) as r:
+        data = await r.json()
+
+    err = data.get(&#34;error&#34;, None)
+    if err:
+        raise HTTPError(err[&#34;code&#34;], err[&#34;errors&#34;][0][&#34;message&#34;])
+
+    return data  # type: ignore</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.poll_for_messages"><code class="name flex">
+<span>async def <span class="ident">poll_for_messages</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A forever-looping task that polls the YouTube Live Streaming
+API for new messages. This is handles for you.</p>
+<p>Errors are generally logged and ignored when they occur, except
+for some HTTPErrors.</p>
+<h2 id="raises">Raises</h2>
+<ul>
+<li><code>HTTPError</code> -
+An invalid API request was made. This error only
+perpetuates when the status code is between 400 and 499
+inclusive.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def poll_for_messages(self) -&gt; None:
+    &#34;&#34;&#34;A forever-looping task that polls the YouTube Live Streaming
+    API for new messages. This is handles for you.
+
+    Errors are generally logged and ignored when they occur, except
+    for some HTTPErrors.
+
+    ## Raises
+    * `HTTPError` -
+        An invalid API request was made. This error only
+        perpetuates when the status code is between 400 and 499
+        inclusive.
+    &#34;&#34;&#34;
+    page_token = &#34;&#34;  # nosec: B105 false positive
+    url = chatto.YOUTUBE_API_BASE_URL + (
+        &#34;/liveChat/messages&#34;
+        f&#34;?key={self.api_key}&#34;
+        f&#34;&amp;liveChatId={self._stream.chat_id}&#34;
+        &#34;&amp;part=snippet,authorDetails&#34;
+    )
+
+    while True:
+        try:
+            log.debug(&#34;Polling for new messages...&#34;)
+            data = await self.make_request(url + f&#34;&amp;pageToken={page_token}&#34;)
+            await self.events.dispatch(events.ChatPolledEvent, data)
+            new_items = data[&#34;items&#34;]
+
+            if new_items and page_token:
+                log.info(f&#34;Processing {len(new_items):,} new message(s)&#34;)
+
+                for item in new_items:
+                    message = Message.from_youtube(item, self._stream)
+                    await self.events.dispatch(events.MessageCreatedEvent, message)
+
+            page_token = data[&#34;nextPageToken&#34;]
+            next_poll_in = data[&#34;pollingIntervalMillis&#34;] / 1_000
+            log.debug(f&#34;Waiting {next_poll_in:,} seconds before next poll&#34;)
+            await asyncio.sleep(next_poll_in)
+
+        except Exception as exc:
+            if isinstance(exc, HTTPError):
+                if 400 &lt;= exc.code &lt;= 499:
+                    log.critical(&#34;Received 4xx error, cannot continue&#34;)
+                    return traceback.print_exc()
+
+            log.error(f&#34;Ignoring error during polling (will retry in 5 seconds):&#34;)
+            traceback.print_exc()
+            await asyncio.sleep(5)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, *, read_only: bool = False, force_auth: bool = False, with_stream_id: str | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the bot.</p>
+<h2 id="warning">Warning</h2>
+<p>This is blocking, and thus should be the last thing you run.</p>
+<h2 id="keyword-arguments">Keyword Arguments</h2>
+<ul>
+<li><code>read_only</code> -
+Whether to launch the bot in read-only mode. You will not be
+able to send or delete messages in this mode, but you will
+also bypass the need to authenticate the bot with OAuth 2.</li>
+<li><code>force_auth</code> -
+Whether to force OAuth 2 authorisation, irrespective of
+whether existing tokens are available.</li>
+<li><code>with_stream_id</code> -
+Connectly directly to a specific stream. This is a fallback
+in case the YouTube Data API does not recognise your channel
+is currently live.</li>
+</ul>
+<h2 id="raises">Raises</h2>
+<p><code>Exception</code> -
+A critical error occured and Chatto has to shut down.
+Non-critical errors are ignored and logged.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(
+    self,
+    *,
+    read_only: bool = False,
+    force_auth: bool = False,
+    with_stream_id: str | None = None,
+) -&gt; None:
+    &#34;&#34;&#34;Run the bot.
+
+    WARNING:
+        This is blocking, and thus should be the last thing you run.
+
+    ## Keyword Arguments
+    * `read_only` -
+        Whether to launch the bot in read-only mode. You will not be
+        able to send or delete messages in this mode, but you will
+        also bypass the need to authenticate the bot with OAuth 2.
+    * `force_auth` -
+        Whether to force OAuth 2 authorisation, irrespective of
+        whether existing tokens are available.
+    * `with_stream_id` -
+        Connectly directly to a specific stream. This is a fallback
+        in case the YouTube Data API does not recognise your channel
+        is currently live.
+
+    ## Raises
+    `Exception` -
+        A critical error occured and Chatto has to shut down.
+        Non-critical errors are ignored and logged.
+    &#34;&#34;&#34;
+    log.info(&#34;\33[1mNow starting bot!\33[0m&#34;)
+
+    if sys.version_info &gt;= (3, 10):
+        self._loop = asyncio.new_event_loop()
+    else:
+        self._loop = asyncio.get_event_loop()
+
+    try:
+        self._loop.run_until_complete(self.events.create_queue())
+        self._loop.run_until_complete(self.create_session(self._loop))
+
+        if not read_only:
+            self._loop.run_until_complete(self.authorise(force=force_auth))
+
+        self._loop.run_until_complete(self.fetch_stream_info(with_stream_id))
+
+        task = self._loop.create_task(self.poll_for_messages())
+        self._loop.create_task(self.events.process())
+        self._loop.create_task(
+            self.auto_refresh_tokens(self.tokens[&#34;expires_in&#34;])  # type: ignore
+        )
+
+        self._loop.run_until_complete(self.events.dispatch(events.ReadyEvent))
+        self._loop.run_until_complete(task)
+
+    except Exception as exc:
+        log.critical(&#34;A critical error occurred, and Chatto cannot continue&#34;)
+        raise exc
+
+    except KeyboardInterrupt:
+        ...
+
+    finally:
+        self.close(self._loop)</code></pre>
+</details>
+</dd>
+<dt id="chatto.YouTubeBot.send_message"><code class="name flex">
+<span>async def <span class="ident">send_message</span></span>(<span>self, content: str) ‑> <a title="chatto.message.Message" href="message.html#chatto.message.Message">Message</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Send a message to the live chat.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>content</code> -
+The message text you want to send.</li>
+</ul>
+<h2 id="returns">Returns</h2>
+<p><code>Message</code> -
+The message that has been sent.</p>
+<h2 id="raises">Raises</h2>
+<p><code>HTTPError</code> -
+The API request was invalid.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def send_message(self, content: str) -&gt; Message:
+    &#34;&#34;&#34;Send a message to the live chat.
+
+    ## Arguments
+    * `content` -
+        The message text you want to send.
+
+    ## Returns
+    `Message` -
+        The message that has been sent.
+
+    ## Raises
+    `HTTPError` -
+        The API request was invalid.
+    &#34;&#34;&#34;
+    url = (
+        chatto.YOUTUBE_API_BASE_URL
+        + f&#34;/liveChat/messages?part=id,snippet,authorDetails&#34;
+    )
+    data = {
+        &#34;snippet&#34;: {
+            &#34;type&#34;: &#34;textMessageEvent&#34;,
+            &#34;liveChatId&#34;: self._stream.chat_id,
+            &#34;textMessageDetails&#34;: {
+                &#34;messageText&#34;: content,
+            },
+        }
+    }
+    headers = {
+        &#34;Authorization&#34;: f&#34;Bearer {self.access_token}&#34;,
+        &#34;Accept&#34;: &#34;application/json&#34;,
+        &#34;Content-Type&#34;: &#34;application/json&#34;,
+    }
+
+    async with self._session.post(url, data=json.dumps(data), headers=headers) as r:
+        data = await r.json()
+
+    err = data.get(&#34;error&#34;, None)
+    if err:
+        # These ARE the right types -- Mypy just has no idea.
+        raise HTTPError(err[&#34;code&#34;], err[&#34;message&#34;])  # type: ignore
+
+    message = Message.from_youtube(data, self._stream)
+    await self.events.dispatch(events.MessageSentEvent, message)
+    return message</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="chatto.oauth.OAuthMixin" href="oauth.html#chatto.oauth.OAuthMixin">OAuthMixin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="chatto.oauth.OAuthMixin.authorise" href="oauth.html#chatto.oauth.OAuthMixin.authorise">authorise</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.authorize" href="oauth.html#chatto.oauth.OAuthMixin.authorize">authorize</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.secrets" href="oauth.html#chatto.oauth.OAuthMixin.secrets">secrets</a></code></li>
+<li><code><a title="chatto.oauth.OAuthMixin.use_secrets" href="oauth.html#chatto.oauth.OAuthMixin.use_secrets">use_secrets</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div id="dark-mode-toggle" onclick="toggleDarkMode()">
+<svg class="dm-icon-off" viewBox="0 0 16 16">
+<path d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.414-1.414zM14 7h2v2h-2zM12.95 14.433l-1.415-1.414 1.414-1.414 1.415 1.413zM7 14h2v2H7zM2.98 14.363L1.566 12.95l1.415-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.707L4.465 3.12 3.05 4.535 1.636 3.121z" />
+<path d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z" />
+</svg>
+<svg class="dm-icon-on" viewBox="0 0 16 16">
+<path d="M6,0C2.5,0.9,0,4.1,0,7.9C0,12.4,3.6,16,8.1,16c3.8,0,6.9-2.5,7.9-6C9.9,11.7,4.3,6.1,6,0z"></path>
+</svg>
+</div>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="chatto.channel" href="channel.html">chatto.channel</a></code></li>
+<li><code><a title="chatto.errors" href="errors.html">chatto.errors</a></code></li>
+<li><code><a title="chatto.events" href="events.html">chatto.events</a></code></li>
+<li><code><a title="chatto.message" href="message.html">chatto.message</a></code></li>
+<li><code><a title="chatto.oauth" href="oauth.html">chatto.oauth</a></code></li>
+<li><code><a title="chatto.secrets" href="secrets.html">chatto.secrets</a></code></li>
+<li><code><a title="chatto.stream" href="stream.html">chatto.stream</a></code></li>
+<li><code><a title="chatto.ux" href="ux.html">chatto.ux</a></code></li>
+<li><code><a title="chatto.youtube" href="youtube.html">chatto.youtube</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="chatto.YouTubeBot" href="#chatto.YouTubeBot">YouTubeBot</a></code></h4>
+<ul class="two-column">
+<li><code><a title="chatto.YouTubeBot.access_token" href="#chatto.YouTubeBot.access_token">access_token</a></code></li>
+<li><code><a title="chatto.YouTubeBot.api_key" href="#chatto.YouTubeBot.api_key">api_key</a></code></li>
+<li><code><a title="chatto.YouTubeBot.authorised" href="#chatto.YouTubeBot.authorised">authorised</a></code></li>
+<li><code><a title="chatto.YouTubeBot.authorized" href="#chatto.YouTubeBot.authorized">authorized</a></code></li>
+<li><code><a title="chatto.YouTubeBot.channel_id" href="#chatto.YouTubeBot.channel_id">channel_id</a></code></li>
+<li><code><a title="chatto.YouTubeBot.close" href="#chatto.YouTubeBot.close">close</a></code></li>
+<li><code><a title="chatto.YouTubeBot.commands" href="#chatto.YouTubeBot.commands">commands</a></code></li>
+<li><code><a title="chatto.YouTubeBot.create_session" href="#chatto.YouTubeBot.create_session">create_session</a></code></li>
+<li><code><a title="chatto.YouTubeBot.events" href="#chatto.YouTubeBot.events">events</a></code></li>
+<li><code><a title="chatto.YouTubeBot.fetch_stream_info" href="#chatto.YouTubeBot.fetch_stream_info">fetch_stream_info</a></code></li>
+<li><code><a title="chatto.YouTubeBot.listen" href="#chatto.YouTubeBot.listen">listen</a></code></li>
+<li><code><a title="chatto.YouTubeBot.loop" href="#chatto.YouTubeBot.loop">loop</a></code></li>
+<li><code><a title="chatto.YouTubeBot.make_request" href="#chatto.YouTubeBot.make_request">make_request</a></code></li>
+<li><code><a title="chatto.YouTubeBot.platform" href="#chatto.YouTubeBot.platform">platform</a></code></li>
+<li><code><a title="chatto.YouTubeBot.poll_for_messages" href="#chatto.YouTubeBot.poll_for_messages">poll_for_messages</a></code></li>
+<li><code><a title="chatto.YouTubeBot.run" href="#chatto.YouTubeBot.run">run</a></code></li>
+<li><code><a title="chatto.YouTubeBot.send_message" href="#chatto.YouTubeBot.send_message">send_message</a></code></li>
+<li><code><a title="chatto.YouTubeBot.session" href="#chatto.YouTubeBot.session">session</a></code></li>
+<li><code><a title="chatto.YouTubeBot.stream" href="#chatto.YouTubeBot.stream">stream</a></code></li>
+<li><code><a title="chatto.YouTubeBot.tokens" href="#chatto.YouTubeBot.tokens">tokens</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.3.dev22+g601fb40</a>.</p>
+</footer>
+</body>
+</html>

@@ -45,7 +45,7 @@ from tests.test_stream import stream
 def message(stream: Stream, channel: Channel) -> Message:
     return Message(
         id="r398tn38g8943ng8b40g",
-        type=MessageTypes.TextMessageEvent,
+        type=MessageType.TEXT_MESSAGE_EVENT,
         stream=stream,
         channel=channel,
         published_at=dt.datetime(2022, 1, 1, 0, 0, 0, tzinfo=tzutc()),
@@ -79,7 +79,7 @@ def youtube_message_data() -> dict[str, t.Any]:
 
 def test_create_message(message: Message, stream: Stream, channel: Channel) -> None:
     assert message.id == "r398tn38g8943ng8b40g"
-    assert message.type == MessageTypes.TextMessageEvent
+    assert message.type == MessageType.TEXT_MESSAGE_EVENT
     assert message.stream == stream
     assert message.channel == channel
     assert message.published_at == dt.datetime(2022, 1, 1, 0, 0, 0, tzinfo=tzutc())

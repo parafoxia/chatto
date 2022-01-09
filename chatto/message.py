@@ -27,6 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from __future__ import annotations
+import enum
 
 import datetime as dt
 import typing as t
@@ -37,22 +38,48 @@ from dateutil.parser import parse as parse_ts
 from chatto.channel import Channel
 from chatto.stream import Stream
 
+class MessageTypes(enum.Enum):
+    ChatEndedEvent = "chatEndedEvent"
+    MessageDeletedEvent = "messageDeletedEvent" 
+    NewSponsorEvent = "newSponsorEvent"
+    SponsorOnlyModeEndedEvent = "sponsorOnlyModeEndedEvent"
+    SponsorOnlyModeStartedEvent = "sponsorOnlyModeStartedEvent"
+    MemberMilestoneChatEvent = "memberMilestoneChatEvent"
+    SuperChatEvent = "superChatEvent"
+    SuperStickerEvent = "superStickerEvent"
+    TextMessageEvent = "textMessageEvent"
+    Tombstone = "tombstone"
+    UserBannedEvent = "userBannedEvent"
 
 @dataclass(eq=True, frozen=True)
 class Message:
     id: str
-    type: str
+    type: MessageTypes
     stream: Stream
     channel: Channel
     published_at: dt.datetime
     content: str
+
+    def get_type(type: str) -> MessageTypes:
+        print(type == MessageTypes.TextMessageEvent.value)
+        if (type == MessageTypes.ChatEndedEvent.value): return MessageTypes.ChatEndedEvent
+        if (type == MessageTypes.MessageDeletedEvent.value): return MessageTypes.MessageDeletedEvent
+        if (type == MessageTypes.NewSponsorEvent.value): return MessageTypes.NewSponsorEvent
+        if (type == MessageTypes.SponsorOnlyModeEndedEvent.value): return MessageTypes.SponsorOnlyModeEndedEvent
+        if (type == MessageTypes.SponsorOnlyModeStartedEvent.value): return MessageTypes.SponsorOnlyModeStartedEvent
+        if (type == MessageTypes.MemberMilestoneChatEvent.value): return MessageTypes.MemberMilestoneChatEvent
+        if (type == MessageTypes.SuperChatEvent.value): return MessageTypes.SuperChatEvent
+        if (type == MessageTypes.SuperStickerEvent.value): return MessageTypes.SuperStickerEvent
+        if (type == MessageTypes.TextMessageEvent.value): return MessageTypes.TextMessageEvent
+        if (type == MessageTypes.Tombstone.value): return MessageTypes.Tombstone
+        if (type == MessageTypes.UserBannedEvent.value): return MessageTypes.UserBannedEvent
 
     @classmethod
     def from_youtube(cls, item: dict[str, t.Any], stream: Stream) -> Message:
         snippet = item["snippet"]
         return cls(
             id=item["id"],
-            type=snippet["type"],
+            type=cls.get_type(snippet["type"]),
             stream=stream,
             channel=Channel.from_author(item["authorDetails"]),
             published_at=parse_ts(snippet["publishedAt"]),

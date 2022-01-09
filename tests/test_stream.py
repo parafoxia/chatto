@@ -75,12 +75,12 @@ def test_create_stream(stream: Stream) -> None:
 
 
 def test_create_stream_from_data(stream: Stream, stream_data: dict[str, t.Any]) -> None:
-    assert stream == Stream.from_data(stream_data)
+    assert stream == Stream.from_youtube(stream_data)
 
 
 def test_create_stream_from_bad_data(
     stream: Stream, bad_stream_data: dict[str, t.Any]
 ) -> None:
     with pytest.raises(errors.ChannelNotLive) as exc:
-        assert stream == Stream.from_data(bad_stream_data)
+        assert stream == Stream.from_youtube(bad_stream_data)
     assert str(exc.value) == "the stream has no active chat ID"

@@ -369,7 +369,7 @@ class YouTubeBot(OAuthMixin):
 
         ## Raises
         `Exception` -
-            A critical error occured and Chatto has to shut down.
+            A critical error occurred and Chatto has to shut down.
             Non-critical errors are ignored and logged.
         """
         log.info("\33[1mNow starting bot!\33[0m")

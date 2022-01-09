@@ -92,6 +92,7 @@ def tests(session: nox.Session) -> None:
     )
     session.run("coverage", "report", "-mi")
     os.remove("CALLBACK")
+    os.remove("test.log")
 
 
 @nox.session(reuse_venv=True)

@@ -29,6 +29,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import enum
 import typing as t
 from dataclasses import dataclass
 
@@ -36,6 +37,20 @@ from dateutil.parser import parse as parse_ts
 
 from chatto.channel import Channel
 from chatto.stream import Stream
+
+
+class MessageType(enum.Enum):
+    CHAT_ENDED_EVENT = "chatEndedEvent"
+    MESSAGE_DELETED_EVENT = "messageDeletedEvent"
+    NEW_SPONSOR_EVENT = "newSponsorEvent"
+    SPONSOR_ONLY_MODE_ENDED_EVENT = "sponsorOnlyModeEndedEvent"
+    SPONSOR_ONLY_MODE_STARTED_EVENT = "sponsorOnlyModeStartedEvent"
+    MEMBER_MILESTONE_CHAT_EVENT = "memberMilestoneChatEvent"
+    SUPER_CHAT_EVENT = "superChatEvent"
+    SUPER_STICKER_EVENT = "superStickerEvent"
+    TEXT_MESSAGE_EVENT = "textMessageEvent"
+    TOMBSTONE = "tombstone"
+    USER_BANNED_EVENT = "userBannedEvent"
 
 
 @dataclass(eq=True, frozen=True)
@@ -46,7 +61,7 @@ class Message:
     id: str
     """The message's ID."""
 
-    type: str
+    type: MessageType
     """The message's type."""
 
     stream: Stream
@@ -80,7 +95,7 @@ class Message:
         snippet = resource["snippet"]
         return cls(
             id=resource["id"],
-            type=snippet["type"],
+            type=MessageType(snippet["type"]),
             stream=stream,
             channel=Channel.from_author(resource["authorDetails"]),
             published_at=parse_ts(snippet["publishedAt"]),

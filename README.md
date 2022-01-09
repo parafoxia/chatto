@@ -3,6 +3,7 @@
 [![PyPi version](https://img.shields.io/pypi/v/chatto.svg)](https://pypi.python.org/pypi/chatto/)
 [![Downloads](https://pepy.tech/badge/chatto)](https://pepy.tech/project/chatto)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/parafoxia/chatto/CI?label=ci)](https://github.com/parafoxia/chatto/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-up-green)](https://parafoxia.github.io/chatto/chatto/)
 [![License](https://img.shields.io/github/license/parafoxia/chatto.svg)](https://github.com/parafoxia/chatto/blob/main/LICENSE)
 
 A unified API wrapper for YouTube and Twitch chat bots.
@@ -34,7 +35,7 @@ You may need to prefix these commands with a call to the Python interpreter depe
 
 Before you begin, you will need to have a Google Developers project with the YouTube Data API V3 enabled. You need an API key, and if you want to send and delete messages, you will need an OAuth client ID.
 
-Although this project is currently undocumented, I [made a video](https://www.youtube.com/watch?v=1Xday10ZWeg) walking through all the necessary steps.
+I [made a video](https://www.youtube.com/watch?v=1Xday10ZWeg) walking through all the necessary steps.
 
 ## Creating a YouTube bot
 
@@ -85,6 +86,7 @@ If you don't want to use OAuth, you can launch Chatto in read-only mode. Note th
 ```py
 bot.run(read_only=True)
 ```
+To learn how to make more advanced bots, check the [documentation](https://parafoxia.github.io/chatto/chatto/).
 
 ## Creating a Twitch bot
 

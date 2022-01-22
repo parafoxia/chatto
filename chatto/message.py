@@ -65,7 +65,7 @@ class Message:
     """The message's type."""
 
     stream: Stream
-    """The stream instance the """
+    """The stream in which the bot is connected to."""
 
     channel: Channel
     """The channel in which the message was sent."""
@@ -89,7 +89,7 @@ class Message:
             connected to.
 
         ## Returns
-        * `Message`:
+        * `Message` -
             The newly created message object.
         """
         snippet = resource["snippet"]

@@ -339,7 +339,6 @@ class YouTubeBot(OAuthMixin):
             raise HTTPError(err["code"], err["message"])  # type: ignore
 
         message = Message.from_youtube(data, self._stream)
-        await self.events.dispatch(events.MessageSentEvent, message)
         return message
 
     def run(

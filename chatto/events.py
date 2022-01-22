@@ -84,15 +84,6 @@ class ChatPolledEvent(Event):
 
 
 @dataclass(eq=True, frozen=True)
-class MessageSentEvent(Event):
-    """Event dispatched when a message has been sent to the live
-    chat by the bot."""
-
-    message: Message
-    """The sent message."""
-
-
-@dataclass(eq=True, frozen=True)
 class AuthorisedEvent(Event):
     """Event dispatched once the bot has been authorised with
     OAuth 2."""

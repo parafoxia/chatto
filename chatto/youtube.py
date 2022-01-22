@@ -246,9 +246,9 @@ class YouTubeBot(OAuthMixin):
 
         return data  # type: ignore
 
-    async def poll_for_messages(self) -> None:
+    async def process_messages(self) -> None:
         """A forever-looping task that polls the YouTube Live Streaming
-        API for new messages. This is handles for you.
+        API for new messages. This is handled for you.
 
         Errors are generally logged and ignored when they occur, except
         for some HTTPErrors.
@@ -387,7 +387,7 @@ class YouTubeBot(OAuthMixin):
 
             self._loop.run_until_complete(self.fetch_stream_info(with_stream_id))
 
-            task = self._loop.create_task(self.poll_for_messages())
+            task = self._loop.create_task(self.process_messages())
             self._loop.create_task(self.events.process())
             self._loop.create_task(
                 self.auto_refresh_tokens(self.tokens["expires_in"])  # type: ignore
